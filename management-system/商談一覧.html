@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商談一覧 | 電気保安管理システム</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen overflow-hidden">
+        <!-- サイドバー -->
+        <div class="hidden md:flex md:flex-shrink-0">
+            <div class="flex flex-col w-64">
+                <div class="flex flex-col h-0 flex-1 bg-primary-800">
+                    <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+                        <div class="flex items-center flex-shrink-0 px-4">
+                            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-300.svg" alt="電気保安管理">
+                            <span class="ml-2 text-white text-lg font-semibold">電気保安管理システム</span>
+                        </div>
+                        <nav class="mt-5 flex-1 px-2 space-y-1">
+                            <a href="ダッシュボード.html" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-white hover:bg-primary-700">
+                                <i class="fas fa-tachometer-alt mr-3 text-primary-300"></i>
+                                ダッシュボード
+                            </a>
+                            <a href="技術者一覧.html" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-white hover:bg-primary-700">
+                                <i class="fas fa-user-hard-hat mr-3 text-primary-300"></i>
+                                技術者管理
+                            </a>
+                            <a href="設備管理.html" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-white hover:bg-primary-700">
+                                <i class="fas fa-bolt mr-3 text-primary-300"></i>
+                                設備管理
+                            </a>
+                            <a href="点検計画.html" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-white hover:bg-primary-700">
+                                <i class="fas fa-clipboard-check mr-3 text-primary-300"></i>
+                                点検計画
+                            </a>
+                            <a href="指摘事項一覧.html" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-white hover:bg-primary-700">
+                                <i class="fas fa-exclamation-triangle mr-3 text-primary-300"></i>
+                                指摘事項管理
+                            </a>
+                            <a href="商談一覧.html" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-primary-300 bg-primary-700">
+                                <i class="fas fa-handshake mr-3 text-primary-300"></i>
+                                商談管理
+                            </a>
+                            <a href="契約管理.html" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-white hover:bg-primary-700">
+                                <i class="fas fa-file-contract mr-3 text-primary-300"></i>
+                                契約管理
+                            </a>
+                            <a href="ユーザー管理.html" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-white hover:bg-primary-700">
+                                <i class="fas fa-users-cog mr-3 text-primary-300"></i>
+                                ユーザー管理
+                            </a>
+                            <a href="単線結線図編集.html" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-white hover:bg-primary-700">
+                                <i class="fas fa-project-diagram mr-3 text-primary-300"></i>
+                                単線結線図
+                            </a>
+                        </nav>
+                    </div>
+                    <div class="flex-shrink-0 flex border-t border-primary-700 p-4">
+                        <a href="#" class="flex-shrink-0 group block">
+                            <div class="flex items-center">
+                                <div>
+                                    <img class="inline-block h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-base font-medium text-white">管理者</p>
+                                    <p class="text-sm font-medium text-primary-300 group-hover:text-primary-200">ログアウト</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- メインコンテンツ -->
+        <div class="flex flex-col w-0 flex-1 overflow-hidden">
+            <div class="md:hidden pl-1 pt-1 sm:pl-3 sm:pt-3">
+                <button type="button" class="-ml-0.5 -mt-0.5 h-12 w-12 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500">
+                    <span class="sr-only">メニューを開く</span>
+                    <i class="fas fa-bars h-6 w-6"></i>
+                </button>
+            </div>
+
+            <!-- ヘッダー -->
+            <main class="flex-1 relative z-0 overflow-y-auto focus:outline-none">
+                <div class="py-6">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                        <div class="flex justify-between items-center">
+                            <h1 class="text-2xl font-semibold text-gray-900">商談管理</h1>
+                            <div class="flex space-x-3">
+                                <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                    <i class="fas fa-plus mr-2"></i>
+                                    新規商談
+                                </button>
+                                <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                    <i class="fas fa-file-export mr-2"></i>
+                                    エクスポート
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mt-4">
+                        <!-- フィルターとソート -->
+                        <div class="bg-white shadow rounded-lg p-4 mb-6">
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                <div>
+                                    <label for="status" class="block text-sm font-medium text-gray-700">ステータス</label>
+                                    <select id="status" name="status" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md">
+                                        <option value="">すべて</option>
+                                        <option value="new">新規</option>
+                                        <option value="in_progress">進行中</option>
+                                        <option value="proposal">提案済み</option>
+                                        <option value="negotiation">交渉中</option>
+                                        <option value="closed_won">成約</option>
+                                        <option value="closed_lost">失注</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="sales_person" class="block text-sm font-medium text-gray-700">営業担当者</label>
+                                    <select id="sales_person" name="sales_person" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md">
+                                        <option value="">すべて</option>
+                                        <option value="tanaka">田中 一郎</option>
+                                        <option value="suzuki">鈴木 健太</option>
+                                        <option value="yamada">山田 太郎</option>
+                                        <option value="sato">佐藤 花子</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="date_range" class="block text-sm font-medium text-gray-700">期間</label>
+                                    <select id="date_range" name="date_range" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md">
+                                        <option value="all">すべて</option>
+                                        <option value="this_month">今月</option>
+                                        <option value="last_month">先月</option>
+                                        <option value="this_quarter">今四半期</option>
+                                        <option value="last_quarter">前四半期</option>
+                                        <option value="this_year">今年度</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="search" class="block text-sm font-medium text-gray-700">検索</label>
+                                    <div class="mt-1 relative rounded-md shadow-sm">
+                                        <input type="text" name="search" id="search" class="focus:ring-primary-500 focus:border-primary-500 block w-full pr-10 sm:text-sm border-gray-300 rounded-md" placeholder="顧客名、案件名など">
+                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                            <i class="fas fa-search text-gray-400"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex justify-end">
+                                <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                    <i class="fas fa-filter mr-2"></i>
+                                    フィルター適用
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 商談一覧テーブル -->
+                        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <div class="flex items-center">
+                                                    商談名
+                                                    <i class="fas fa-sort-alpha-down ml-1 text-gray-400"></i>
+                                                </div>
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <div class="flex items-center">
+                                                    顧客名
+                                                    <i class="fas fa-sort ml-1 text-gray-400"></i>
+                                                </div>
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <div class="flex items-center">
+                                                    ステータス
+                                                    <i class="fas fa-sort ml-1 text-gray-400"></i>
+                                                </div>
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <div class="flex items-center">
+                                                    金額
+                                                    <i class="fas fa-sort-numeric-down ml-1 text-gray-400"></i>
+                                                </div>
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <div class="flex items-center">
+                                                    確度
+                                                    <i class="fas fa-sort ml-1 text-gray-400"></i>
+                                                </div>
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <div class="flex items-center">
+                                                    担当者
+                                                    <i class="fas fa-sort ml-1 text-gray-400"></i>
+                                                </div>
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <div class="flex items-center">
+                                                    最終更新日
+                                                    <i class="fas fa-sort-numeric-down ml-1 text-gray-400"></i>
+                                                </div>
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                アクション
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <a href="商談詳細.html" class="text-primary-600 hover:text-primary-900">東京本社ビル 高圧受電設備更新</a>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-blue-100 rounded-full">
+                                                        <span class="text-blue-800 font-medium">YK</span>
+                                                    </div>
+                                                    <div class="ml-4">
+                                                        <div class="text-sm font-medium text-gray-900">山田工業株式会社</div>
+                                                        <div class="text-sm text-gray-500">製造業</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                    提案済み
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                ¥12,500,000
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="w-24 bg-gray-200 rounded-full h-2.5">
+                                                    <div class="bg-green-500 h-2.5 rounded-full" style="width: 70%"></div>
+                                                </div>
+                                                <span class="text-xs text-gray-500">70%</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                田中 一郎
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                2025/05/15
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <div class="flex space-x-2">
+                                                    <a href="商談詳細.html" class="text-primary-600 hover:text-primary-900">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a href="#" class="text-primary-600 hover:text-primary-900">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a href="#" class="text-red-600 hover:text-red-900">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <a href="商談詳細.html" class="text-primary-600 hover:text-primary-900">大阪工場 年間保守契約</a>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-green-100 rounded-full">
+                                                        <span class="text-green-800 font-medium">SK</span>
+                                                    </div>
+                                                    <div class="ml-4">
+                                                        <div class="text-sm font-medium text-gray-900">鈴木化学工業</div>
+                                                        <div class="text-sm text-gray-500">化学</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                                    交渉中
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                ¥8,400,000
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="w-24 bg-gray-200 rounded-full h-2.5">
+                                                    <div class="bg-blue-500 h-2.5 rounded-full" style="width: 50%"></div>
+                                                </div>
+                                                <span class="text-xs text-gray-500">50%</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                鈴木 健太
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                2025/05/10
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <div class="flex space-x-2">
+                                                    <a href="商談詳細.html" class="text-primary-600 hover:text-primary-900">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a href="#" class="text-primary-600 hover:text-primary-900">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a href="#" class="text-red-600 hover:text-red-900">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <a href="商談詳細.html" class="text-primary-600 hover:text-primary-900">名古屋支店 電気設備点検</a>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-purple-100 rounded-full">
+                                                        <span class="text-purple-800 font-medium">TS</span>
+                                                    </div>
+                                                    <div class="ml-4">
+                                                        <div class="text-sm font-medium text-gray-900">東海商事株式会社</div>
+                                                        <div class="text-sm text-gray-500">小売</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                                    新規
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                ¥3,200,000
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="w-24 bg-gray-200 rounded-full h-2.5">
+                                                    <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 30%"></div>
+                                                </div>
+                                                <span class="text-xs text-gray-500">30%</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                山田 太郎
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                2025/05/08
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <div class="flex space-x-2">
+                                                    <a href="商談詳細.html" class="text-primary-600 hover:text-primary-900">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a href="#" class="text-primary-600 hover:text-primary-900">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a href="#" class="text-red-600 hover:text-red-900">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <a href="商談詳細.html" class="text-primary-600 hover:text-primary-900">福岡ビル 電気設備更新</a>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-red-100 rounded-full">
+                                                        <span class="text-red-800 font-medium">KF</span>
+                                                    </div>
+                                                    <div class="ml-4">
+                                                        <div class="text-sm font-medium text-gray-900">九州不動産株式会社</div>
+                                                        <div class="text-sm text-gray-500">不動産</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                                    失注
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                ¥18,500,000
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="w-24 bg-gray-200 rounded-full h-2.5">
+                                                    <div class="bg-red-500 h-2.5 rounded-full" style="width: 0%"></div>
+                                                </div>
+                                                <span class="text-xs text-gray-500">0%</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                佐藤 花子
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                2025/05/01
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <div class="flex space-x-2">
+                                                    <a href="商談詳細.html" class="text-primary-600 hover:text-primary-900">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a href="#" class="text-primary-600 hover:text-primary-900">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a href="#" class="text-red-600 hover:text-red-900">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <a href="商談詳細.html" class="text-primary-600 hover:text-primary-900">札幌支店 年間保守契約</a>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-indigo-100 rounded-full">
+                                                        <span class="text-indigo-800 font-medium">HF</span>
+                                                    </div>
+                                                    <div class="ml-4">
+                                                        <div class="text-sm font-medium text-gray-900">北海道食品株式会社</div>
+                                                        <div class="text-sm text-gray-500">食品</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                    成約
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                ¥5,800,000
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="w-24 bg-gray-200 rounded-full h-2.5">
+                                                    <div class="bg-green-500 h-2.5 rounded-full" style="width: 100%"></div>
+                                                </div>
+                                                <span class="text-xs text-gray-500">100%</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                田中 一郎
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                2025/04/28
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <div class="flex space-x-2">
+                                                    <a href="商談詳細.html" class="text-primary-600 hover:text-primary-900">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a href="#" class="text-primary-600 hover:text-primary-900">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a href="#" class="text-red-600 hover:text-red-900">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- ページネーション -->
+                            <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+                                <div class="flex-1 flex justify-between sm:hidden">
+                                    <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                        前へ
+                                    </a>
+                                    <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                        次へ
+                                    </a>
+                                </div>
+                                <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                                    <div>
+                                        <p class="text-sm text-gray-700">
+                                            <span class="font-medium">1</span> から <span class="font-medium">5</span> を表示 / 合計 <span class="font-medium">25</span> 件
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                                <span class="sr-only">前へ</span>
+                                                <i class="fas fa-chevron-left h-5 w-5"></i>
+                                            </a>
+                                            <a href="#" aria-current="page" class="z-10 bg-primary-50 border-primary-500 text-primary-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                                1
+                                            </a>
+                                            <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                                2
+                                            </a>
+                                            <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                                3
+                                            </a>
+                                            <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                                                ...
+                                            </span>
+                                            <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                                5
+                                            </a>
+                                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                                <span class="sr-only">次へ</span>
+                                                <i class="fas fa-chevron-right h-5 w-5"></i>
+                                            </a>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 商談分析 -->
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mt-6">
+                        <h2 class="text-lg font-medium text-gray-900 mb-4">商談分析</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- ステータス別商談数 -->
+                            <div class="bg-white shadow rounded-lg p-6">
+                                <h3 class="text-base font-medium text-gray-900 mb-4">ステータス別商談数</h3>
+                                <div class="h-64 flex items-end space-x-6">
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-16 bg-yellow-500 rounded-t-md" style="height: 40px;"></div>
+                                        <div class="mt-2 text-xs text-gray-500">新規</div>
+                                        <div class="text-sm font-medium">5</div>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-16 bg-blue-500 rounded-t-md" style="height: 80px;"></div>
+                                        <div class="mt-2 text-xs text-gray-500">進行中</div>
+                                        <div class="text-sm font-medium">10</div>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-16 bg-indigo-500 rounded-t-md" style="height: 60px;"></div>
+                                        <div class="mt-2 text-xs text-gray-500">提案済み</div>
+                                        <div class="text-sm font-medium">8</div>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-16 bg-purple-500 rounded-t-md" style="height: 30px;"></div>
+                                        <div class="mt-2 text-xs text-gray-500">交渉中</div>
+                                        <div class="text-sm font-medium">4</div>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-16 bg-green-500 rounded-t-md" style="height: 50px;"></div>
+                                        <div class="mt-2 text-xs text-gray-500">成約</div>
+                                        <div class="text-sm font-medium">7</div>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-16 bg-red-500 rounded-t-md" style="height: 20px;"></div>
+                                        <div class="mt-2 text-xs text-gray-500">失注</div>
+                                        <div class="text-sm font-medium">3</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 月別売上予測 -->
+                            <div class="bg-white shadow rounded-lg p-6">
+                                <h3 class="text-base font-medium text-gray-900 mb-4">月別売上予測（百万円）</h3>
+                                <div class="h-64 flex items-end space-x-4">
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-12 bg-primary-500 rounded-t-md" style="height: 30px;"></div>
+                                        <div class="mt-2 text-xs text-gray-500">4月</div>
+                                        <div class="text-sm font-medium">15</div>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-12 bg-primary-500 rounded-t-md" style="height: 60px;"></div>
+                                        <div class="mt-2 text-xs text-gray-500">5月</div>
+                                        <div class="text-sm font-medium">30</div>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-12 bg-primary-500 rounded-t-md" style="height: 80px;"></div>
+                                        <div class="mt-2 text-xs text-gray-500">6月</div>
+                                        <div class="text-sm font-medium">40</div>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-12 bg-primary-500 rounded-t-md" style="height: 50px;"></div>
+                                        <div class="mt-2 text-xs text-gray-500">7月</div>
+                                        <div class="text-sm font-medium">25</div>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-12 bg-primary-500 rounded-t-md" style="height: 70px;"></div>
+                                        <div class="mt-2 text-xs text-gray-500">8月</div>
+                                        <div class="text-sm font-medium">35</div>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-12 bg-primary-500 rounded-t-md" style="height: 100px;"></div>
+                                        <div class="mt-2 text-xs text-gray-500">9月</div>
+                                        <div class="text-sm font-medium">50</div>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-12 bg-primary-500 rounded-t-md" style="height: 90px;"></div>
+                                        <div class="mt-2 text-xs text-gray-500">10月</div>
+                                        <div class="text-sm font-medium">45</div>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-12 bg-primary-500 rounded-t-md" style="height: 110px;"></div>
+                                        <div class="mt-2 text-xs text-gray-500">11月</div>
+                                        <div class="text-sm font-medium">55</div>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-12 bg-primary-500 rounded-t-md" style="height: 120px;"></div>
+                                        <div class="mt-2 text-xs text-gray-500">12月</div>
+                                        <div class="text-sm font-medium">60</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

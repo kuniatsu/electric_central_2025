@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ダッシュボード | 電気保安管理システム</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- ヘッダー -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <span class="text-primary-600 text-xl font-bold">電気保安管理システム</span>
+                </div>
+                <nav class="hidden md:ml-8 md:flex md:space-x-8">
+                    <a href="index.html" class="text-primary-600 font-medium border-b-2 border-primary-500 px-1 pt-1 text-sm">ホーム</a>
+                    <a href="技術者一覧.html" class="text-gray-500 hover:text-gray-700 font-medium px-1 pt-1 text-sm">技術者管理</a>
+                    <a href="設備管理.html" class="text-gray-500 hover:text-gray-700 font-medium px-1 pt-1 text-sm">設備管理</a>
+                    <a href="指摘事項一覧.html" class="text-gray-500 hover:text-gray-700 font-medium px-1 pt-1 text-sm">指摘事項</a>
+                    <a href="点検計画.html" class="text-gray-500 hover:text-gray-700 font-medium px-1 pt-1 text-sm">点検計画</a>
+                    <a href="契約管理.html" class="text-gray-500 hover:text-gray-700 font-medium px-1 pt-1 text-sm">契約管理</a>
+                    <a href="商談管理.html" class="text-gray-500 hover:text-gray-700 font-medium px-1 pt-1 text-sm">商談管理</a>
+                </nav>
+            </div>
+            <div class="flex items-center">
+                <div class="ml-3 relative">
+                    <div class="flex items-center">
+                        <button class="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none">
+                            <span class="sr-only">通知を見る</span>
+                            <i class="fas fa-bell"></i>
+                        </button>
+                        <div class="ml-3 relative">
+                            <div>
+                                <button class="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none" id="user-menu-button">
+                                    <span class="sr-only">ユーザーメニューを開く</span>
+                                    <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-gray-900">ダッシュボード</h1>
+            <p class="mt-1 text-sm text-gray-500">電気保安管理システムの概要と重要な指標</p>
+        </div>
+
+        <!-- 概要カード -->
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+            <!-- 点検予定カード -->
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-primary-100 rounded-md p-3">
+                            <i class="fas fa-calendar-check text-primary-600 text-xl"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">今月の点検予定</dt>
+                                <dd>
+                                    <div class="text-lg font-medium text-gray-900">128件</div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-4 sm:px-6">
+                    <div class="text-sm">
+                        <a href="点検計画.html" class="font-medium text-primary-600 hover:text-primary-500">詳細を見る</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 未対応指摘事項カード -->
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-red-100 rounded-md p-3">
+                            <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">未対応指摘事項</dt>
+                                <dd>
+                                    <div class="text-lg font-medium text-gray-900">23件</div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-4 sm:px-6">
+                    <div class="text-sm">
+                        <a href="指摘事項一覧.html" class="font-medium text-primary-600 hover:text-primary-500">詳細を見る</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 進行中の商談カード -->
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-green-100 rounded-md p-3">
+                            <i class="fas fa-handshake text-green-600 text-xl"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">進行中の商談</dt>
+                                <dd>
+                                    <div class="text-lg font-medium text-gray-900">42件</div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-4 sm:px-6">
+                    <div class="text-sm">
+                        <a href="商談管理.html" class="font-medium text-primary-600 hover:text-primary-500">詳細を見る</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 技術者稼働率カード -->
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-purple-100 rounded-md p-3">
+                            <i class="fas fa-user-hard-hat text-purple-600 text-xl"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">技術者稼働率</dt>
+                                <dd>
+                                    <div class="text-lg font-medium text-gray-900">78%</div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-4 sm:px-6">
+                    <div class="text-sm">
+                        <a href="技術者一覧.html" class="font-medium text-primary-600 hover:text-primary-500">詳細を見る</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- グラフとチャートセクション -->
+        <div class="grid grid-cols-1 gap-5 lg:grid-cols-2 mb-8">
+            <!-- 月別点検実績グラフ -->
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="px-4 py-5 sm:p-6">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">月別点検実績</h3>
+                    <div class="mt-4 h-64 bg-gray-50 rounded-lg p-4 flex items-end space-x-2">
+                        <div class="w-1/12 bg-primary-500 rounded-t-md" style="height: 40%;"></div>
+                        <div class="w-1/12 bg-primary-500 rounded-t-md" style="height: 60%;"></div>
+                        <div class="w-1/12 bg-primary-500 rounded-t-md" style="height: 75%;"></div>
+                        <div class="w-1/12 bg-primary-500 rounded-t-md" style="height: 50%;"></div>
+                        <div class="w-1/12 bg-primary-500 rounded-t-md" style="height: 65%;"></div>
+                        <div class="w-1/12 bg-primary-500 rounded-t-md" style="height: 80%;"></div>
+                        <div class="w-1/12 bg-primary-500 rounded-t-md" style="height: 90%;"></div>
+                        <div class="w-1/12 bg-primary-500 rounded-t-md" style="height: 70%;"></div>
+                        <div class="w-1/12 bg-primary-500 rounded-t-md" style="height: 55%;"></div>
+                        <div class="w-1/12 bg-primary-500 rounded-t-md" style="height: 45%;"></div>
+                        <div class="w-1/12 bg-primary-500 rounded-t-md" style="height: 60%;"></div>
+                        <div class="w-1/12 bg-primary-500 rounded-t-md" style="height: 75%;"></div>
+                    </div>
+                    <div class="mt-1 flex justify-between text-xs text-gray-500">
+                        <span>1月</span>
+                        <span>2月</span>
+                        <span>3月</span>
+                        <span>4月</span>
+                        <span>5月</span>
+                        <span>6月</span>
+                        <span>7月</span>
+                        <span>8月</span>
+                        <span>9月</span>
+                        <span>10月</span>
+                        <span>11月</span>
+                        <span>12月</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 指摘事項カテゴリ分布 -->
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="px-4 py-5 sm:p-6">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">指摘事項カテゴリ分布</h3>
+                    <div class="mt-4 h-64 bg-gray-50 rounded-lg p-4 flex flex-col justify-center">
+                        <div class="flex items-center mb-4">
+                            <div class="w-full bg-gray-200 rounded-full h-4">
+                                <div class="bg-red-500 h-4 rounded-full" style="width: 35%"></div>
+                            </div>
+                            <span class="ml-2 text-sm text-gray-700 w-32">絶縁不良 (35%)</span>
+                        </div>
+                        <div class="flex items-center mb-4">
+                            <div class="w-full bg-gray-200 rounded-full h-4">
+                                <div class="bg-yellow-500 h-4 rounded-full" style="width: 25%"></div>
+                            </div>
+                            <span class="ml-2 text-sm text-gray-700 w-32">接続部緩み (25%)</span>
+                        </div>
+                        <div class="flex items-center mb-4">
+                            <div class="w-full bg-gray-200 rounded-full h-4">
+                                <div class="bg-green-500 h-4 rounded-full" style="width: 20%"></div>
+                            </div>
+                            <span class="ml-2 text-sm text-gray-700 w-32">経年劣化 (20%)</span>
+                        </div>
+                        <div class="flex items-center mb-4">
+                            <div class="w-full bg-gray-200 rounded-full h-4">
+                                <div class="bg-blue-500 h-4 rounded-full" style="width: 15%"></div>
+                            </div>
+                            <span class="ml-2 text-sm text-gray-700 w-32">過負荷 (15%)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-full bg-gray-200 rounded-full h-4">
+                                <div class="bg-purple-500 h-4 rounded-full" style="width: 5%"></div>
+                            </div>
+                            <span class="ml-2 text-sm text-gray-700 w-32">その他 (5%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 最近の活動と通知 -->
+        <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+            <!-- 最近の点検 -->
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="px-4 py-5 sm:px-6">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">最近の点検</h3>
+                    <p class="mt-1 max-w-2xl text-sm text-gray-500">直近の点検実施状況</p>
+                </div>
+                <div class="border-t border-gray-200">
+                    <ul role="list" class="divide-y divide-gray-200">
+                        <li class="px-4 py-4 sm:px-6">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0">
+                                        <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-green-100">
+                                            <i class="fas fa-check text-green-600"></i>
+                                        </span>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-gray-900">株式会社東京電機 本社ビル</p>
+                                        <p class="text-sm text-gray-500">月次点検 - 高圧受電設備</p>
+                                    </div>
+                                </div>
+                                <div class="ml-2 flex-shrink-0 flex">
+                                    <p class="text-sm text-gray-500">2025/05/24</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="px-4 py-4 sm:px-6">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0">
+                                        <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-green-100">
+                                            <i class="fas fa-check text-green-600"></i>
+                                        </span>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-gray-900">大阪製造工業 第二工場</p>
+                                        <p class="text-sm text-gray-500">年次点検 - 変電設備</p>
+                                    </div>
+                                </div>
+                                <div class="ml-2 flex-shrink-0 flex">
+                                    <p class="text-sm text-gray-500">2025/05/23</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="px-4 py-4 sm:px-6">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0">
+                                        <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-yellow-100">
+                                            <i class="fas fa-exclamation text-yellow-600"></i>
+                                        </span>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-gray-900">名古屋商事 物流センター</p>
+                                        <p class="text-sm text-gray-500">臨時点検 - 配電盤</p>
+                                    </div>
+                                </div>
+                                <div class="ml-2 flex-shrink-0 flex">
+                                    <p class="text-sm text-gray-500">2025/05/22</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="px-4 py-4 sm:px-6">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0">
+                                        <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-green-100">
+                                            <i class="fas fa-check text-green-600"></i>
+                                        </span>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-gray-900">福岡ショッピングモール</p>
+                                        <p class="text-sm text-gray-500">月次点検 - 高圧受電設備</p>
+                                    </div>
+                                </div>
+                                <div class="ml-2 flex-shrink-0 flex">
+                                    <p class="text-sm text-gray-500">2025/05/21</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 px-4 py-4 sm:px-6">
+                    <div class="text-sm">
+                        <a href="点検計画.html" class="font-medium text-primary-600 hover:text-primary-500">すべての点検を見る</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 最近の通知 -->
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+                <div class="px-4 py-5 sm:px-6">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">最近の通知</h3>
+                    <p class="mt-1 max-w-2xl text-sm text-gray-500">システムからの重要なお知らせ</p>
+                </div>
+                <div class="border-t border-gray-200">
+                    <ul role="list" class="divide-y divide-gray-200">
+                        <li class="px-4 py-4 sm:px-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-red-100">
+                                        <i class="fas fa-bell text-red-600"></i>
+                                    </span>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-900">緊急点検依頼：横浜倉庫</p>
+                                    <p class="text-sm text-gray-500">停電発生のため緊急点検が必要です</p>
+                                </div>
+                                <div class="ml-auto">
+                                    <p class="text-xs text-gray-500">30分前</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="px-4 py-4 sm:px-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-yellow-100">
+                                        <i class="fas fa-exclamation-triangle text-yellow-600"></i>
+                                    </span>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-900">指摘事項対応期限：東京オフィス</p>
+                                    <p class="text-sm text-gray-500">高圧ケーブル絶縁不良の対応期限が近づいています</p>
+                                </div>
+                                <div class="ml-auto">
+                                    <p class="text-xs text-gray-500">2時間前</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="px-4 py-4 sm:px-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-blue-100">
+                                        <i class="fas fa-info-circle text-blue-600"></i>
+                                    </span>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-900">新規契約：札幌データセンター</p>
+                                    <p class="text-sm text-gray-500">新規契約が承認されました</p>
+                                </div>
+                                <div class="ml-auto">
+                                    <p class="text-xs text-gray-500">5時間前</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="px-4 py-4 sm:px-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-green-100">
+                                        <i class="fas fa-check-circle text-green-600"></i>
+                                    </span>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-900">点検報告書承認：大阪工場</p>
+                                    <p class="text-sm text-gray-500">月次点検報告書が承認されました</p>
+                                </div>
+                                <div class="ml-auto">
+                                    <p class="text-xs text-gray-500">昨日</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 px-4 py-4 sm:px-6">
+                    <div class="text-sm">
+                        <a href="#" class="font-medium text-primary-600 hover:text-primary-500">すべての通知を見る</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- フッター -->
+    <footer class="bg-white mt-12">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 border-t border-gray-200">
+            <div class="flex justify-between items-center">
+                <div class="text-sm text-gray-500">
+                    &copy; 2025 電気保安管理システム. All rights reserved.
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-gray-500">
+                        <span class="sr-only">ヘルプ</span>
+                        <i class="fas fa-question-circle"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-gray-500">
+                        <span class="sr-only">設定</span>
+                        <i class="fas fa-cog"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

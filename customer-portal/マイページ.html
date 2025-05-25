@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>マイページ | 顧客ポータル</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- ヘッダー -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="電気保安管理">
+                        <span class="ml-2 text-xl font-bold text-primary-600">顧客ポータル</span>
+                    </div>
+                    <nav class="ml-6 flex space-x-8">
+                        <a href="index.html" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700">
+                            ホーム
+                        </a>
+                        <a href="契約情報.html" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700">
+                            契約情報
+                        </a>
+                        <a href="お知らせ.html" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700">
+                            お知らせ
+                        </a>
+                        <a href="点検報告詳細.html" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700">
+                            点検報告
+                        </a>
+                        <a href="お問い合わせ.html" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700">
+                            お問い合わせ
+                        </a>
+                    </nav>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="マイページ.html" class="flex items-center text-sm text-primary-600">
+                            <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                            <span class="ml-1">山田商事株式会社</span>
+                        </a>
+                    </div>
+                    <div class="ml-4">
+                        <a href="index.html" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="ml-1 text-sm">ログアウト</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- パンくずリスト -->
+        <nav class="flex mb-6" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-2">
+                <li>
+                    <div>
+                        <a href="index.html" class="text-gray-400 hover:text-gray-500">
+                            <i class="fas fa-home"></i>
+                            <span class="sr-only">ホーム</span>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                        <span class="ml-2 text-sm font-medium text-primary-600" aria-current="page">マイページ</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+
+        <div class="md:flex md:space-x-6">
+            <!-- サイドバー -->
+            <div class="md:w-1/4">
+                <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+                    <div class="px-4 py-5 sm:px-6 bg-primary-50">
+                        <h2 class="text-lg font-medium text-gray-900">アカウント管理</h2>
+                    </div>
+                    <div class="border-t border-gray-200">
+                        <nav class="flex flex-col">
+                            <a href="#profile" class="px-4 py-3 text-sm font-medium text-primary-600 bg-primary-50 border-l-4 border-primary-500">
+                                プロフィール情報
+                            </a>
+                            <a href="#security" class="px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                                セキュリティ設定
+                            </a>
+                            <a href="#notification" class="px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                                通知設定
+                            </a>
+                            <a href="#users" class="px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                                ユーザー管理
+                            </a>
+                            <a href="#billing" class="px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                                請求情報
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- メインコンテンツ -->
+            <div class="md:w-3/4">
+                <!-- プロフィール情報 -->
+                <div id="profile" class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+                    <div class="px-4 py-5 sm:px-6 bg-primary-50 flex justify-between items-center">
+                        <div>
+                            <h2 class="text-lg font-medium text-gray-900">プロフィール情報</h2>
+                            <p class="mt-1 max-w-2xl text-sm text-gray-500">顧客情報の確認と編集</p>
+                        </div>
+                        <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                            <i class="fas fa-edit mr-2"></i>
+                            編集
+                        </button>
+                    </div>
+                    <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
+                        <div class="sm:flex sm:items-start sm:justify-between">
+                            <div class="sm:flex sm:items-center">
+                                <div class="sm:flex-shrink-0">
+                                    <img class="h-20 w-20 rounded-full" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                                </div>
+                                <div class="mt-4 sm:mt-0 sm:ml-6">
+                                    <div class="text-xl font-medium text-gray-900">山田商事株式会社</div>
+                                    <div class="text-sm text-gray-500">顧客ID: CUS-12345</div>
+                                </div>
+                            </div>
+                            <div class="mt-5 sm:mt-0">
+                                <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                    <i class="fas fa-camera mr-2"></i>
+                                    画像を変更
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 border-t border-gray-200 pt-6">
+                            <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+                                <div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500">会社名</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">山田商事株式会社</dd>
+                                </div>
+                                <div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500">業種</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">製造業</dd>
+                                </div>
+                                <div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500">代表者名</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">山田 太郎</dd>
+                                </div>
+                                <div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500">設立年</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">1985年</dd>
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <dt class="text-sm font-medium text-gray-500">本社住所</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">〒100-0001 東京都千代田区千代田1-1-1 山田ビル5F</dd>
+                                </div>
+                                <div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500">電話番号</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">03-1234-5678</dd>
+                                </div>
+                                <div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500">FAX番号</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">03-1234-5679</dd>
+                                </div>
+                                <div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500">メールアドレス</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">info@yamada-shoji.example.com</dd>
+                                </div>
+                                <div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500">Webサイト</dt>
+                                    <dd class="mt-1 text-sm text-gray-900">
+                                        <a href="#" class="text-primary-600 hover:text-primary-500">www.yamada-shoji.example.com</a>
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 担当者情報 -->
+                <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+                    <div class="px-4 py-5 sm:px-6 bg-primary-50 flex justify-between items-center">
+                        <div>
+                            <h2 class="text-lg font-medium text-gray-900">担当者情報</h2>
+                            <p class="mt-1 max-w-2xl text-sm text-gray-500">連絡先担当者の情報</p>
+                        </div>
+                        <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                            <i class="fas fa-user-plus mr-2"></i>
+                            担当者追加
+                        </button>
+                    </div>
+                    <div class="border-t border-gray-200">
+                        <ul role="list" class="divide-y divide-gray-200">
+                            <li>
+                                <div class="px-4 py-4 sm:px-6">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0">
+                                                <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">山田 一郎</div>
+                                                <div class="text-sm text-gray-500">総務部 部長</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <button type="button" class="inline-flex items-center p-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button type="button" class="inline-flex items-center p-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 sm:flex sm:justify-between">
+                                        <div class="sm:flex">
+                                            <div class="flex items-center text-sm text-gray-500">
+                                                <i class="fas fa-envelope flex-shrink-0 mr-1.5 text-gray-400"></i>
+                                                <span>ichiro.yamada@yamada-shoji.example.com</span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                                            <i class="fas fa-phone flex-shrink-0 mr-1.5 text-gray-400"></i>
+                                            <span>03-1234-5678（内線: 1001）</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="px-4 py-4 sm:px-6">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0">
+                                                <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">佐藤 花子</div>
+                                                <div class="text-sm text-gray-500">設備管理部 主任</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <button type="button" class="inline-flex items-center p-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button type="button" class="inline-flex items-center p-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 sm:flex sm:justify-between">
+                                        <div class="sm:flex">
+                                            <div class="flex items-center text-sm text-gray-500">
+                                                <i class="fas fa-envelope flex-shrink-0 mr-1.5 text-gray-400"></i>
+                                                <span>hanako.sato@yamada-shoji.example.com</span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                                            <i class="fas fa-phone flex-shrink-0 mr-1.5 text-gray-400"></i>
+                                            <span>03-1234-5678（内線: 2001）</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- アカウント設定 -->
+                <div id="security" class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+                    <div class="px-4 py-5 sm:px-6 bg-primary-50">
+                        <h2 class="text-lg font-medium text-gray-900">セキュリティ設定</h2>
+                        <p class="mt-1 max-w-2xl text-sm text-gray-500">アカウントのセキュリティ設定を管理します</p>
+                    </div>
+                    <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="text-base font-medium text-gray-900">パスワード変更</h3>
+                                <div class="mt-2 max-w-xl text-sm text-gray-500">
+                                    <p>定期的なパスワード変更をお勧めします。前回の変更から90日以上経過しています。</p>
+                                </div>
+                                <div class="mt-3">
+                                    <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                        パスワードを変更
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="pt-6 border-t border-gray-200">
+                                <h3 class="text-base font-medium text-gray-900">二要素認証</h3>
+                                <div class="mt-2 max-w-xl text-sm text-gray-500">
+                                    <p>アカウントのセキュリティを強化するために二要素認証の設定をお勧めします。</p>
+                                </div>
+                                <div class="mt-3 flex items-center">
+                                    <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                        二要素認証を有効化
+                                    </button>
+                                    <span class="ml-3 text-sm text-gray-500">現在: 無効</span>
+                                </div>
+                            </div>
+
+                            <div class="pt-6 border-t border-gray-200">
+                                <h3 class="text-base font-medium text-gray-900">ログイン履歴</h3>
+                                <div class="mt-2 max-w-xl text-sm text-gray-500">
+                                    <p>最近のログイン履歴を確認できます。不審なアクセスがあった場合はすぐにご連絡ください。</p>
+                                </div>
+                                <div class="mt-3">
+                                    <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                        ログイン履歴を表示
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 通知設定 -->
+                <div id="notification" class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+                    <div class="px-4 py-5 sm:px-6 bg-primary-50">
+                        <h2 class="text-lg font-medium text-gray-900">通知設定</h2>
+                        <p class="mt-1 max-w-2xl text-sm text-gray-500">通知の受信方法を設定します</p>
+                    </div>
+                    <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
+                        <div class="space-y-6">
+                            <fieldset>
+                                <legend class="text-base font-medium text-gray-900">メール通知</legend>
+                                <div class="mt-4 space-y-4">
+                                    <div class="flex items-start">
+                                        <div class="flex items-center h-5">
+                                            <input id="email_inspection" name="email_inspection" type="checkbox" class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded" checked>
+                                        </div>
+                                        <div class="ml-3 text-sm">
+                                            <label for="email_inspection" class="font-medium text-gray-700">点検予定のお知らせ</label>
+                                            <p class="text-gray-500">点検の予定日の1週間前と3日前にメールでお知らせします</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="flex items-center h-5">
+                                            <input id="email_report" name="email_report" type="checkbox" class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded" checked>
+                                        </div>
+                                        <div class="ml-3 text-sm">
+                                            <label for="email_report" class="font-medium text-gray-700">点検報告書の公開</label>
+                                            <p class="text-gray-500">点検報告書が公開されたらメールでお知らせします</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="flex items-center h-5">
+                                            <input id="email_issue" name="email_issue" type="checkbox" class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded" checked>
+                                        </div>
+                                        <div class="ml-3 text-sm">
+                                            <label for="email_issue" class="font-medium text-gray-700">指摘事項の通知</label>
+                                            <p class="text-gray-500">点検で指摘事項があった場合にメールでお知らせします</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="flex items-center h-5">
+                                            <input id="email_news" name="email_news" type="checkbox" class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded">
+                                        </div>
+                                        <div class="ml-3 text-sm">
+                                            <label for="email_news" class="font-medium text-gray-700">お知らせ・キャンペーン</label>
+                                            <p class="text-gray-500">サービスに関するお知らせやキャンペーン情報をお送りします</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="pt-6 border-t border-gray-200">
+                                <legend class="text-base font-medium text-gray-900">通知先メールアドレス</legend>
+                                <div class="mt-4 space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="text-sm text-gray-900">ichiro.yamada@yamada-shoji.example.com</div>
+                                        <div class="flex items-center">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 mr-2">
+                                                主要連絡先
+                                            </span>
+                                            <button type="button" class="inline-flex items-center p-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="text-sm text-gray-900">hanako.sato@yamada-shoji.example.com</div>
+                                        <div>
+                                            <button type="button" class="inline-flex items-center p-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                            <i class="fas fa-plus mr-2"></i>
+                                            メールアドレスを追加
+                                        </button>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <div class="pt-6 border-t border-gray-200 flex justify-end">
+                                <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                    設定を保存
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- フッター -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div class="md:flex md:items-center md:justify-between">
+                <div class="flex justify-center md:order-2 space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-gray-500">
+                        <span class="sr-only">お問い合わせ</span>
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-gray-500">
+                        <span class="sr-only">ヘルプ</span>
+                        <i class="fas fa-question-circle"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-gray-500">
+                        <span class="sr-only">設定</span>
+                        <i class="fas fa-cog"></i>
+                    </a>
+                </div>
+                <div class="mt-8 md:mt-0 md:order-1">
+                    <p class="text-center text-sm text-gray-400">
+                        &copy; 2025 電気保安管理株式会社. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

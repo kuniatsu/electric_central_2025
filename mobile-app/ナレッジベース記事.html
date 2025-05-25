@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ナレッジベース記事 | 点検モバイルアプリ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            200: '#fed7aa',
+                            300: '#fdba74',
+                            400: '#fb923c',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                            800: '#9a3412',
+                            900: '#7c2d12',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- ヘッダー -->
+    <header class="bg-white shadow-sm fixed top-0 left-0 right-0 z-10">
+        <div class="max-w-md mx-auto px-4 flex justify-between items-center h-14">
+            <div class="flex items-center">
+                <a href="ナレッジベース.html" class="text-gray-500">
+                    <i class="fas fa-arrow-left text-lg"></i>
+                </a>
+                <h1 class="ml-4 text-lg font-medium text-gray-900">高圧受電設備の月次点検手順</h1>
+            </div>
+            <div>
+                <button class="text-gray-500 p-2">
+                    <i class="fas fa-bookmark"></i>
+                </button>
+                <button class="text-gray-500 p-2">
+                    <i class="fas fa-share-alt"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="max-w-md mx-auto px-4 pt-20 pb-24">
+        <!-- 記事情報 -->
+        <div class="mb-6">
+            <div class="flex items-center mb-2">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mr-2">
+                    技術マニュアル
+                </span>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    高圧受電設備
+                </span>
+            </div>
+            <div class="text-sm text-gray-500 flex items-center">
+                <span class="flex items-center">
+                    <i class="fas fa-calendar-alt mr-1"></i>
+                    更新日: 2025年4月15日
+                </span>
+                <span class="mx-2">|</span>
+                <span class="flex items-center">
+                    <i class="fas fa-user mr-1"></i>
+                    作成者: 技術部
+                </span>
+            </div>
+        </div>
+
+        <!-- 目次 -->
+        <div class="bg-white rounded-lg shadow-sm mb-6 p-4">
+            <h2 class="text-base font-medium text-gray-900 mb-3">目次</h2>
+            <ul class="space-y-2 text-sm">
+                <li>
+                    <a href="#purpose" class="text-primary-600 hover:text-primary-700 flex items-center">
+                        <i class="fas fa-circle text-xs mr-2"></i>
+                        1. 点検の目的
+                    </a>
+                </li>
+                <li>
+                    <a href="#preparation" class="text-primary-600 hover:text-primary-700 flex items-center">
+                        <i class="fas fa-circle text-xs mr-2"></i>
+                        2. 事前準備
+                    </a>
+                </li>
+                <li>
+                    <a href="#safety" class="text-primary-600 hover:text-primary-700 flex items-center">
+                        <i class="fas fa-circle text-xs mr-2"></i>
+                        3. 安全対策
+                    </a>
+                </li>
+                <li>
+                    <a href="#inspection" class="text-primary-600 hover:text-primary-700 flex items-center">
+                        <i class="fas fa-circle text-xs mr-2"></i>
+                        4. 点検手順
+                    </a>
+                </li>
+                <li>
+                    <a href="#measurement" class="text-primary-600 hover:text-primary-700 flex items-center">
+                        <i class="fas fa-circle text-xs mr-2"></i>
+                        5. 測定方法
+                    </a>
+                </li>
+                <li>
+                    <a href="#reporting" class="text-primary-600 hover:text-primary-700 flex items-center">
+                        <i class="fas fa-circle text-xs mr-2"></i>
+                        6. 報告書作成
+                    </a>
+                </li>
+                <li>
+                    <a href="#troubleshooting" class="text-primary-600 hover:text-primary-700 flex items-center">
+                        <i class="fas fa-circle text-xs mr-2"></i>
+                        7. トラブルシューティング
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 本文 -->
+        <div class="space-y-6">
+            <!-- 点検の目的 -->
+            <section id="purpose" class="bg-white rounded-lg shadow-sm p-4">
+                <h2 class="text-lg font-medium text-gray-900 mb-3">1. 点検の目的</h2>
+                <div class="prose prose-sm text-gray-700">
+                    <p class="mb-3">
+                        高圧受電設備の月次点検は、電気事業法に基づく自主保安活動の一環として実施されます。主な目的は以下の通りです。
+                    </p>
+                    <ul class="list-disc pl-5 space-y-1 mb-3">
+                        <li>電気設備の異常を早期に発見し、事故を未然に防止する</li>
+                        <li>設備の劣化状況を把握し、計画的な更新・修繕計画を立案する</li>
+                        <li>法令遵守の証明として記録を残す</li>
+                        <li>設備の安定稼働を確保し、停電リスクを低減する</li>
+                    </ul>
+                    <p>
+                        月次点検は年次点検と比較して簡易的なものですが、重要な異常兆候を発見するための重要な機会です。点検項目を確実に実施し、異常が見つかった場合は速やかに報告・対応することが求められます。
+                    </p>
+                </div>
+            </section>
+
+            <!-- 事前準備 -->
+            <section id="preparation" class="bg-white rounded-lg shadow-sm p-4">
+                <h2 class="text-lg font-medium text-gray-900 mb-3">2. 事前準備</h2>
+                <div class="prose prose-sm text-gray-700">
+                    <p class="mb-3">
+                        点検を効率的かつ安全に実施するために、以下の事前準備を行ってください。
+                    </p>
+                    <h3 class="text-base font-medium text-gray-800 mb-2">2.1 必要な工具・測定器</h3>
+                    <ul class="list-disc pl-5 space-y-1 mb-3">
+                        <li>絶縁抵抗計（メガー）</li>
+                        <li>クランプメーター</li>
+                        <li>検電器</li>
+                        <li>絶縁手袋</li>
+                        <li>絶縁マット</li>
+                        <li>ヘルメット</li>
+                        <li>工具セット（ドライバー、レンチ等）</li>
+                        <li>デジタルカメラ（スマートフォンでも可）</li>
+                        <li>清掃用具（ブロワー、ウエス等）</li>
+                    </ul>
+                    <h3 class="text-base font-medium text-gray-800 mb-2">2.2 事前確認事項</h3>
+                    <ul class="list-disc pl-5 space-y-1 mb-3">
+                        <li>前回の点検報告書を確認し、指摘事項や経過観察項目を把握する</li>
+                        <li>顧客担当者に点検日時を事前に連絡し、立会いの有無を確認する</li>
+                        <li>停電を伴う点検の場合は、停電範囲と時間を明確にし、顧客の了承を得る</li>
+                        <li>設備の単線結線図を確認し、系統構成を把握する</li>
+                        <li>測定器の校正期限を確認する</li>
+                    </ul>
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 mb-3">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-yellow-700">
+                                    測定器の校正期限が切れている場合は、必ず校正済みの測定器を使用してください。校正期限切れの測定器での測定結果は無効となります。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 安全対策 -->
+            <section id="safety" class="bg-white rounded-lg shadow-sm p-4">
+                <h2 class="text-lg font-medium text-gray-900 mb-3">3. 安全対策</h2>
+                <div class="prose prose-sm text-gray-700">
+                    <p class="mb-3">
+                        高圧電気設備の点検は危険を伴う作業です。以下の安全対策を必ず実施してください。
+                    </p>
+                    <h3 class="text-base font-medium text-gray-800 mb-2">3.1 基本的な安全対策</h3>
+                    <ul class="list-disc pl-5 space-y-1 mb-3">
+                        <li>必ず2人以上で作業を行う</li>
+                        <li>適切な保護具（絶縁手袋、絶縁マット、ヘルメット）を着用する</li>
+                        <li>作業前に検電器の動作確認を行う</li>
+                        <li>作業範囲に関係者以外が立ち入らないよう区画する</li>
+                        <li>作業前に作業手順と役割分担を確認する</li>
+                    </ul>
+                    <h3 class="text-base font-medium text-gray-800 mb-2">3.2 停電作業時の安全対策</h3>
+                    <ul class="list-disc pl-5 space-y-1 mb-3">
+                        <li>停電操作は必ず手順書に従って実施する</li>
+                        <li>遮断器を開放後、必ず検電を行い、充電されていないことを確認する</li>
+                        <li>検電は複数箇所で実施し、確実に無電圧状態を確認する</li>
+                        <li>接地線を取り付け、作業中の誤通電を防止する</li>
+                        <li>操作禁止札を設置し、誤操作を防止する</li>
+                    </ul>
+                    <div class="bg-red-50 border-l-4 border-red-400 p-3">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-exclamation-circle text-red-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-red-700">
+                                    <strong>重要：</strong> 検電を省略したり、一人で高圧電気設備の作業を行ったりすることは絶対に避けてください。感電事故は死亡事故につながる可能性があります。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 点検手順 -->
+            <section id="inspection" class="bg-white rounded-lg shadow-sm p-4">
+                <h2 class="text-lg font-medium text-gray-900 mb-3">4. 点検手順</h2>
+                <div class="prose prose-sm text-gray-700">
+                    <p class="mb-3">
+                        月次点検は以下の手順で実施します。各項目を確実に実施し、異常が見つかった場合は写真撮影と詳細な記録を行ってください。
+                    </p>
+                    <h3 class="text-base font-medium text-gray-800 mb-2">4.1 外観点検（通電状態）</h3>
+                    <ul class="list-disc pl-5 space-y-1 mb-3">
+                        <li>キュービクル周囲の状況確認（物の置き忘れ、水漏れ、小動物の侵入痕等）</li>
+                        <li>キュービクル外観の確認（錆、変形、損傷等）</li>
+                        <li>警報装置の動作確認</li>
+                        <li>表示灯の点灯状態確認</li>
+                        <li>異音、異臭、振動の有無確認</li>
+                        <li>温度上昇の有無確認（サーモグラフィーがあれば使用）</li>
+                    </ul>
+                    <div class="mb-3">
+                        <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="キュービクル外観点検" class="rounded-lg w-full h-48 object-cover">
+                        <p class="text-xs text-gray-500 mt-1 text-center">キュービクル外観点検の例</p>
+                    </div>
+                    <h3 class="text-base font-medium text-gray-800 mb-2">4.2 計器類の確認</h3>
+                    <ul class="list-disc pl-5 space-y-1 mb-3">
+                        <li>電圧計の指示値確認（相間電圧、対地電圧）</li>
+                        <li>電流計の指示値確認（各相電流、不平衡率）</li>
+                        <li>電力量計の指示値記録</li>
+                        <li>力率計の指示値確認</li>
+                        <li>各種計器の動作状態確認</li>
+                    </ul>
+                    <h3 class="text-base font-medium text-gray-800 mb-2">4.3 内部点検（必要に応じて停電）</h3>
+                    <ul class="list-disc pl-5 space-y-1 mb-3">
+                        <li>高圧機器の外観確認（変色、損傷、汚損等）</li>
+                        <li>低圧機器の外観確認（変色、損傷、汚損等）</li>
+                        <li>配線の状態確認（変色、損傷、緩み等）</li>
+                        <li>端子部の状態確認（変色、損傷、緩み等）</li>
+                        <li>接地線の状態確認</li>
+                        <li>変圧器の状態確認（油漏れ、異音、温度等）</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 測定方法 -->
+            <section id="measurement" class="bg-white rounded-lg shadow-sm p-4">
+                <h2 class="text-lg font-medium text-gray-900 mb-3">5. 測定方法</h2>
+                <div class="prose prose-sm text-gray-700">
+                    <p class="mb-3">
+                        月次点検では、以下の測定を実施します。測定値は前回の値と比較し、大きな変化がないか確認してください。
+                    </p>
+                    <h3 class="text-base font-medium text-gray-800 mb-2">5.1 負荷電流測定</h3>
+                    <p class="mb-3">
+                        クランプメーターを使用して、各相の負荷電流を測定します。測定は以下の手順で行います。
+                    </p>
+                    <ol class="list-decimal pl-5 space-y-1 mb-3">
+                        <li>クランプメーターの電流レンジを適切に設定する</li>
+                        <li>クランプ部を開き、測定する電線に挟む</li>
+                        <li>表示値を読み取り、記録する</li>
+                        <li>各相（R相、S相、T相）で同様に測定する</li>
+                    </ol>
+                    <div class="bg-blue-50 border-l-4 border-blue-400 p-3 mb-3">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-info-circle text-blue-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-blue-700">
+                                    相間の電流不平衡率が20%を超える場合は、負荷の偏りや相順の誤りが考えられます。詳細な調査が必要です。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="text-base font-medium text-gray-800 mb-2">5.2 絶縁抵抗測定（停電時）</h3>
+                    <p class="mb-3">
+                        絶縁抵抗計（メガー）を使用して、高圧回路および低圧回路の絶縁抵抗を測定します。
+                    </p>
+                    <ul class="list-disc pl-5 space-y-1 mb-3">
+                        <li>高圧回路：DC 2500V または 5000V メガーを使用</li>
+                        <li>低圧回路：DC 500V メガーを使用</li>
+                    </ul>
+                    <p class="mb-3">
+                        測定は以下の手順で行います。
+                    </p>
+                    <ol class="list-decimal pl-5 space-y-1 mb-3">
+                        <li>測定対象回路を停電させ、充電されていないことを確認する</li>
+                        <li>測定対象回路を他の回路から切り離す</li>
+                        <li>メガーの測定レンジを適切に設定する</li>
+                        <li>測定端子を接続し、測定を開始する</li>
+                        <li>1分間測定を継続し、指示値を読み取る</li>
+                        <li>測定値を記録する</li>
+                    </ol>
+                    <div class="mb-3">
+                        <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="絶縁抵抗測定" class="rounded-lg w-full h-48 object-cover">
+                        <p class="text-xs text-gray-500 mt-1 text-center">絶縁抵抗測定の例</p>
+                    </div>
+                    <div class="bg-blue-50 border-l-4 border-blue-400 p-3">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-info-circle text-blue-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-blue-700">
+                                    絶縁抵抗値の判定基準：<br>
+                                    - 高圧回路：5MΩ以上（基準値）<br>
+                                    - 低圧回路：1MΩ以上（基準値）<br>
+                                    基準値を下回る場合や、前回測定値から大幅に低下している場合は、詳細な調査が必要です。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 報告書作成 -->
+            <section id="reporting" class="bg-white rounded-lg shadow-sm p-4">
+                <h2 class="text-lg font-medium text-gray-900 mb-3">6. 報告書作成</h2>
+                <div class="prose prose-sm text-gray-700">
+                    <p class="mb-3">
+                        点検終了後、以下の内容を含む報告書を作成します。報告書は本アプリの点検報告作成機能を使用して作成してください。
+                    </p>
+                    <h3 class="text-base font-medium text-gray-800 mb-2">6.1 報告書に含める内容</h3>
+                    <ul class="list-disc pl-5 space-y-1 mb-3">
+                        <li>点検日時、点検者名、立会者名</li>
+                        <li>点検対象設備の基本情報</li>
+                        <li>点検項目と結果（良好/要注意/不良）</li>
+                        <li>測定値（電圧、電流、絶縁抵抗値等）</li>
+                        <li>異常箇所の写真と詳細説明</li>
+                        <li>指摘事項と改善提案</li>
+                        <li>次回点検までの注意事項</li>
+                    </ul>
+                    <h3 class="text-base font-medium text-gray-800 mb-2">6.2 報告書作成のポイント</h3>
+                    <ul class="list-disc pl-5 space-y-1 mb-3">
+                        <li>客観的な事実に基づいて記載する</li>
+                        <li>専門用語を使いすぎず、顧客にも理解しやすい表現を心がける</li>
+                        <li>異常箇所は必ず写真を添付し、何が問題かを明確に説明する</li>
+                        <li>改善提案は優先度を明確にし、概算費用や工期の目安も可能な範囲で記載する</li>
+                        <li>前回からの変化や経年劣化の傾向も記載する</li>
+                    </ul>
+                    <div class="bg-green-50 border-l-4 border-green-400 p-3">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-check-circle text-green-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-green-700">
+                                    報告書は顧客の設備管理における重要な記録となります。また、法的な証明書としての役割も持ちます。正確かつ丁寧に作成してください。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- トラブルシューティング -->
+            <section id="troubleshooting" class="bg-white rounded-lg shadow-sm p-4">
+                <h2 class="text-lg font-medium text-gray-900 mb-3">7. トラブルシューティング</h2>
+                <div class="prose prose-sm text-gray-700">
+                    <p class="mb-3">
+                        点検中によく遭遇する問題とその対処法を紹介します。
+                    </p>
+                    <div class="space-y-4">
+                        <div class="border border-gray-200 rounded-md p-3">
+                            <h3 class="text-base font-medium text-gray-800 mb-2">7.1 絶縁抵抗値が低い場合</h3>
+                            <p class="mb-2">考えられる原因：</p>
+                            <ul class="list-disc pl-5 space-y-1 mb-2">
+                                <li>絶縁材の劣化</li>
+                                <li>湿気や結露による影響</li>
+                                <li>汚損や塵埃の蓄積</li>
+                                <li>小動物の侵入による損傷</li>
+                            </ul>
+                            <p class="mb-2">対処法：</p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>汚損や塵埃がある場合は清掃を行う</li>
+                                <li>湿気が原因の場合は乾燥させる</li>
+                                <li>明らかな損傷がある場合は部品交換を検討</li>
+                                <li>経年劣化の場合は設備更新計画を提案</li>
+                            </ul>
+                        </div>
+                        <div class="border border-gray-200 rounded-md p-3">
+                            <h3 class="text-base font-medium text-gray-800 mb-2">7.2 異音がする場合</h3>
+                            <p class="mb-2">考えられる原因：</p>
+                            <ul class="list-disc pl-5 space-y-1 mb-2">
+                                <li>機械的な緩み</li>
+                                <li>放電現象</li>
+                                <li>冷却ファンの異常</li>
+                                <li>変圧器のコアの振動</li>
+                            </ul>
+                            <p class="mb-2">対処法：</p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>緩みがある場合は増し締めを行う</li>
+                                <li>放電音の場合は絶縁不良箇所を特定し対処</li>
+                                <li>冷却ファンの異常は修理または交換</li>
+                                <li>変圧器の異音は専門家による詳細調査を実施</li>
+                            </ul>
+                        </div>
+                        <div class="border border-gray-200 rounded-md p-3">
+                            <h3 class="text-base font-medium text-gray-800 mb-2">7.3 過熱している場合</h3>
+                            <p class="mb-2">考えられる原因：</p>
+                            <ul class="list-disc pl-5 space-y-1 mb-2">
+                                <li>過負荷状態</li>
+                                <li>接触不良による接触抵抗の増加</li>
+                                <li>冷却システムの不具合</li>
+                                <li>換気不良</li>
+                            </ul>
+                            <p class="mb-2">対処法：</p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>負荷電流を測定し、定格を超えていないか確認</li>
+                                <li>接触部の増し締めや清掃を実施</li>
+                                <li>冷却システムの点検と修理</li>
+                                <li>換気状態の改善</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="bg-red-50 border-l-4 border-red-400 p-3 mt-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-exclamation-circle text-red-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-red-700">
+                                    <strong>緊急時の対応：</strong> 重大な異常（煙、火花、激しい異音、強い異臭など）を発見した場合は、安全を最優先し、以下の対応を行ってください。<br>
+                                    1. 顧客に直ちに報告し、設備の使用停止を依頼<br>
+                                    2. 必要に応じて緊急停電措置を実施<br>
+                                    3. 上長に報告し、指示を仰ぐ<br>
+                                    4. 火災の危険がある場合は消防署に通報
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 関連記事 -->
+        <div class="mt-8">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">関連記事</h2>
+            <div class="space-y-3">
+                <a href="#" class="block bg-white rounded-lg shadow-sm p-3 hover:bg-gray-50">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 h-10 w-10 bg-primary-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-bolt text-primary-600"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-900">高圧遮断器の動作試験手順</p>
+                            <p class="text-xs text-gray-500">更新日: 2025年3月10日</p>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="block bg-white rounded-lg shadow-sm p-3 hover:bg-gray-50">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 h-10 w-10 bg-primary-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-shield-alt text-primary-600"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-900">保護継電器の整定値確認方法</p>
+                            <p class="text-xs text-gray-500">更新日: 2025年2月25日</p>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="block bg-white rounded-lg shadow-sm p-3 hover:bg-gray-50">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 h-10 w-10 bg-primary-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-thermometer-half text-primary-600"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-900">変圧器の温度管理と冷却システム点検</p>
+                            <p class="text-xs text-gray-500">更新日: 2025年1月15日</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- フッターナビゲーション -->
+    <footer class="bg-white shadow-md fixed bottom-0 left-0 right-0 z-10">
+        <div class="max-w-md mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <a href="index.html" class="flex flex-col items-center text-gray-500">
+                    <i class="fas fa-home text-lg"></i>
+                    <span class="text-xs mt-1">ホーム</span>
+                </a>
+                <a href="点検選択.html" class="flex flex-col items-center text-gray-500">
+                    <i class="fas fa-clipboard-check text-lg"></i>
+                    <span class="text-xs mt-1">点検</span>
+                </a>
+                <a href="点検履歴.html" class="flex flex-col items-center text-gray-500">
+                    <i class="fas fa-history text-lg"></i>
+                    <span class="text-xs mt-1">履歴</span>
+                </a>
+                <a href="ナレッジベース.html" class="flex flex-col items-center text-primary-500">
+                    <i class="fas fa-book text-lg"></i>
+                    <span class="text-xs mt-1">ナレッジ</span>
+                </a>
+                <a href="設定.html" class="flex flex-col items-center text-gray-500">
+                    <i class="fas fa-cog text-lg"></i>
+                    <span class="text-xs mt-1">設定</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
