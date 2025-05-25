@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>点検計画 | 電気保安管理システム</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#082f49',
+            },
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 min-h-screen flex">
+  <!-- サイドバー -->
+  <aside class="bg-primary-800 text-white w-64 flex-shrink-0 hidden md:block">
+    <div class="p-4 border-b border-primary-700">
+      <h1 class="text-xl font-bold">電気保安管理システム</h1>
+    </div>
+    <nav class="p-2">
+      <ul class="space-y-1">
+        <li>
+          <a href="index.html" class="flex items-center p-2 rounded-md hover:bg-primary-700">
+            <i class="fas fa-tachometer-alt w-6"></i>
+            <span>ダッシュボード</span>
+          </a>
+        </li>
+        <li>
+          <div class="p-2 text-primary-300 text-sm font-medium">顧客管理</div>
+          <ul class="pl-2 space-y-1">
+            <li>
+              <a href="#" class="flex items-center p-2 rounded-md hover:bg-primary-700">
+                <i class="fas fa-building w-6"></i>
+                <span>顧客一覧</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="flex items-center p-2 rounded-md hover:bg-primary-700">
+                <i class="fas fa-file-contract w-6"></i>
+                <span>契約管理</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <div class="p-2 text-primary-300 text-sm font-medium">点検管理</div>
+          <ul class="pl-2 space-y-1">
+            <li>
+              <a href="点検計画.html" class="flex items-center p-2 rounded-md bg-primary-700">
+                <i class="fas fa-calendar-alt w-6"></i>
+                <span>点検計画</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="flex items-center p-2 rounded-md hover:bg-primary-700">
+                <i class="fas fa-clipboard-check w-6"></i>
+                <span>点検報告</span>
+              </a>
+            </li>
+            <li>
+              <a href="指摘事項一覧.html" class="flex items-center p-2 rounded-md hover:bg-primary-700">
+                <i class="fas fa-exclamation-triangle w-6"></i>
+                <span>指摘事項</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <div class="p-2 text-primary-300 text-sm font-medium">設備管理</div>
+          <ul class="pl-2 space-y-1">
+            <li>
+              <a href="設備管理.html" class="flex items-center p-2 rounded-md hover:bg-primary-700">
+                <i class="fas fa-bolt w-6"></i>
+                <span>設備一覧</span>
+              </a>
+            </li>
+            <li>
+              <a href="単線結線図編集.html" class="flex items-center p-2 rounded-md hover:bg-primary-700">
+                <i class="fas fa-project-diagram w-6"></i>
+                <span>単線結線図</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <div class="p-2 text-primary-300 text-sm font-medium">人員管理</div>
+          <ul class="pl-2 space-y-1">
+            <li>
+              <a href="../技術者一覧.html" class="flex items-center p-2 rounded-md hover:bg-primary-700">
+                <i class="fas fa-users w-6"></i>
+                <span>技術者管理</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <div class="p-2 text-primary-300 text-sm font-medium">システム設定</div>
+          <ul class="pl-2 space-y-1">
+            <li>
+              <a href="#" class="flex items-center p-2 rounded-md hover:bg-primary-700">
+                <i class="fas fa-cog w-6"></i>
+                <span>基本設定</span>
+              </a>
+            </li>
+            <li>
+              <a href="../グループ権限画面.html" class="flex items-center p-2 rounded-md hover:bg-primary-700">
+                <i class="fas fa-user-lock w-6"></i>
+                <span>権限管理</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- メインコンテンツ -->
+  <div class="flex-1 flex flex-col">
+    <!-- ヘッダー -->
+    <header class="bg-white shadow-sm z-10">
+      <div class="flex items-center justify-between p-4">
+        <div class="flex items-center space-x-4">
+          <button class="md:hidden text-gray-500 hover:text-gray-700">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+          <h1 class="text-xl font-semibold text-gray-800">点検計画</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+          <button class="text-gray-500 hover:text-gray-700">
+            <i class="fas fa-bell text-xl"></i>
+          </button>
+          <div class="relative">
+            <button class="flex items-center text-gray-700 hover:text-gray-900">
+              <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="User avatar">
+              <span class="ml-2 text-sm font-medium">管理者</span>
+              <i class="fas fa-chevron-down ml-1 text-xs"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- コンテンツエリア -->
+    <main class="flex-1 overflow-auto p-6">
+      <!-- フィルターと操作ボタン -->
+      <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+        <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+          <div class="flex items-center space-x-2">
+            <label for="year" class="text-sm font-medium text-gray-700">年度</label>
+            <select id="year" class="rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm">
+              <option>2025年度</option>
+              <option>2024年度</option>
+              <option>2023年度</option>
+            </select>
+          </div>
+          <div class="flex items-center space-x-2">
+            <label for="customer" class="text-sm font-medium text-gray-700">顧客</label>
+            <select id="customer" class="rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm">
+              <option>すべて</option>
+              <option>A社</option>
+              <option>B社</option>
+              <option>C社</option>
+            </select>
+          </div>
+          <div class="flex items-center space-x-2">
+            <label for="status" class="text-sm font-medium text-gray-700">状態</label>
+            <select id="status" class="rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm">
+              <option>すべて</option>
+              <option>計画済</option>
+              <option>日程調整中</option>
+              <option>確定</option>
+              <option>完了</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex space-x-2">
+          <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            <i class="fas fa-plus mr-2"></i>
+            新規作成
+          </button>
+          <button class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            <i class="fas fa-file-export mr-2"></i>
+            エクスポート
+          </button>
+        </div>
+      </div>
+
+      <!-- 表示切替タブ -->
+      <div class="mb-6 border-b border-gray-200">
+        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+          <a href="#" class="border-primary-500 text-primary-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+            カレンダー表示
+          </a>
+          <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+            リスト表示
+          </a>
+        </nav>
+      </div>
+
+      <!-- カレンダー表示 -->
+      <div class="bg-white shadow overflow-hidden rounded-lg">
+        <!-- カレンダーヘッダー -->
+        <div class="px-4 py-5 border-b border-gray-200 sm:px-6 flex justify-between items-center">
+          <div class="flex items-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">2025年5月</h3>
+            <div class="ml-4 flex space-x-1">
+              <button class="p-1 rounded-full text-gray-400 hover:text-gray-500">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <button class="p-1 rounded-full text-gray-400 hover:text-gray-500">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+          <button class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            今日
+          </button>
+        </div>
+
+        <!-- カレンダー本体 -->
+        <div class="bg-white p-4">
+          <!-- 曜日ヘッダー -->
+          <div class="grid grid-cols-7 gap-px bg-gray-200 text-center text-xs leading-6 text-gray-700 font-semibold">
+            <div class="bg-white py-2 text-red-500">日</div>
+            <div class="bg-white py-2">月</div>
+            <div class="bg-white py-2">火</div>
+            <div class="bg-white py-2">水</div>
+            <div class="bg-white py-2">木</div>
+            <div class="bg-white py-2">金</div>
+            <div class="bg-white py-2 text-blue-500">土</div>
+          </div>
+
+          <!-- カレンダー日付 -->
+          <div class="grid grid-cols-7 gap-px bg-gray-200 text-sm">
+            <!-- 前月 -->
+            <div class="bg-gray-50 px-2 py-2 h-32 text-gray-400">
+              <time datetime="2025-04-27">27</time>
+            </div>
+            <div class="bg-gray-50 px-2 py-2 h-32 text-gray-400">
+              <time datetime="2025-04-28">28</time>
+            </div>
+            <div class="bg-gray-50 px-2 py-2 h-32 text-gray-400">
+              <time datetime="2025-04-29">29</time>
+            </div>
+            <div class="bg-gray-50 px-2 py-2 h-32 text-gray-400">
+              <time datetime="2025-04-30">30</time>
+            </div>
+            
+            <!-- 当月 -->
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-01">1</time>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-02">2</time>
+            </div>
+            <div class="bg-white px-2 py-2 h-32 text-blue-500">
+              <time datetime="2025-05-03">3</time>
+            </div>
+
+            <!-- 2行目 -->
+            <div class="bg-white px-2 py-2 h-32 text-red-500">
+              <time datetime="2025-05-04">4</time>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-05">5</time>
+              <div class="mt-1">
+                <div class="bg-blue-100 rounded px-2 py-1 text-xs text-blue-700 mb-1 truncate">
+                  A社ビル 定期点検
+                </div>
+              </div>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-06">6</time>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-07">7</time>
+              <div class="mt-1">
+                <div class="bg-green-100 rounded px-2 py-1 text-xs text-green-700 mb-1 truncate">
+                  B社工場 月次点検
+                </div>
+              </div>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-08">8</time>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-09">9</time>
+            </div>
+            <div class="bg-white px-2 py-2 h-32 text-blue-500">
+              <time datetime="2025-05-10">10</time>
+            </div>
+
+            <!-- 3行目 -->
+            <div class="bg-white px-2 py-2 h-32 text-red-500">
+              <time datetime="2025-05-11">11</time>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-12">12</time>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-13">13</time>
+              <div class="mt-1">
+                <div class="bg-yellow-100 rounded px-2 py-1 text-xs text-yellow-700 mb-1 truncate">
+                  C社事務所 臨時点検
+                </div>
+              </div>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-14">14</time>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-15">15</time>
+              <div class="mt-1">
+                <div class="bg-blue-100 rounded px-2 py-1 text-xs text-blue-700 mb-1 truncate">
+                  D社ビル 定期点検
+                </div>
+                <div class="bg-purple-100 rounded px-2 py-1 text-xs text-purple-700 truncate">
+                  E社 自家用電気工作物点検
+                </div>
+              </div>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-16">16</time>
+            </div>
+            <div class="bg-white px-2 py-2 h-32 text-blue-500">
+              <time datetime="2025-05-17">17</time>
+            </div>
+
+            <!-- 4行目 -->
+            <div class="bg-white px-2 py-2 h-32 text-red-500">
+              <time datetime="2025-05-18">18</time>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-19">19</time>
+              <div class="mt-1">
+                <div class="bg-green-100 rounded px-2 py-1 text-xs text-green-700 mb-1 truncate">
+                  F社工場 月次点検
+                </div>
+              </div>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-20">20</time>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-21">21</time>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-22">22</time>
+              <div class="mt-1">
+                <div class="bg-blue-100 rounded px-2 py-1 text-xs text-blue-700 mb-1 truncate">
+                  G社ビル 定期点検
+                </div>
+              </div>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-23">23</time>
+            </div>
+            <div class="bg-white px-2 py-2 h-32 text-blue-500">
+              <time datetime="2025-05-24">24</time>
+            </div>
+
+            <!-- 5行目 -->
+            <div class="bg-white px-2 py-2 h-32 text-red-500">
+              <time datetime="2025-05-25">25</time>
+            </div>
+            <div class="bg-white px-2 py-2 h-32 bg-primary-50 ring-2 ring-primary-600">
+              <time datetime="2025-05-26" class="font-semibold text-primary-600">26</time>
+              <div class="mt-1">
+                <div class="bg-blue-100 rounded px-2 py-1 text-xs text-blue-700 mb-1 truncate">
+                  H社ビル 定期点検
+                </div>
+                <div class="bg-green-100 rounded px-2 py-1 text-xs text-green-700 truncate">
+                  I社工場 月次点検
+                </div>
+              </div>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-27">27</time>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-28">28</time>
+              <div class="mt-1">
+                <div class="bg-yellow-100 rounded px-2 py-1 text-xs text-yellow-700 mb-1 truncate">
+                  J社事務所 臨時点検
+                </div>
+              </div>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-29">29</time>
+            </div>
+            <div class="bg-white px-2 py-2 h-32">
+              <time datetime="2025-05-30">30</time>
+            </div>
+            <div class="bg-white px-2 py-2 h-32 text-blue-500">
+              <time datetime="2025-05-31">31</time>
+            </div>
+
+            <!-- 翌月 -->
+            <div class="bg-gray-50 px-2 py-2 h-32 text-gray-400 text-red-300">
+              <time datetime="2025-06-01">1</time>
+            </div>
+            <div class="bg-gray-50 px-2 py-2 h-32 text-gray-400">
+              <time datetime="2025-06-02">2</time>
+            </div>
+            <div class="bg-gray-50 px-2 py-2 h-32 text-gray-400">
+              <time datetime="2025-06-03">3</time>
+            </div>
+            <div class="bg-gray-50 px-2 py-2 h-32 text-gray-400">
+              <time datetime="2025-06-04">4</time>
+            </div>
+            <div class="bg-gray-50 px-2 py-2 h-32 text-gray-400">
+              <time datetime="2025-06-05">5</time>
+            </div>
+            <div class="bg-gray-50 px-2 py-2 h-32 text-gray-400">
+              <time datetime="2025-06-06">6</time>
+            </div>
+            <div class="bg-gray-50 px-2 py-2 h-32 text-gray-400 text-blue-300">
+              <time datetime="2025-06-07">7</time>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 凡例 -->
+      <div class="mt-4 flex flex-wrap gap-4">
+        <div class="flex items-center">
+          <div class="w-4 h-4 bg-blue-100 rounded mr-2"></div>
+          <span class="text-sm text-gray-600">定期点検</span>
+        </div>
+        <div class="flex items-center">
+          <div class="w-4 h-4 bg-green-100 rounded mr-2"></div>
+          <span class="text-sm text-gray-600">月次点検</span>
+        </div>
+        <div class="flex items-center">
+          <div class="w-4 h-4 bg-yellow-100 rounded mr-2"></div>
+          <span class="text-sm text-gray-600">臨時点検</span>
+        </div>
+        <div class="flex items-center">
+          <div class="w-4 h-4 bg-purple-100 rounded mr-2"></div>
+          <span class="text-sm text-gray-600">自家用電気工作物点検</span>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
