@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>マイページ | 顧客ポータル</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#082f49',
+            },
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <!-- ヘッダー -->
+  <header class="bg-white shadow">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex">
+          <div class="flex-shrink-0 flex items-center">
+            <img class="h-8 w-auto" src="https://placehold.jp/3d4070/ffffff/200x80.png?text=電気保安管理" alt="電気保安管理システム">
+          </div>
+          <nav class="ml-6 flex space-x-8">
+            <a href="index.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+              ホーム
+            </a>
+            <a href="契約情報.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+              契約情報
+            </a>
+            <a href="点検報告.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+              点検報告
+            </a>
+            <a href="お知らせ.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+              お知らせ
+            </a>
+            <a href="お問い合わせ.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+              お問い合わせ
+            </a>
+          </nav>
+        </div>
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="relative inline-block text-left">
+              <div>
+                <button type="button" class="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                  <span class="sr-only">メニューを開く</span>
+                  <img class="h-8 w-8 rounded-full" src="https://placehold.jp/150x150.png" alt="">
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- メインコンテンツ -->
+  <main>
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <!-- パンくずリスト -->
+      <nav class="flex mb-5" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-4">
+          <li>
+            <div>
+              <a href="index.html" class="text-gray-400 hover:text-gray-500">
+                <svg class="flex-shrink-0 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                </svg>
+                <span class="sr-only">ホーム</span>
+              </a>
+            </div>
+          </li>
+          <li>
+            <div class="flex items-center">
+              <svg class="flex-shrink-0 h-5 w-5 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
+              </svg>
+              <span class="ml-4 text-sm font-medium text-gray-500" aria-current="page">マイページ</span>
+            </div>
+          </li>
+        </ol>
+      </nav>
+
+      <div class="md:flex md:items-center md:justify-between mb-6">
+        <div class="flex-1 min-w-0">
+          <h1 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+            マイページ
+          </h1>
+          <p class="mt-1 text-sm text-gray-500">
+            アカウント情報の管理と設定
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <!-- サイドナビゲーション -->
+        <div class="lg:col-span-1">
+          <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="px-4 py-5 sm:px-6 bg-gray-50">
+              <h2 class="text-lg font-medium text-gray-900">設定メニュー</h2>
+            </div>
+            <nav class="divide-y divide-gray-200">
+              <a href="#profile" class="block px-4 py-3 text-sm font-medium text-primary-600 bg-primary-50">
+                プロフィール情報
+              </a>
+              <a href="#security" class="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                セキュリティ設定
+              </a>
+              <a href="#notification" class="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                通知設定
+              </a>
+              <a href="#access" class="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                アクセス権限
+              </a>
+              <a href="#billing" class="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                請求情報
+              </a>
+            </nav>
+          </div>
+        </div>
+
+        <!-- メインコンテンツエリア -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- プロフィール情報 -->
+          <div id="profile" class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="px-4 py-5 sm:px-6 bg-gray-50 flex justify-between items-center">
+              <div>
+                <h2 class="text-lg font-medium text-gray-900">プロフィール情報</h2>
+                <p class="mt-1 text-sm text-gray-500">基本的な会社情報と連絡先</p>
+              </div>
+              <button type="button" class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                <svg class="-ml-1 mr-1 h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+                編集
+              </button>
+            </div>
+            <div class="px-4 py-5 sm:p-6">
+              <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                <div class="sm:col-span-3">
+                  <dt class="text-sm font-medium text-gray-500">会社名</dt>
+                  <dd class="mt-1 text-sm text-gray-900">株式会社テクノ電機</dd>
+                </div>
+                <div class="sm:col-span-3">
+                  <dt class="text-sm font-medium text-gray-500">顧客ID</dt>
+                  <dd class="mt-1 text-sm text-gray-900">C-20250001</dd>
+                </div>
+                <div class="sm:col-span-3">
+                  <dt class="text-sm font-medium text-gray-500">担当者名</dt>
+                  <dd class="mt-1 text-sm text-gray-900">田中 一郎</dd>
+                </div>
+                <div class="sm:col-span-3">
+                  <dt class="text-sm font-medium text-gray-500">部署・役職</dt>
+                  <dd class="mt-1 text-sm text-gray-900">設備管理部 部長</dd>
+                </div>
+                <div class="sm:col-span-3">
+                  <dt class="text-sm font-medium text-gray-500">メールアドレス</dt>
+                  <dd class="mt-1 text-sm text-gray-900">tanaka@example.com</dd>
+                </div>
+                <div class="sm:col-span-3">
+                  <dt class="text-sm font-medium text-gray-500">電話番号</dt>
+                  <dd class="mt-1 text-sm text-gray-900">03-1234-5678</dd>
+                </div>
+                <div class="sm:col-span-6">
+                  <dt class="text-sm font-medium text-gray-500">住所</dt>
+                  <dd class="mt-1 text-sm text-gray-900">〒100-0001 東京都千代田区千代田1-1-1 テクノビル5F</dd>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- セキュリティ設定 -->
+          <div id="security" class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="px-4 py-5 sm:px-6 bg-gray-50">
+              <h2 class="text-lg font-medium text-gray-900">セキュリティ設定</h2>
+              <p class="mt-1 text-sm text-gray-500">パスワードと認証設定</p>
+            </div>
+            <div class="px-4 py-5 sm:p-6">
+              <div class="space-y-4">
+                <div>
+                  <h3 class="text-sm font-medium text-gray-900">パスワード変更</h3>
+                  <button type="button" class="mt-2 inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                    パスワードを変更する
+                  </button>
+                  <p class="mt-1 text-xs text-gray-500">前回の変更: 2025年3月15日</p>
+                </div>
+                <div class="pt-4 border-t border-gray-200">
+                  <h3 class="text-sm font-medium text-gray-900">二要素認証</h3>
+                  <div class="mt-2 flex items-center justify-between">
+                    <div>
+                      <p class="text-sm text-gray-500">アカウントのセキュリティを強化するため、ログイン時に追加の認証を要求します。</p>
+                      <p class="mt-1 text-xs text-red-500">現在無効になっています</p>
+                    </div>
+                    <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                      設定する
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 通知設定 -->
+          <div id="notification" class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="px-4 py-5 sm:px-6 bg-gray-50">
+              <h2 class="text-lg font-medium text-gray-900">通知設定</h2>
+              <p class="mt-1 text-sm text-gray-500">メールやポータルでの通知設定</p>
+            </div>
+            <div class="px-4 py-5 sm:p-6">
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-sm font-medium text-gray-900">点検予定のお知らせ</p>
+                    <p class="text-xs text-gray-500">点検の1週間前にメールでお知らせします</p>
+                  </div>
+                  <div class="flex items-center">
+                    <span class="mr-3 text-xs text-green-500">オン</span>
+                    <button type="button" class="bg-primary-600 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" role="switch" aria-checked="true">
+                      <span class="translate-x-5 pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
+                    </button>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-sm font-medium text-gray-900">点検報告書の通知</p>
+                    <p class="text-xs text-gray-500">点検報告書が作成されたらメールでお知らせします</p>
+                  </div>
+                  <div class="flex items-center">
+                    <span class="mr-3 text-xs text-green-500">オン</span>
+                    <button type="button" class="bg-primary-600 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" role="switch" aria-checked="true">
+                      <span class="translate-x-5 pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- フッター -->
+  <footer class="bg-white mt-12">
+    <div class="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8">
+      <nav class="-mx-5 -my-2 flex flex-wrap justify-center" aria-label="Footer">
+        <div class="px-5 py-2">
+          <a href="index.html" class="text-base text-gray-500 hover:text-gray-900">
+            ホーム
+          </a>
+        </div>
+        <div class="px-5 py-2">
+          <a href="契約情報.html" class="text-base text-gray-500 hover:text-gray-900">
+            契約情報
+          </a>
+        </div>
+        <div class="px-5 py-2">
+          <a href="点検報告.html" class="text-base text-gray-500 hover:text-gray-900">
+            点検報告
+          </a>
+        </div>
+        <div class="px-5 py-2">
+          <a href="お知らせ.html" class="text-base text-gray-500 hover:text-gray-900">
+            お知らせ
+          </a>
+        </div>
+        <div class="px-5 py-2">
+          <a href="お問い合わせ.html" class="text-base text-gray-500 hover:text-gray-900">
+            お問い合わせ
+          </a>
+        </div>
+      </nav>
+      <p class="mt-8 text-center text-base text-gray-400">
+        &copy; 2025 電気保安管理株式会社. All rights reserved.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
