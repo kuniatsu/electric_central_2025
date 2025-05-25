@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お知らせ詳細 | 顧客ポータル</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- ヘッダー -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="電気保安管理">
+                        <span class="ml-2 text-xl font-bold text-primary-600">顧客ポータル</span>
+                    </div>
+                    <nav class="ml-6 flex space-x-8">
+                        <a href="index.html" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700">
+                            ホーム
+                        </a>
+                        <a href="契約情報.html" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700">
+                            契約情報
+                        </a>
+                        <a href="お知らせ.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-primary-500 text-sm font-medium text-primary-600">
+                            お知らせ
+                        </a>
+                        <a href="点検報告詳細.html" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700">
+                            点検報告
+                        </a>
+                        <a href="お問い合わせ.html" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700">
+                            お問い合わせ
+                        </a>
+                    </nav>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="マイページ.html" class="flex items-center text-sm text-gray-500 hover:text-gray-700">
+                            <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                            <span class="ml-1">山田商事株式会社</span>
+                        </a>
+                    </div>
+                    <div class="ml-4">
+                        <a href="index.html" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="ml-1 text-sm">ログアウト</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- パンくずリスト -->
+        <nav class="flex mb-6" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-2">
+                <li>
+                    <div>
+                        <a href="index.html" class="text-gray-400 hover:text-gray-500">
+                            <i class="fas fa-home"></i>
+                            <span class="sr-only">ホーム</span>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                        <a href="お知らせ.html" class="ml-2 text-sm font-medium text-gray-500 hover:text-gray-700">お知らせ</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                        <span class="ml-2 text-sm font-medium text-primary-600" aria-current="page">年次点検のお知らせ</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+
+        <!-- お知らせ詳細 -->
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+            <div class="px-4 py-5 sm:px-6 bg-primary-50">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">年次点検のお知らせ</h1>
+                        <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mr-2">
+                                点検
+                            </span>
+                            <span class="inline-flex items-center">
+                                <i class="fas fa-calendar-alt mr-1 text-gray-400"></i>
+                                2025年6月15日 10:00
+                            </span>
+                        </p>
+                    </div>
+                    <div>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                            <i class="fas fa-check-circle mr-1"></i>
+                            未読
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+                <div class="prose max-w-none text-gray-700">
+                    <p class="mb-4">山田商事株式会社 ご担当者様</p>
+                    
+                    <p class="mb-4">平素は格別のご高配を賜り、厚く御礼申し上げます。</p>
+                    
+                    <p class="mb-4">電気事業法に基づく年次点検を下記の通り実施させていただきますので、ご案内申し上げます。</p>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">点検概要</h3>
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="py-2 text-sm font-medium text-gray-500 w-1/4">点検日時</td>
+                                    <td class="py-2 text-sm text-gray-900">2025年6月15日（水）10:00〜15:00</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 text-sm font-medium text-gray-500">点検場所</td>
+                                    <td class="py-2 text-sm text-gray-900">東京本社ビル 受変電設備</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 text-sm font-medium text-gray-500">点検内容</td>
+                                    <td class="py-2 text-sm text-gray-900">高圧受電設備年次点検（停電を伴う全項目点検）</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 text-sm font-medium text-gray-500">停電範囲</td>
+                                    <td class="py-2 text-sm text-gray-900">本社ビル全館（非常用電源は除く）</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 text-sm font-medium text-gray-500">担当技術者</td>
+                                    <td class="py-2 text-sm text-gray-900">山田 太郎（電気主任技術者 第二種）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">点検内容</h3>
+                    <p class="mb-4">本点検は電気事業法に基づく年次点検として、以下の項目を実施いたします。</p>
+                    
+                    <ul class="list-disc pl-5 mb-4">
+                        <li>高圧受電設備の外観点検</li>
+                        <li>保護継電器の動作試験</li>
+                        <li>遮断器の動作試験</li>
+                        <li>絶縁抵抗測定</li>
+                        <li>接地抵抗測定</li>
+                        <li>変圧器の詳細点検</li>
+                        <li>配電盤の詳細点検</li>
+                        <li>非常用発電設備の動作確認</li>
+                    </ul>
+                    
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">ご準備いただきたいこと</h3>
+                    <p class="mb-4">点検を円滑に実施するため、以下のご協力をお願いいたします。</p>
+                    
+                    <ul class="list-disc pl-5 mb-4">
+                        <li>点検当日は、貴社設備管理ご担当者様の立ち会いをお願いいたします。</li>
+                        <li>停電に伴い、コンピュータ等の機器は事前にシャットダウンをお願いいたします。</li>
+                        <li>重要なデータのバックアップを事前に実施してください。</li>
+                        <li>エレベーターは停止いたしますので、ご注意ください。</li>
+                        <li>非常用照明の確認も行いますので、懐中電灯等のご準備をお願いいたします。</li>
+                    </ul>
+                    
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-yellow-800">ご注意事項</h3>
+                                <div class="mt-2 text-sm text-yellow-700">
+                                    <p>
+                                        点検日時の変更をご希望の場合は、点検日の7日前までにご連絡ください。
+                                        また、点検当日は安全確保のため、電気設備周辺への立ち入りを制限させていただきます。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="mb-4">
+                        本点検は、お客様の電気設備の安全確保と法令遵守のために必要な作業です。
+                        ご不便をおかけいたしますが、ご理解とご協力を賜りますようお願い申し上げます。
+                    </p>
+                    
+                    <p class="mb-4">
+                        なお、ご不明な点がございましたら、下記担当者までお問い合わせください。
+                    </p>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">お問い合わせ先</h3>
+                        <p class="text-sm text-gray-700">
+                            電気保安管理株式会社 東京支店<br>
+                            担当：佐藤 健太<br>
+                            TEL：03-1234-5678<br>
+                            Email：k.sato@example.com
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- アクションボタン -->
+        <div class="flex justify-between mb-6">
+            <div>
+                <a href="お知らせ.html" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    お知らせ一覧に戻る
+                </a>
+            </div>
+            <div class="flex space-x-3">
+                <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    <i class="fas fa-print mr-2"></i>
+                    印刷
+                </button>
+                <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700">
+                    <i class="fas fa-calendar-check mr-2"></i>
+                    日程確認
+                </button>
+            </div>
+        </div>
+
+        <!-- 関連情報 -->
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6 bg-primary-50">
+                <h2 class="text-lg font-medium text-gray-900">関連情報</h2>
+                <p class="mt-1 max-w-2xl text-sm text-gray-500">過去の点検履歴と今後の予定</p>
+            </div>
+            <div class="border-t border-gray-200">
+                <dl>
+                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">前回の年次点検</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                            2024年6月10日 実施済み
+                            <a href="点検報告詳細.html" class="ml-2 text-primary-600 hover:text-primary-500">
+                                <i class="fas fa-file-alt"></i>
+                                報告書を見る
+                            </a>
+                        </dd>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">直近の月次点検</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                            2025年5月15日 実施済み
+                            <a href="#" class="ml-2 text-primary-600 hover:text-primary-500">
+                                <i class="fas fa-file-alt"></i>
+                                報告書を見る
+                            </a>
+                        </dd>
+                    </div>
+                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">次回の月次点検</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                            2025年7月15日 予定
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+    </main>
+
+    <!-- フッター -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div class="md:flex md:items-center md:justify-between">
+                <div class="flex justify-center md:order-2 space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-gray-500">
+                        <span class="sr-only">お問い合わせ</span>
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-gray-500">
+                        <span class="sr-only">ヘルプ</span>
+                        <i class="fas fa-question-circle"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-gray-500">
+                        <span class="sr-only">設定</span>
+                        <i class="fas fa-cog"></i>
+                    </a>
+                </div>
+                <div class="mt-8 md:mt-0 md:order-1">
+                    <p class="text-center text-sm text-gray-400">
+                        &copy; 2025 電気保安管理株式会社. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
