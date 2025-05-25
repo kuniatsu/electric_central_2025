@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ナレッジベース記事 | 点検モバイルアプリ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              200: '#fed7aa',
+              300: '#fdba74',
+              400: '#fb923c',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c',
+              800: '#9a3412',
+              900: '#7c2d12',
+              950: '#431407',
+            },
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- ヘッダー -->
+  <header class="bg-white shadow-sm fixed top-0 inset-x-0 z-10">
+    <div class="max-w-md mx-auto px-4">
+      <div class="flex justify-between h-14">
+        <div class="flex items-center">
+          <a href="ナレッジベース.html" class="text-gray-500">
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </a>
+          <h1 class="ml-3 text-lg font-medium text-gray-900">ナレッジベース記事</h1>
+        </div>
+        <div class="flex items-center">
+          <button type="button" class="p-2 rounded-full text-gray-500 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- メインコンテンツ -->
+  <main class="pt-14 pb-16">
+    <div class="max-w-md mx-auto px-4 py-6">
+      <!-- 記事ヘッダー -->
+      <div class="mb-6">
+        <h2 class="text-xl font-bold text-gray-900">高圧受電設備の月次点検手順</h2>
+        <div class="mt-2 flex items-center text-sm text-gray-500">
+          <svg class="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <span>最終更新: 2025年4月15日</span>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-2">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+            高圧受電設備
+          </span>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+            月次点検
+          </span>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+            基本手順
+          </span>
+        </div>
+      </div>
+
+      <!-- 目次 -->
+      <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+        <h3 class="text-base font-medium text-gray-900 mb-3">目次</h3>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="#overview" class="text-primary-600 hover:text-primary-800">1. 概要</a>
+          </li>
+          <li>
+            <a href="#preparation" class="text-primary-600 hover:text-primary-800">2. 事前準備</a>
+          </li>
+          <li>
+            <a href="#safety" class="text-primary-600 hover:text-primary-800">3. 安全確認事項</a>
+          </li>
+          <li>
+            <a href="#inspection" class="text-primary-600 hover:text-primary-800">4. 点検手順</a>
+            <ul class="ml-4 mt-1 space-y-1">
+              <li><a href="#visual" class="text-primary-600 hover:text-primary-800">4.1 外観点検</a></li>
+              <li><a href="#meter" class="text-primary-600 hover:text-primary-800">4.2 計器類の確認</a></li>
+              <li><a href="#temperature" class="text-primary-600 hover:text-primary-800">4.3 温度測定</a></li>
+              <li><a href="#environment" class="text-primary-600 hover:text-primary-800">4.4 環境確認</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#reporting" class="text-primary-600 hover:text-primary-800">5. 報告書作成</a>
+          </li>
+          <li>
+            <a href="#troubleshooting" class="text-primary-600 hover:text-primary-800">6. トラブルシューティング</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 記事本文 -->
+      <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+        <section id="overview" class="mb-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-3">1. 概要</h3>
+          <div class="prose max-w-none text-gray-700">
+            <p>高圧受電設備の月次点検は、電気事業法に基づく自主保安活動の一環として実施される重要な点検です。この点検では、高圧受電設備の外観点検、計器類の確認、温度測定などを行い、設備の安全な運用を確保します。</p>
+            <p class="mt-2">月次点検は停電作業を伴わない活線状態での点検であり、主に目視や非接触測定器を用いて行います。異常が発見された場合は、年次点検時の詳細点検や臨時点検の実施を検討します。</p>
+          </div>
+        </section>
+
+        <section id="preparation" class="mb-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-3">2. 事前準備</h3>
+          <div class="prose max-w-none text-gray-700">
+            <p>月次点検を実施する前に、以下の準備を行ってください：</p>
+            <ul class="list-disc pl-5 space-y-1 mt-2">
+              <li>点検対象設備の基本情報を確認（設備ID、設置場所、主要機器など）</li>
+              <li>前回の点検報告書を確認し、特記事項や指摘事項をチェック</li>
+              <li>必要な測定器具の準備と動作確認
+                <ul class="list-disc pl-5 space-y-1 mt-1">
+                  <li>非接触温度計</li>
+                  <li>絶縁抵抗計（必要に応じて）</li>
+                  <li>デジタルカメラ</li>
+                  <li>照度計</li>
+                </ul>
+              </li>
+              <li>個人保護具の準備
+                <ul class="list-disc pl-5 space-y-1 mt-1">
+                  <li>絶縁手袋</li>
+                  <li>安全靴</li>
+                  <li>ヘルメット</li>
+                </ul>
+              </li>
+              <li>顧客担当者への点検実施の事前連絡</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="safety" class="mb-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-3">3. 安全確認事項</h3>
+          <div class="prose max-w-none text-gray-700">
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm text-yellow-700">
+                    高圧受電設備は危険です。必ず安全確認を行ってから点検作業を開始してください。
+                  </p>
+                </div>
+              </div>
+            </div>
+            <p>点検作業前に以下の安全確認を必ず実施してください：</p>
+            <ul class="list-disc pl-5 space-y-1 mt-2">
+              <li>点検作業範囲の明確化と立入禁止区域の設定</li>
+              <li>個人保護具の着用確認</li>
+              <li>作業前の危険予知活動（KY活動）の実施</li>
+              <li>緊急時の連絡体制と避難経路の確認</li>
+              <li>充電部への接近限界距離の遵守（30cm以上の離隔）</li>
+              <li>作業に必要のない機器や開閉器には触れないこと</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="inspection" class="mb-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-3">4. 点検手順</h3>
+          
+          <section id="visual" class="mb-4 ml-4">
+            <h4 class="text-base font-medium text-gray-900 mb-2">4.1 外観点検</h4>
+            <div class="prose max-w-none text-gray-700">
+              <p>以下の項目について外観点検を実施します：</p>
+              <ul class="list-disc pl-5 space-y-1 mt-2">
+                <li>キュービクル全体の外観確認
+                  <ul class="list-disc pl-5 space-y-1 mt-1">
+                    <li>扉の開閉状態、施錠状態</li>
+                    <li>外装の腐食、損傷、変形</li>
+                    <li>警告表示、銘板の状態</li>
+                  </ul>
+                </li>
+                <li>高圧機器の外観確認
+                  <ul class="list-disc pl-5 space-y-1 mt-1">
+                    <li>VCB（真空遮断器）の外観</li>
+                    <li>PF（電力ヒューズ）の外観</li>
+                    <li>LA（避雷器）の外観</li>
+                    <li>PT（計器用変成器）の外観</li>
+                    <li>CT（変流器）の外観</li>
+                    <li>高圧ケーブルの外観</li>
+                  </ul>
+                </li>
+                <li>変圧器の外観確認
+                  <ul class="list-disc pl-5 space-y-1 mt-1">
+                    <li>油漏れ、異常音、異臭の有無</li>
+                    <li>放熱器の汚れ、詰まり</li>
+                    <li>端子部の緩み、変色</li>
+                  </ul>
+                </li>
+                <li>低圧機器の外観確認
+                  <ul class="list-disc pl-5 space-y-1 mt-1">
+                    <li>MCCB（配線用遮断器）の外観</li>
+                    <li>低圧配線の状態</li>
+                  </ul>
+                </li>
+              </ul>
+              <div class="mt-3">
+                <img src="https://placehold.jp/400x300.png" alt="キュービクル外観点検のポイント" class="rounded-lg">
+                <p class="text-xs text-gray-500 mt-1">図1: キュービクル外観点検のポイント</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="meter" class="mb-4 ml-4">
+            <h4 class="text-base font-medium text-gray-900 mb-2">4.2 計器類の確認</h4>
+            <div class="prose max-w-none text-gray-700">
+              <p>以下の計器類の指示値を確認し記録します：</p>
+              <ul class="list-disc pl-5 space-y-1 mt-2">
+                <li>電圧計（各相の電圧値）</li>
+                <li>電流計（各相の電流値）</li>
+                <li>電力計（有効電力、無効電力）</li>
+                <li>力率計（力率値）</li>
+                <li>周波数計（周波数値）</li>
+                <li>積算電力量計（電力量値）</li>
+              </ul>
+              <p class="mt-2">各計器の指示値が正常範囲内にあることを確認します。異常値が見られる場合は、原因を調査し記録します。</p>
+              <div class="mt-3">
+                <img src="https://placehold.jp/400x300.png" alt="計器類の確認ポイント" class="rounded-lg">
+                <p class="text-xs text-gray-500 mt-1">図2: 計器類の確認ポイント</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="temperature" class="mb-4 ml-4">
+            <h4 class="text-base font-medium text-gray-900 mb-2">4.3 温度測定</h4>
+            <div class="prose max-w-none text-gray-700">
+              <p>非接触温度計を使用して以下の部位の温度を測定し記録します：</p>
+              <ul class="list-disc pl-5 space-y-1 mt-2">
+                <li>高圧機器の接続部</li>
+                <li>変圧器本体</li>
+                <li>変圧器の端子部</li>
+                <li>MCCB（配線用遮断器）の端子部</li>
+                <li>主要な配線接続部</li>
+              </ul>
+              <p class="mt-2">測定した温度が周囲温度と比較して著しく高い場合（一般的に20℃以上の差）や、同相の他の部分と比較して温度差がある場合は、接続不良や過負荷の可能性があります。</p>
+              <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mt-3">
+                <div class="flex">
+                  <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm text-blue-700">
+                      温度測定は負荷状態によって変動します。可能であれば、負荷率が高い時間帯に測定することが望ましいです。
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="environment" class="mb-4 ml-4">
+            <h4 class="text-base font-medium text-gray-900 mb-2">4.4 環境確認</h4>
+            <div class="prose max-w-none text-gray-700">
+              <p>電気室や設備周辺の環境について以下の項目を確認します：</p>
+              <ul class="list-disc pl-5 space-y-1 mt-2">
+                <li>室内温度・湿度</li>
+                <li>換気状態</li>
+                <li>照明の状態</li>
+                <li>異物の有無（小動物、虫、ほこりなど）</li>
+                <li>水漏れ、結露の有無</li>
+                <li>消火設備の状態</li>
+                <li>非常灯の動作状態</li>
+              </ul>
+              <p class="mt-2">電気室内は清潔で乾燥した状態を保つことが重要です。特に小動物や虫の侵入、水漏れは重大な事故につながる可能性があるため、発見した場合は早急に対策を講じる必要があります。</p>
+            </div>
+          </section>
+        </section>
+
+        <section id="reporting" class="mb-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-3">5. 報告書作成</h3>
+          <div class="prose max-w-none text-gray-700">
+            <p>点検終了後、以下の内容を含む報告書を作成します：</p>
+            <ul class="list-disc pl-5 space-y-1 mt-2">
+              <li>点検日時、点検者名</li>
+              <li>点検対象設備の基本情報</li>
+              <li>点検項目ごとの結果（正常/異常）</li>
+              <li>計器類の指示値</li>
+              <li>温度測定結果</li>
+              <li>異常箇所の写真と詳細説明</li>
+              <li>改善提案や次回点検までの注意事項</li>
+              <li>次回点検予定日</li>
+            </ul>
+            <p class="mt-2">報告書は本アプリの「点検報告」機能を使用して作成します。オフライン環境でも入力可能で、通信環境が回復した際に自動的にサーバーへ送信されます。</p>
+            <div class="mt-3">
+              <img src="https://placehold.jp/400x300.png" alt="報告書作成画面" class="rounded-lg">
+              <p class="text-xs text-gray-500 mt-1">図3: 報告書作成画面</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="troubleshooting" class="mb-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-3">6. トラブルシューティング</h3>
+          <div class="prose max-w-none text-gray-700">
+            <p>点検中に以下のような異常を発見した場合の対応方法です：</p>
+            
+            <div class="mt-3 border border-gray-200 rounded-lg overflow-hidden">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">異常内容</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">対応方法</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">緊急度</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr>
+                    <td class="px-4 py-3 text-sm text-gray-900">異常な高温部位の発見</td>
+                    <td class="px-4 py-3 text-sm text-gray-700">写真撮影、温度記録、負荷状況確認、顧客への報告</td>
+                    <td class="px-4 py-3 text-sm">
+                      <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">中</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 text-sm text-gray-900">油漏れの発見</td>
+                    <td class="px-4 py-3 text-sm text-gray-700">漏油量確認、写真撮影、拡大防止措置、顧客への緊急報告</td>
+                    <td class="px-4 py-3 text-sm">
+                      <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">高</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 text-sm text-gray-900">異常音の発生</td>
+                    <td class="px-4 py-3 text-sm text-gray-700">音源特定、録音、負荷状況確認、顧客への報告</td>
+                    <td class="px-4 py-3 text-sm">
+                      <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">中</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 text-sm text-gray-900">計器の異常値</td>
+                    <td class="px-4 py-3 text-sm text-gray-700">値の記録、他の計器との比較、負荷状況確認、顧客への報告</td>
+                    <td class="px-4 py-3 text-sm">
+                      <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">中</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 text-sm text-gray-900">小動物・虫の侵入</td>
+                    <td class="px-4 py-3 text-sm text-gray-700">写真撮影、侵入経路確認、簡易的な侵入防止措置、顧客への報告</td>
+                    <td class="px-4 py-3 text-sm">
+                      <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">低</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <div class="bg-red-50 border-l-4 border-red-400 p-4 mt-4">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm text-red-700">
+                    緊急度「高」の異常を発見した場合は、直ちに顧客担当者と上長に報告し、指示を仰いでください。場合によっては緊急対応が必要です。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- 関連記事 -->
+      <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+        <h3 class="text-base font-medium text-gray-900 mb-3">関連記事</h3>
+        <ul class="space-y-3">
+          <li>
+            <a href="#" class="block hover:bg-gray-50 p-2 rounded-md">
+              <p class="text-sm font-medium text-primary-600">高圧受電設備の年次点検手順</p>
+              <p class="text-xs text-gray-500 mt-1">停電作業を伴う年次点検の詳細手順と注意点</p>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="block hover:bg-gray-50 p-2 rounded-md">
+              <p class="text-sm font-medium text-primary-600">VCB（真空遮断器）の構造と点検ポイント</p>
+              <p class="text-xs text-gray-500 mt-1">VCBの基本構造と重点的に確認すべきポイント</p>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="block hover:bg-gray-50 p-2 rounded-md">
+              <p class="text-sm font-medium text-primary-600">変圧器の異常兆候と対処法</p>
+              <p class="text-xs text-gray-500 mt-1">変圧器の異常を早期発見するためのチェックポイント</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- フィードバック -->
+      <div class="bg-gray-50 rounded-lg p-4">
+        <h3 class="text-sm font-medium text-gray-900 mb-2">この記事は役に立ちましたか？</h3>
+        <div class="flex space-x-2">
+          <button type="button" class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            <svg class="-ml-0.5 mr-1 h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+            </svg>
+            はい
+          </button>
+          <button type="button" class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            <svg class="-ml-0.5 mr-1 h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2" />
+            </svg>
+            いいえ
+          </button>
+        </div>
+        <button type="button" class="mt-3 inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+          <svg class="-ml-0.5 mr-1 h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          フィードバックを送信
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- フッターナビゲーション -->
+  <footer class="bg-white shadow-md fixed bottom-0 inset-x-0 z-10">
+    <div class="max-w-md mx-auto px-4">
+      <div class="flex justify-between h-16">
+        <a href="index.html" class="flex flex-col items-center justify-center w-1/5 text-gray-500 hover:text-primary-600">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          <span class="text-xs mt-1">ホーム</span>
+        </a>
+        <a href="点検選択.html" class="flex flex-col items-center justify-center w-1/5 text-gray-500 hover:text-primary-600">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+          </svg>
+          <span class="text-xs mt-1">点検</span>
+        </a>
+        <a href="点検履歴.html" class="flex flex-col items-center justify-center w-1/5 text-gray-500 hover:text-primary-600">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span class="text-xs mt-1">履歴</span>
+        </a>
+        <a href="ナレッジベース.html" class="flex flex-col items-center justify-center w-1/5 text-primary-600">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+          <span class="text-xs mt-1">知識</span>
+        </a>
+        <a href="設定.html" class="flex flex-col items-center justify-center w-1/5 text-gray-500 hover:text-primary-600">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span class="text-xs mt-1">設定</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
