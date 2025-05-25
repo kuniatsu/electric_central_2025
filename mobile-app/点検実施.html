@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>点検実施 | 点検モバイルアプリ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#082f49',
+            },
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="sticky top-0 bg-white border-b border-gray-200 z-10">
+    <div class="flex items-center justify-between px-4 h-14">
+      <div class="flex items-center space-x-2">
+        <a href="index.html" class="text-lg font-bold">&#x276E;</a>
+        <span class="text-sm">9:30</span>
+      </div>
+      <h1 class="text-base font-semibold">月次：本館_サブ変3</h1>
+      <button class="text-primary-600 text-sm" id="open-all-steps">All Steps (15)</button>
+    </div>
+    
+    <!-- 現在のステップ名 -->
+    <div class="bg-white px-4 py-2 border-b border-gray-200">
+      <div class="text-sm font-medium">Step 1</div>
+    </div>
+  </header>
+
+  <!-- 横表示：ステップ進捗インジケーター -->
+  <div class="bg-white border-b border-gray-200 px-4 py-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
+    <ul class="inline-flex">
+      <li class="relative inline-block w-[45px] h-[60px] mr-[52px] text-center" data-step="1">
+        <div class="w-9 h-9 border-2 border-primary-600 bg-primary-100 rounded-full font-bold text-sm leading-9 mx-auto">1</div>
+        <span class="block mt-1 text-xs truncate">基本情報</span>
+        <div class="absolute top-[18px] left-[40px] w-[63px] h-0.5 bg-gray-300"></div>
+      </li>
+      <li class="relative inline-block w-[45px] h-[60px] mr-[52px] text-center" data-step="2">
+        <div class="w-9 h-9 border-2 border-gray-300 bg-white rounded-full font-bold text-sm leading-9 mx-auto">2</div>
+        <span class="block mt-1 text-xs truncate">測定値</span>
+        <div class="absolute top-[18px] left-[40px] w-[63px] h-0.5 bg-gray-300"></div>
+      </li>
+      <li class="relative inline-block w-[45px] h-[60px] mr-[52px] text-center" data-step="3">
+        <div class="w-9 h-9 border-2 border-gray-300 bg-white rounded-full font-bold text-sm leading-9 mx-auto">3</div>
+        <span class="block mt-1 text-xs truncate">写真</span>
+        <div class="absolute top-[18px] left-[40px] w-[63px] h-0.5 bg-gray-300"></div>
+      </li>
+      <li class="relative inline-block w-[45px] h-[60px] mr-[52px] text-center" data-step="4">
+        <div class="w-9 h-9 border-2 border-green-600 bg-green-50 rounded-full font-bold text-sm leading-9 mx-auto">4</div>
+        <span class="block mt-1 text-xs truncate">高圧設備</span>
+        <div class="absolute top-[18px] left-[40px] w-[63px] h-0.5 bg-gray-300"></div>
+      </li>
+      <li class="relative inline-block w-[45px] h-[60px] mr-[52px] text-center" data-step="5">
+        <div class="w-9 h-9 border-2 border-green-600 bg-green-50 rounded-full font-bold text-sm leading-9 mx-auto">5</div>
+        <span class="block mt-1 text-xs truncate">低圧設備</span>
+        <div class="absolute top-[18px] left-[40px] w-[63px] h-0.5 bg-gray-300"></div>
+      </li>
+      <li class="relative inline-block w-[45px] h-[60px] mr-[52px] text-center" data-step="6">
+        <div class="w-9 h-9 border-2 border-dashed border-gray-400 bg-gray-100 rounded-full font-bold text-sm leading-9 mx-auto">6</div>
+        <span class="block mt-1 text-xs truncate">発電設備</span>
+        <div class="absolute top-[18px] left-[40px] w-[63px] h-0.5 bg-gray-300"></div>
+      </li>
+      <li class="relative inline-block w-[45px] h-[60px] mr-[52px] text-center" data-step="7">
+        <div class="w-9 h-9 border-2 border-dashed border-gray-400 bg-gray-100 rounded-full font-bold text-sm leading-9 mx-auto">7</div>
+        <span class="block mt-1 text-xs truncate">その他設備</span>
+        <div class="absolute top-[18px] left-[40px] w-[63px] h-0.5 bg-gray-300"></div>
+      </li>
+      <li class="relative inline-block w-[45px] h-[60px] mr-[52px] text-center" data-step="8">
+        <div class="w-9 h-9 border-2 border-red-500 bg-red-50 rounded-full font-bold text-sm leading-9 mx-auto text-red-500 relative">8
+          <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-600 text-white text-xs rounded-full flex items-center justify-center border border-red-500">!</span>
+        </div>
+        <span class="block mt-1 text-xs truncate text-red-500">指摘事項</span>
+        <div class="absolute top-[18px] left-[40px] w-[63px] h-0.5 bg-gray-300"></div>
+      </li>
+      <li class="relative inline-block w-[45px] h-[60px] mr-[52px] text-center" data-step="9">
+        <div class="w-9 h-9 border-2 border-gray-300 bg-white rounded-full font-bold text-sm leading-9 mx-auto">9</div>
+        <span class="block mt-1 text-xs truncate">確認事項</span>
+        <div class="absolute top-[18px] left-[40px] w-[63px] h-0.5 bg-gray-300"></div>
+      </li>
+      <li class="relative inline-block w-[45px] h-[60px] mr-[52px] text-center" data-step="10">
+        <div class="w-9 h-9 border-2 border-gray-300 bg-white rounded-full font-bold text-sm leading-9 mx-auto">10</div>
+        <span class="block mt-1 text-xs truncate">目視点検</span>
+        <div class="absolute top-[18px] left-[40px] w-[63px] h-0.5 bg-gray-300"></div>
+      </li>
+      <li class="relative inline-block w-[45px] h-[60px] mr-[52px] text-center" data-step="11">
+        <div class="w-9 h-9 border-2 border-gray-300 bg-white rounded-full font-bold text-sm leading-9 mx-auto">11</div>
+        <span class="block mt-1 text-xs truncate">接地抵抗</span>
+        <div class="absolute top-[18px] left-[40px] w-[63px] h-0.5 bg-gray-300"></div>
+      </li>
+      <li class="relative inline-block w-[45px] h-[60px] mr-[52px] text-center" data-step="12">
+        <div class="w-9 h-9 border-2 border-gray-300 bg-white rounded-full font-bold text-sm leading-9 mx-auto">12</div>
+        <span class="block mt-1 text-xs truncate">絶縁抵抗</span>
+        <div class="absolute top-[18px] left-[40px] w-[63px] h-0.5 bg-gray-300"></div>
+      </li>
+      <li class="relative inline-block w-[45px] h-[60px] mr-[52px] text-center" data-step="13">
+        <div class="w-9 h-9 border-2 border-gray-300 bg-white rounded-full font-bold text-sm leading-9 mx-auto">13</div>
+        <span class="block mt-1 text-xs truncate">総合所見</span>
+        <div class="absolute top-[18px] left-[40px] w-[63px] h-0.5 bg-gray-300"></div>
+      </li>
+      <li class="relative inline-block w-[45px] h-[60px] mr-[52px] text-center" data-step="14">
+        <div class="w-9 h-9 border-2 border-gray-300 bg-white rounded-full font-bold text-sm leading-9 mx-auto">14</div>
+        <span class="block mt-1 text-xs truncate">報告書</span>
+        <div class="absolute top-[18px] left-[40px] w-[63px] h-0.5 bg-gray-300"></div>
+      </li>
+      <li class="relative inline-block w-[45px] h-[60px] text-center" data-step="15">
+        <div class="w-9 h-9 border-2 border-gray-300 bg-white rounded-full font-bold text-sm leading-9 mx-auto">15</div>
+        <span class="block mt-1 text-xs truncate">完了</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- メインコンテンツ -->
+  <main class="flex-1 p-4 mb-20">
+    <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+      <h2 class="text-lg font-semibold mb-3">基本情報入力</h2>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">点検日時</label>
+          <input type="datetime-local" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">点検者</label>
+          <select class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+            <option>佐藤太郎</option>
+            <option>鈴木花子</option>
+            <option>田中一郎</option>
+          </select>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">点検種別</label>
+          <div class="flex space-x-4">
+            <label class="inline-flex items-center">
+              <input type="radio" name="inspection-type" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300" checked>
+              <span class="ml-2 text-sm">月次点検</span>
+            </label>
+            <label class="inline-flex items-center">
+              <input type="radio" name="inspection-type" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300">
+              <span class="ml-2 text-sm">年次点検</span>
+            </label>
+          </div>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">天候</label>
+          <div class="grid grid-cols-4 gap-2">
+            <label class="inline-flex items-center justify-center p-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 cursor-pointer">
+              <input type="radio" name="weather" class="sr-only">
+              <span class="text-sm">晴れ</span>
+            </label>
+            <label class="inline-flex items-center justify-center p-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 cursor-pointer">
+              <input type="radio" name="weather" class="sr-only">
+              <span class="text-sm">曇り</span>
+            </label>
+            <label class="inline-flex items-center justify-center p-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 cursor-pointer">
+              <input type="radio" name="weather" class="sr-only">
+              <span class="text-sm">雨</span>
+            </label>
+            <label class="inline-flex items-center justify-center p-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 cursor-pointer">
+              <input type="radio" name="weather" class="sr-only">
+              <span class="text-sm">雪</span>
+            </label>
+          </div>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">気温</label>
+          <div class="flex items-center">
+            <input type="number" class="w-20 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+            <span class="ml-2">℃</span>
+          </div>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">備考</label>
+          <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 h-24 resize-none"></textarea>
+        </div>
+      </div>
+    </div>
+    
+    <div class="bg-white rounded-lg shadow-md p-4">
+      <h2 class="text-lg font-semibold mb-3">点検対象設備</h2>
+      <div class="space-y-3">
+        <div class="flex items-center justify-between p-3 border border-gray-200 rounded-md">
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-red-500 text-white text-xs rounded mr-1">高圧</span>
+            <span class="text-sm font-medium">キュービクル 1F</span>
+          </div>
+          <div class="text-primary-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+          </div>
+        </div>
+        
+        <div class="flex items-center justify-between p-3 border border-gray-200 rounded-md">
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-green-500 text-white text-xs rounded mr-1">低圧</span>
+            <span class="text-sm font-medium">分電盤 2F-A</span>
+          </div>
+          <div class="text-primary-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+          </div>
+        </div>
+        
+        <div class="flex items-center justify-between p-3 border border-gray-200 rounded-md">
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-orange-500 text-white text-xs rounded mr-1">発電</span>
+            <span class="text-sm font-medium">非常用発電機</span>
+          </div>
+          <div class="text-primary-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- フッターボタン -->
+  <div class="fixed bottom-0 left-0 w-full flex justify-between bg-white border-t border-gray-200 p-4 z-10">
+    <button class="flex-1 py-3 bg-gray-200 text-gray-800 rounded-md mr-2 font-medium">Previous</button>
+    <button class="flex-1 py-3 bg-primary-600 text-white rounded-md ml-2 font-medium">Next</button>
+  </div>
+
+  <!-- 縦表示：All Steps 画面 -->
+  <div class="fixed inset-0 bg-white z-50 hidden" id="vertical-view">
+    <div class="flex items-center justify-between p-4 border-b border-gray-200">
+      <h2 class="text-lg font-bold">All Steps (15)</h2>
+      <button id="close-vertical" class="text-primary-600">Close</button>
+    </div>
+    
+    <ul class="p-4 space-y-8">
+      <li class="flex items-start" data-step="1">
+        <div class="w-9 h-9 border-2 border-primary-600 bg-primary-100 rounded-full font-bold text-sm leading-9 text-center mr-3">1</div>
+        <div class="pt-1.5 text-sm">基本情報</div>
+      </li>
+      <li class="flex items-start relative" data-step="2">
+        <div class="w-9 h-9 border-2 border-gray-300 bg-white rounded-full font-bold text-sm leading-9 text-center mr-3">2</div>
+        <div class="pt-1.5 text-sm">測定値</div>
+        <div class="absolute left-[18px] top-9 w-0.5 h-[34px] bg-gray-300"></div>
+      </li>
+      <li class="flex items-start relative" data-step="3">
+        <div class="w-9 h-9 border-2 border-gray-300 bg-white rounded-full font-bold text-sm leading-9 text-center mr-3">3</div>
+        <div class="pt-1.5 text-sm">写真</div>
+        <div class="absolute left-[18px] top-9 w-0.5 h-[34px] bg-gray-300"></div>
+      </li>
+      <li class="flex items-start relative" data-step="4">
+        <div class="w-9 h-9 border-2 border-green-600 bg-green-50 rounded-full font-bold text-sm leading-9 text-center mr-3">4</div>
+        <div class="pt-1.5 text-sm">高圧設備</div>
+        <div class="absolute left-[18px] top-9 w-0.5 h-[34px] bg-gray-300"></div>
+      </li>
+      <li class="flex items-start relative" data-step="5">
+        <div class="w-9 h-9 border-2 border-green-600 bg-green-50 rounded-full font-bold text-sm leading-9 text-center mr-3">5</div>
+        <div class="pt-1.5 text-sm">低圧設備</div>
+        <div class="absolute left-[18px] top-9 w-0.5 h-[34px] bg-gray-300"></div>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const openAllStepsBtn = document.getElementById('open-all-steps');
+      const closeVerticalBtn = document.getElementById('close-vertical');
+      const verticalView = document.getElementById('vertical-view');
+      
+      openAllStepsBtn.addEventListener('click', function() {
+        verticalView.classList.remove('hidden');
+      });
+      
+      closeVerticalBtn.addEventListener('click', function() {
+        verticalView.classList.add('hidden');
+      });
+      
+      // 天候選択のラジオボタン挙動
+      const weatherLabels = document.querySelectorAll('input[name="weather"]');
+      weatherLabels.forEach(radio => {
+        radio.closest('label').addEventListener('click', function() {
+          // すべてのラベルからアクティブクラスを削除
+          document.querySelectorAll('input[name="weather"]').forEach(r => {
+            r.closest('label').classList.remove('bg-primary-50', 'border-primary-500');
+          });
+          
+          // クリックされたラベルにアクティブクラスを追加
+          this.classList.add('bg-primary-50', 'border-primary-500');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
