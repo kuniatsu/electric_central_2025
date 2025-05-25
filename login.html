@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ログイン | 電気保安管理システム</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#082f49',
+            },
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+  <div class="flex-grow flex items-center justify-center px-4 py-12">
+    <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
+      <div class="text-center">
+        <h2 class="mt-6 text-3xl font-bold text-gray-900" id="system-title">電気保安管理システム</h2>
+        <p class="mt-2 text-sm text-gray-600" id="system-subtitle">管理者向けシステム</p>
+      </div>
+      
+      <div class="mt-8">
+        <div class="rounded-md shadow-sm -space-y-px">
+          <div>
+            <label for="email-address" class="sr-only">メールアドレス</label>
+            <input id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm" placeholder="メールアドレス">
+          </div>
+          <div>
+            <label for="password" class="sr-only">パスワード</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm" placeholder="パスワード">
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <button id="login-button" type="button" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+              <svg class="h-5 w-5 text-primary-500 group-hover:text-primary-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+              </svg>
+            </span>
+            ログイン
+          </button>
+        </div>
+        
+        <div class="mt-4 text-center">
+          <p class="text-sm text-gray-600">
+            テスト用アカウント:
+          </p>
+          <p class="text-xs text-gray-500 mt-1">
+            test1@info.com, test2@info.com, test3@info.com<br>
+            パスワード: pwssowrd1234
+          </p>
+        </div>
+        
+        <div id="error-message" class="mt-4 text-center text-red-500 text-sm hidden">
+          メールアドレスまたはパスワードが正しくありません。
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer class="py-4 bg-gray-800 text-white">
+    <div class="container mx-auto px-4 text-center">
+      <p>© 2025 電気保安管理システム. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // URLからシステムパラメータを取得
+    const urlParams = new URLSearchParams(window.location.search);
+    const system = urlParams.get('system') || 'management';
+    
+    // システムに応じてタイトルとサブタイトルを変更
+    const systemTitle = document.getElementById('system-title');
+    const systemSubtitle = document.getElementById('system-subtitle');
+    
+    if (system === 'customer') {
+      systemTitle.textContent = '顧客ポータル';
+      systemSubtitle.textContent = '顧客向けポータル';
+      document.title = 'ログイン | 顧客ポータル';
+    } else if (system === 'mobile') {
+      systemTitle.textContent = '点検モバイルアプリ';
+      systemSubtitle.textContent = '技術者向けアプリ';
+      document.title = 'ログイン | 点検モバイルアプリ';
+    } else {
+      systemTitle.textContent = '電気保安管理システム';
+      systemSubtitle.textContent = '管理者向けシステム';
+      document.title = 'ログイン | 電気保安管理システム';
+    }
+    
+    // ログインボタンのクリックイベント
+    document.getElementById('login-button').addEventListener('click', function() {
+      const email = document.getElementById('email-address').value;
+      const password = document.getElementById('password').value;
+      const errorMessage = document.getElementById('error-message');
+      
+      // テスト用アカウントの検証
+      const validEmails = ['test1@info.com', 'test2@info.com', 'test3@info.com'];
+      const validPassword = 'pwssowrd1234';
+      
+      if (validEmails.includes(email) && password === validPassword) {
+        // ログイン成功時のリダイレクト
+        if (system === 'customer') {
+          window.location.href = 'customer-portal/index.html';
+        } else if (system === 'mobile') {
+          window.location.href = 'mobile-app/index.html';
+        } else {
+          window.location.href = 'management-system/index.html';
+        }
+      } else {
+        // エラーメッセージを表示
+        errorMessage.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
