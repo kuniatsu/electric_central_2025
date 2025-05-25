@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>メニュー＋ヘッダーのみ</title>
+  <style>
+    /* 全体リセット */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: sans-serif;
+    }
+    body {
+      display: flex;
+      min-height: 100vh;
+      background-color: #f7f7f7;
+    }
+
+    /*────────────────────────────
+      左側サイドバー（折りたたみ機能付き）
+    ─────────────────────────────*/
+    .sidebar {
+      position: relative;
+      z-index: 9999;
+      width: 240px;
+      background-color: #005da8;
+      color: #fff;
+      padding: 0 10px 20px;
+      display: flex;
+      flex-direction: column;
+      transition: width 0.3s ease;
+    }
+    .sidebar.collapsed {
+      width: 40px;
+    }
+    .sidebar.collapsed .logo,
+    .sidebar.collapsed .menu-header,
+    .sidebar.collapsed .menu,
+    .sidebar.collapsed .collapsible {
+      display: none;
+    }
+    .sidebar-toggle {
+      background-color: #004080;
+      color: #fff;
+      text-align: center;
+      padding: 5px 0;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .sidebar .logo {
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin: 20px 0;
+      line-height: 1.4;
+    }
+    .menu-header {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      padding-left: 10px;
+    }
+    .menu {
+      list-style: none;
+      padding-left: 0;
+    }
+    .menu-item {
+      margin-bottom: 8px;
+    }
+    .menu-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      padding: 8px 10px;
+      color: #fff;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+    .menu-title:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    .sub-menu {
+      list-style: none;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      padding-left: 15px;
+    }
+    .sub-menu.open {
+      max-height: 500px;
+    }
+    .sub-menu li a {
+      display: block;
+      padding: 6px 10px;
+      font-size: 0.9rem;
+      color: #fff;
+      text-decoration: none;
+    }
+    .sub-menu li a:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+    .collapsible {
+      border-top: 1px solid rgba(255,255,255,0.3);
+      padding-top: 10px;
+      margin-top: 20px;
+    }
+    .collapsible-content {
+      display: none;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: #eee;
+      padding-left: 10px;
+    }
+
+    /*────────────────────────────
+      メインコンテンツ領域（ヘッダーのみ）
+    ─────────────────────────────*/
+    .main-content {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .top-bar {
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .top-bar .location {
+      font-size: 1rem;
+      color: #666;
+    }
+    .top-bar .button-group {
+      display: flex;
+      gap: 10px;
+    }
+    .top-bar button {
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      cursor: pointer;
+    }
+    .top-bar button:hover {
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body>
+  <!-- 左側サイドバー -->
+  <div class="sidebar" id="sidebar">
+    <!-- 折りたたみボタン -->
+    <div class="sidebar-toggle" id="sidebar-toggle"><<</div>
+    <div class="logo">保安管理期間システム</div>
+    <div class="menu-header">メニュー</div>
+    <ul class="menu">
+      <!-- 技術者グループ -->
+      <li class="menu-item">
+        <button class="menu-title">技術者 <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">技術者一覧</a></li>
+          <li><a href="#">物件アサイン＆技術者点数推移</a></li>
+        </ul>
+      </li>
+      <!-- 商談グループ -->
+      <li class="menu-item">
+        <button class="menu-title">商談 <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">商談一覧</a></li>
+          <li><a href="#">工事見積依頼一覧</a></li>
+        </ul>
+      </li>
+      <!-- 申請・届出グループ -->
+      <li class="menu-item">
+        <button class="menu-title">申請・届出 <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">申請/届出一覧</a></li>
+        </ul>
+      </li>
+      <!-- 顧客グループ -->
+      <li class="menu-item">
+        <button class="menu-title">顧客 <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">顧客一覧</a></li>
+          <li><a href="#">取引先一覧</a></li>
+          <li><a href="#">契約一覧</a></li>
+          <li><a href="#">契約承認一覧</a></li>
+          <li><a href="#">物件一覧</a></li>
+          <li><a href="#">設備一覧</a></li>
+          <li><a href="#">設備一括登録</a></li>
+        </ul>
+      </li>
+      <!-- 点検グループ -->
+      <li class="menu-item">
+        <button class="menu-title">点検 <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">点検日程一覧</a></li>
+          <li><a href="#">対応不可日時登録</a></li>
+          <li><a href="#">点検日程自動登録一覧</a></li>
+          <li><a href="#">点検日程自動登録詳細</a></li>
+          <li><a href="#">点検計画一覧</a></li>
+          <li><a href="#">点検実施</a></li>
+          <li><a href="#">点検報告一覧</a></li>
+          <li><a href="#">差し戻し履歴一覧</a></li>
+        </ul>
+      </li>
+      <!-- 24時間監視グループ -->
+      <li class="menu-item">
+        <button class="menu-title">24時間監視 <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">監視装置一覧</a></li>
+          <li><a href="#">地図-位置情報</a></li>
+          <li><a href="#">監視ログ一覧</a></li>
+          <li><a href="#">監視装置設定</a></li>
+        </ul>
+      </li>
+      <!-- お知らせ -->
+      <li class="menu-item">
+        <button class="menu-title">お知らせ <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">お知らせ一覧</a></li>
+        </ul>
+      </li>
+      <!-- 問い合わせ -->
+      <li class="menu-item">
+        <button class="menu-title">問い合わせ <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">問い合わせ一覧</a></li>
+        </ul>
+      </li>
+      <!-- ナレッジ・共有 -->
+      <li class="menu-item">
+        <button class="menu-title">ナレッジ・共有 <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">マニュアル一覧</a></li>
+          <li><a href="#">技術者掲示板一覧</a></li>
+        </ul>
+      </li>
+      <!-- 購買・備品管理 -->
+      <li class="menu-item">
+        <button class="menu-title">購買・備品管理 <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">資産備品管理一覧</a></li>
+          <li><a href="#">試験機管理一覧</a></li>
+        </ul>
+      </li>
+      <!-- 販売管理 -->
+      <li class="menu-item">
+        <button class="menu-title">販売管理 <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">請求一覧</a></li>
+          <li><a href="#">支払い一覧</a></li>
+          <li><a href="#">売上一覧</a></li>
+        </ul>
+      </li>
+      <!-- マスタ -->
+      <li class="menu-item">
+        <button class="menu-title">マスタ <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">単価一覧</a></li>
+          <li><a href="#">設備作成マスタ一覧</a></li>
+          <li><a href="#">フォーマット一覧</a></li>
+          <li><a href="#">メールテンプレート一覧</a></li>
+          <li><a href="#">点検報告文例一覧</a></li>
+          <li><a href="#">換算値一覧</a></li>
+        </ul>
+      </li>
+      <!-- ユーザー -->
+      <li class="menu-item">
+        <button class="menu-title">ユーザー <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">ユーザー一覧</a></li>
+          <li><a href="#">グループ権限一覧</a></li>
+          <li><a href="#">顧客アカウント一覧</a></li>
+        </ul>
+      </li>
+      <!-- システム -->
+      <li class="menu-item">
+        <button class="menu-title">システム <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">外部連携</a></li>
+        </ul>
+      </li>
+    </ul>
+    <div class="collapsible">
+      <div class="collapsible-content">
+        <p>追加情報1</p>
+        <p>追加情報2</p>
+        <p>追加情報3</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- メインコンテンツ領域 (ヘッダーのみ表示) -->
+  <div class="main-content">
+    <div class="top-bar">
+      <div class="location">1 depth &gt; 2 depth</div>
+      <div class="button-group">
+        <button>通知一覧</button>
+        <button>myページ</button>
+        <button>ログアウト</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // サイドバー折りたたみボタン
+      const sidebar = document.getElementById('sidebar');
+      const sidebarToggle = document.getElementById('sidebar-toggle');
+      sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        sidebarToggle.textContent = sidebar.classList.contains('collapsed') ? '>>' : '<<';
+      });
+
+      // サイドバーの各メニュー項目の折りたたみ切替
+      const menuTitles = document.querySelectorAll('.menu-title');
+      menuTitles.forEach(title => {
+        title.addEventListener('click', () => {
+          const subMenu = title.nextElementSibling;
+          const icon = title.querySelector('span');
+          if (subMenu && subMenu.classList.contains('sub-menu')) {
+            subMenu.classList.toggle('open');
+            icon.textContent = subMenu.classList.contains('open') ? '－' : '＋';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

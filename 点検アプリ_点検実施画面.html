@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Step Progress Indicator (15 Steps)</title>
+  <style>
+    /* ------------------------------
+       Reset / Base
+    ------------------------------ */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+    }
+
+    /* ------------------------------
+       Header
+    ------------------------------ */
+    .header {
+      position: sticky;
+      top: 0;
+      background-color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      height: 56px;
+      border-bottom: 1px solid #ddd;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .back-icon {
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .header-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .header-right button {
+      background-color: transparent;
+      color: #007aff;
+      font-size: 14px;
+      padding: 4px 8px;
+    }
+
+    /* ------------------------------
+       Horizontal Step Bar
+    ------------------------------ */
+    .current-step-name-bar {
+      background: #fff;
+      padding: 8px 16px 4px;
+      border-bottom: 1px solid #ddd;
+    }
+    .current-step-label {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .step-progress-container {
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+      padding: 8px 0 8px 16px;
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+    .step-progress-container::-webkit-scrollbar {
+      display: none;
+    }
+    .step-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: inline-flex;
+    }
+
+    /* ========================
+       横ステップ (メイン画面)
+       ======================== */
+    .step-item {
+      position: relative;
+      display: inline-block;
+      width: 45px;
+      height: 60px;
+      margin-right: 52px;
+      text-align: center;
+      vertical-align: top;
+    }
+    .step-item:last-child {
+      margin-right: 0;
+    }
+    .step-item:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 18px;
+      left: 22px;
+      width: 63px;
+      height: 2px;
+      margin-left: 18px;
+      background-color: #ccc;
+      z-index: 0;
+    }
+    .step-node {
+      width: 36px;
+      height: 36px;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      background-color: #fff;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 36px;
+      margin: 0 auto;
+      user-select: none;
+    }
+    .step-name {
+      display: block;
+      margin-top: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .step-item.active .step-node {
+      border-color: #007aff;
+      background-color: #cce5ff;
+    }
+
+    /* ------------------------------
+       Content
+    ------------------------------ */
+    .content {
+      padding: 16px;
+      margin-bottom: 80px; /* 下部ボタンが固定なので少しマージン確保 */
+    }
+
+    /* ------------------------------
+       Footer (画面下に固定)
+    ------------------------------ */
+    .footer-buttons {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      background-color: #fff;
+      border-top: 1px solid #ddd;
+      padding: 8px 16px;
+      gap: 8px;
+      z-index: 100;
+    }
+    .footer-buttons button {
+      flex: 1;
+      padding: 12px 0;
+      font-size: 16px;
+    }
+    .prev-button {
+      background-color: #eee;
+      color: #333;
+    }
+    .next-button {
+      background-color: #007aff;
+      color: #fff;
+    }
+    /* ※ フッターは Previous, Next のみ表示 */
+
+    /* ========================
+       縦ステップ (All Steps)
+       ======================== */
+    .vertical-view {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      z-index: 999;
+      display: none;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .vertical-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+      border-bottom: 1px solid #ddd;
+      background-color: #fff;
+    }
+    .vertical-step-list {
+      list-style: none;
+      padding: 16px;
+      margin: 0;
+      position: relative;
+    }
+    .vertical-step-item {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 32px;
+    }
+    .vertical-step-item:last-child {
+      margin-bottom: 0;
+    }
+    .vertical-step-item:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      left: 18px;
+      top: 36px;
+      width: 2px;
+      height: 34px;
+      background-color: #ccc;
+      z-index: 0;
+    }
+    .vertical-step-node {
+      width: 36px;
+      height: 36px;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      background-color: #fff;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 36px;
+      text-align: center;
+      user-select: none;
+      margin-right: 10px;
+    }
+    .vertical-step-name {
+      font-size: 14px;
+      line-height: 1.5;
+      padding-top: 7px;
+    }
+    .vertical-step-item.active .vertical-step-node {
+      border-color: #007aff;
+      background-color: #cce5ff;
+    }
+
+    @media only screen and (max-width: 480px) {
+      .step-item .step-name {
+        overflow: visible;
+      }
+    }
+
+    /* ここから タグ用の色付きラベルクラスを定義 */
+    .tag-label {
+      display: inline-block;
+      padding: 0px 1px;
+      border-radius: 2px;
+      color: #fff;
+      font-size: 12px;
+      margin-right: 1px;
+    }
+    .tag-kouatsu {
+      background-color: #f15b5b; /* 高圧=赤 */
+    }
+    .tag-teiatsu {
+      background-color: #47b14c; /* 低圧=緑 */
+    }
+    .tag-hatsuden {
+      background-color: #f8b551; /* 発電=オレンジ */
+    }
+    .tag-sonota {
+      background-color: #adb0b1; /* その他=グレー */
+    }
+    .tag-kakunin {
+      background-color: #439efc; /* 確認=青 */
+    }
+    .tag-mokushi {
+      background-color: #6c757d; /* 目視=やや濃いグレー */
+    }
+    .tag-default {
+      background-color: #999;
+    }
+
+    /* Step2のテーブルの簡易デザイン */
+    table.measure-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+    }
+    table.measure-table th,
+    table.measure-table td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    table.measure-table thead {
+      background-color: #f2f2f2;
+    }
+    .measure-section-title {
+      font-weight: bold;
+      margin: 16px 0 8px;
+    }
+
+    /* ========================
+       Step13用の追加スタイル
+       ======================== */
+    .step13-container {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 16px;
+    }
+    .step13-section-title {
+      font-weight: bold;
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+    .issue-type-buttons {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .issue-type-button {
+      flex: 1;
+      border: 1px solid #ccc;
+      background-color: #fafafa;
+      color: #333;
+      border-radius: 4px;
+      padding: 8px;
+      text-align: center;
+      font-size: 14px;
+    }
+    .issue-textarea,
+    .summary-textarea {
+      width: 100%;
+      min-height: 80px;
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
+    }
+    .add-issue-button {
+      margin-top: 8px;
+      background-color: #007aff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+    .summary-section {
+      margin-top: 16px;
+    }
+
+    /* ==================================
+       4,5 step => 緑色の円
+       6,7 step => 点線の円
+       ================================== */
+    /* 横ステップ */
+    .step-item[data-step="4"] .step-node,
+    .step-item[data-step="5"] .step-node {
+      border-color: rgb(31, 170, 31);
+      background-color: rgb(236, 255, 236);
+    }
+    .step-item[data-step="6"] .step-node,
+    .step-item[data-step="7"] .step-node {
+      border-style: dashed;
+      border-color: #aaaaaa;
+      background-color: #e8e8e8;
+    }
+    /* 縦ステップ */
+    .vertical-step-item[data-step="4"] .vertical-step-node,
+    .vertical-step-item[data-step="5"] .vertical-step-node {
+      border-color: rgb(31, 170, 31);
+      background-color: rgb(236, 255, 236);
+    }
+    .vertical-step-item[data-step="6"] .vertical-step-node,
+    .vertical-step-item[data-step="7"] .vertical-step-node {
+      border-style: dashed;
+      border-color: #aaaaaa;
+      background-color: #e8e8e8;
+    }
+    /* Step8 のカスタムスタイル (水平・垂直共通) */
+    .step-item[data-step="8"] .step-node,
+    .step-item[data-step="8"].active .step-node,
+    .vertical-step-item[data-step="8"] .vertical-step-node,
+    .vertical-step-item[data-step="8"].active .vertical-step-node {
+      border-color: #FF4500;
+      background-color: #FFE4E1;
+      color: #FF4500;
+      position: relative;
+    }
+    .step-item[data-step="8"] .step-node::after,
+    .vertical-step-item[data-step="8"] .vertical-step-node::after {
+      content: "!";
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      font-size: 10px;
+      color: #ffffff;
+      background: #df0202;
+      border: 1px solid #FF4500;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      text-align: center;
+      line-height: 14px;
+    }
+    .step-item[data-step="8"] .step-name,
+    .vertical-step-item[data-step="8"] .vertical-step-name {
+      color: #FF4500;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <span class="back-icon">&#x276E;</span>
+      <span>9:30</span>
+    </div>
+    <span class="header-title">月次：本館_サブ変3</span>
+    <div class="header-right">
+      <button class="open-all-steps">All Steps (15)</button>
+    </div>
+  </div>
+
+  <!-- 現在のステップ名 -->
+  <div class="current-step-name-bar">
+    <div class="current-step-label">Step 1</div>
+  </div>
+
+  <!-- 横表示：ステップ進捗インジケーター -->
+  <div class="step-progress-container">
+    <ul class="step-list">
+      <li class="step-item active" data-step="1">
+        <div class="step-node">1</div>
+        <span class="step-name"></span>
+      </li>
+      <li class="step-item" data-step="2">
+        <div class="step-node">2</div>
+        <span class="step-name"></span>
+      </li>
+      <li class="step-item" data-step="3">
+        <div class="step-node">3</div>
+        <span class="step-name"></span>
+      </li>
+      <li class="step-item" data-step="4">
+        <div class="step-node">4</div>
+        <span class="step-name"></span>
+      </li>
+      <li class="step-item" data-step="5">
+        <div class="step-node">5</div>
+        <span class="step-name"></span>
+      </li>
+      <li class="step-item" data-step="6">
+        <div class="step-node">6</div>
+        <span class="step-name"></span>
+      </li>
+      <li class="step-item" data-step="7">
+        <div class="step-node">7</div>
+        <span class="step-name"></span>
+      </li>
+      <li class="step-item" data-step="8">
+        <div class="step-node">8</div>
+        <span class="step-name"></span>
+      </li>
+      <li class="step-item" data-step="9">
+        <div class="step-node">9</div>
+        <span class="step-name"></span>
+      </li>
+      <li class="step-item" data-step="10">
+        <div class="step-node">10</div>
+        <span class="step-name"></span>
+      </li>
+      <li class="step-item" data-step="11">
+        <div class="step-node">11</div>
+        <span class="step-name"></span>
+      </li>
+      <li class="step-item" data-step="12">
+        <div class="step-node">12</div>
+        <span class="step-name"></span>
+      </li>
+      <li class="step-item" data-step="13">
+        <div class="step-node">13</div>
+        <span class="step-name"></span>
+      </li>
+      <li class="step-item" data-step="14">
+        <div class="step-node">14</div>
+        <span class="step-name"></span>
+      </li>
+      <li class="step-item" data-step="15">
+        <div class="step-node">15</div>
+        <span class="step-name"></span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- メインコンテンツ (内容は updateContent() により動的に設定) -->
+  <div class="content">
+    <p>ここにフォームや入力内容を表示します。横スクロールで各ステップを切り替えできます。</p>
+    <p>iPhone 14 Pro Max など大きめの画面でもスクロールしやすいように調整してください。</p>
+    <!-- 各ステップでアップロードボタンが追記されます -->
+  </div>
+
+  <!-- フッターボタン (Previous, Next のみ) -->
+  <div class="footer-buttons">
+    <button class="prev-button">Previous</button>
+    <button class="next-button">Next</button>
+  </div>
+
+  <!-- 縦表示：All Steps 画面 -->
+  <div class="vertical-view" id="vertical-view">
+    <div class="vertical-header">
+      <h2>All Steps (15)</h2>
+      <button id="close-vertical">Close</button>
+    </div>
+    <ul class="vertical-step-list">
+      <li class="vertical-step-item active" data-step="1">
+        <div class="vertical-step-node">1</div>
+        <div class="vertical-step-name"></div>
+      </li>
+      <li class="vertical-step-item" data-step="2">
+        <div class="vertical-step-node">2</div>
+        <div class="vertical-step-name"></div>
+      </li>
+      <li class="vertical-step-item" data-step="3">
+        <div class="vertical-step-node">3</div>
+        <div class="vertical-step-name"></div>
+      </li>
+      <li class="vertical-step-item" data-step="4">
+        <div class="vertical-step-node">4</div>
+        <div class="vertical-step-name"></div>
+      </li>
+      <li class="vertical-step-item" data-step="5">
+        <div class="vertical-step-node">5</div>
+        <div class="vertical-step-name"></div>
+      </li>
+      <li class="vertical-step-item" data-step="6">
+        <div class="vertical-step-node">6</div>
+        <div class="vertical-step-name"></div>
+      </li>
+      <li class="vertical-step-item" data-step="7">
+        <div class="vertical-step-node">7</div>
+        <div class="vertical-step-name"></div>
+      </li>
+      <li class="vertical-step-item" data-step="8">
+        <div class="vertical-step-node">8</div>
+        <div class="vertical-step-name"></div>
+      </li>
+      <li class="vertical-step-item" data-step="9">
+        <div class="vertical-step-node">9</div>
+        <div class="vertical-step-name"></div>
+      </li>
+      <li class="vertical-step-item" data-step="10">
+        <div class="vertical-step-node">10</div>
+        <div class="vertical-step-name"></div>
+      </li>
+      <li class="vertical-step-item" data-step="11">
+        <div class="vertical-step-node">11</div>
+        <div class="vertical-step-name"></div>
+      </li>
+      <li class="vertical-step-item" data-step="12">
+        <div class="vertical-step-node">12</div>
+        <div class="vertical-step-name"></div>
+      </li>
+      <li class="vertical-step-item" data-step="13">
+        <div class="vertical-step-node">13</div>
+        <div class="vertical-step-name"></div>
+      </li>
+      <li class="vertical-step-item" data-step="14">
+        <div class="vertical-step-node">14</div>
+        <div class="vertical-step-name"></div>
+      </li>
+      <li class="vertical-step-item" data-step="15">
+        <div class="vertical-step-node">15</div>
+        <div class="vertical-step-name"></div>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    // ====== タグ付きステップ名の設定 ======
+    const stepNames = {
+      "1": "【確認】受電状況",
+      "2": "【高圧】変圧器",
+      "3": "【高圧】遮断器",
+      "4": "【高圧】PCB",
+      "5": "【高圧】コンデンサ",
+      "6": "【高圧】変成器",
+      "7": "【発電】蓄電池",
+      "8": "【発電】太陽光",
+      "9": "【その他】ポンプ室",
+      "10": "【低圧】回路",
+      "11": "【その他】接地確認",
+      "12": "【外観】〇〇",
+      "13": "指摘事項入力",
+      "14": "報告/印刷",
+      "15": "完了/報告"
+    };
+
+    // タグ名→クラス名 の対応表
+    const tagClasses = {
+      "確認": "tag-kakunin",
+      "高圧": "tag-kouatsu",
+      "低圧": "tag-teiatsu",
+      "発電": "tag-hatsuden",
+      "その他": "tag-sonota",
+      "外観": "tag-mokushi"
+    };
+
+    function createTaggedHTML(fullText) {
+      const match = fullText.match(/^【([^】]+)】(.*)/);
+      if (!match) {
+        return fullText;
+      }
+      const tag = match[1];
+      const main = match[2];
+      const className = tagClasses[tag] || "tag-default";
+      return `<span class="tag-label ${className}">${tag}</span>${main}`;
+    }
+
+    // ========= 各ステップのコンテンツを更新する関数 =========
+    // 各ステップのコンテンツ下部に、そのステップ専用の Upload ボタンを追加する
+    const contentEl = document.querySelector(".content");
+    function updateContent(stepNum) {
+      let html = "";
+      if (stepNum === "2") {
+        html = `
+          <div>
+            <div class="measure-section-title">変圧器測定情報</div>
+            <table class="measure-table">
+              <thead>
+                <tr>
+                  <th>kVA</th>
+                  <th>V</th>
+                  <th>kW</th>
+                  <th>A</th>
+                  <th>℃</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="measure-section-title">計量器測定情報</div>
+            <table class="measure-table">
+              <thead>
+                <tr>
+                  <th>3</th>
+                  <th>4</th>
+                  <th>5</th>
+                  <th>6</th>
+                  <th>7</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      } else if (stepNum === "13") {
+        html = `
+          <div class="step13-container">
+            <!-- 新規イシュー事項 -->
+            <div class="step13-section-title">新規イシュ事項</div>
+            <div class="issue-type-buttons">
+              <button class="issue-type-button" style="background-color:#ff7675;">緊急処置</button>
+              <button class="issue-type-button" style="background-color:#ffeaa7;">処置必要</button>
+              <button class="issue-type-button" style="background-color:#dfe6e9;">その他意見</button>
+            </div>
+            <textarea class="issue-textarea" placeholder="ここに詳細を入力"></textarea>
+            <button class="add-issue-button">追加する</button>
+
+            <!-- 総合意見 -->
+            <div class="summary-section">
+              <div class="step13-section-title">総合意見</div>
+              <textarea class="summary-textarea" placeholder="総合意見を入力"></textarea>
+            </div>
+          </div>
+        `;
+      } else {
+        html = `
+          <p>ここにフォームや入力内容を表示します。横スクロールで各ステップを切り替えできます。</p>
+          <p>iPhone 14 Pro Max など大きめの画面でもスクロールしやすいように調整してください。</p>
+        `;
+      }
+      // 各ステップ固有のアップロードボタンを追加
+      html += `
+        <div style="margin-top: 16px;">
+          <button class="step-upload-button" data-step="${stepNum}" style="width: 100%; padding: 12px; background-color: #12ab1e; color: #fff; border: none; border-radius: 6px; font-size: 16px;">
+            Upload Step ${stepNum}
+          </button>
+        </div>
+      `;
+      contentEl.innerHTML = html;
+    }
+    // =============================================================
+
+    // 横ステップのステップ名一括更新
+    document.querySelectorAll(".step-item").forEach((item) => {
+      const stepNum = item.getAttribute("data-step");
+      const nameEl = item.querySelector(".step-name");
+      if (nameEl && stepNames[stepNum]) {
+        nameEl.innerHTML = createTaggedHTML(stepNames[stepNum]);
+      }
+    });
+
+    // 縦ステップのステップ名一括更新
+    document.querySelectorAll(".vertical-step-item").forEach((item) => {
+      const stepNum = item.getAttribute("data-step");
+      const nameEl = item.querySelector(".vertical-step-name");
+      if (nameEl && stepNames[stepNum]) {
+        nameEl.innerHTML = createTaggedHTML(stepNames[stepNum]);
+      }
+    });
+
+    // 初期の現在のステップ表示およびコンテンツ更新
+    const currentStepLabelEl = document.querySelector(".current-step-label");
+    if (currentStepLabelEl && stepNames["1"]) {
+      currentStepLabelEl.innerHTML = `Step 1 — ${createTaggedHTML(stepNames["1"])}`;
+    }
+    updateContent("1");
+
+    // 横ステップクリック時の処理
+    const horizontalSteps = document.querySelectorAll(".step-item");
+    const verticalSteps = document.querySelectorAll(".vertical-step-item");
+    const currentStepLabel = document.querySelector(".current-step-label");
+    horizontalSteps.forEach((step) => {
+      step.addEventListener("click", function () {
+        horizontalSteps.forEach((s) => s.classList.remove("active"));
+        this.classList.add("active");
+
+        const stepNum = this.getAttribute("data-step");
+        verticalSteps.forEach((v) => v.classList.remove("active"));
+        const target = document.querySelector(`.vertical-step-item[data-step="${stepNum}"]`);
+        if (target) {
+          target.classList.add("active");
+        }
+        currentStepLabel.innerHTML = `Step ${stepNum} — ${createTaggedHTML(stepNames[stepNum] || "")}`;
+        updateContent(stepNum);
+        this.scrollIntoView({ behavior: "smooth", inline: "center" });
+      });
+    });
+
+    // 縦ステップクリック時の処理
+    verticalSteps.forEach((step) => {
+      step.addEventListener("click", function () {
+        verticalSteps.forEach((s) => s.classList.remove("active"));
+        this.classList.add("active");
+
+        const stepNum = this.getAttribute("data-step");
+        horizontalSteps.forEach((s) => s.classList.remove("active"));
+        const target = document.querySelector(`.step-item[data-step="${stepNum}"]`);
+        if (target) {
+          target.classList.add("active");
+          currentStepLabel.innerHTML = `Step ${stepNum} — ${createTaggedHTML(stepNames[stepNum] || "")}`;
+          updateContent(stepNum);
+          target.scrollIntoView({ behavior: "smooth", inline: "center" });
+        }
+        // 縦ステップ選択時は All Steps 画面を閉じる
+        document.getElementById("vertical-view").style.display = "none";
+      });
+    });
+
+    // All Steps を開くボタン
+    document.querySelector(".open-all-steps").addEventListener("click", () => {
+      document.getElementById("vertical-view").style.display = "block";
+    });
+
+    // Close ボタン (All Steps 画面)
+    document.getElementById("close-vertical").addEventListener("click", () => {
+      document.getElementById("vertical-view").style.display = "none";
+    });
+
+    // Next ボタン：現在の step から次の step へ移動
+    document.querySelector(".next-button").addEventListener("click", () => {
+      const currentStepEl = document.querySelector(".step-item.active");
+      if (!currentStepEl) return;
+      let currentStep = parseInt(currentStepEl.getAttribute("data-step"), 10);
+      if (currentStep < 15) {
+        let nextStep = currentStep + 1;
+        const nextStepEl = document.querySelector(`.step-item[data-step="${nextStep}"]`);
+        if (nextStepEl) nextStepEl.click();
+      }
+    });
+
+    // Previous ボタン：現在の step から前の step へ移動
+    document.querySelector(".prev-button").addEventListener("click", () => {
+      const currentStepEl = document.querySelector(".step-item.active");
+      if (!currentStepEl) return;
+      let currentStep = parseInt(currentStepEl.getAttribute("data-step"), 10);
+      if (currentStep > 1) {
+        let prevStep = currentStep - 1;
+        const prevStepEl = document.querySelector(`.step-item[data-step="${prevStep}"]`);
+        if (prevStepEl) prevStepEl.click();
+      }
+    });
+
+    // コンテンツ領域内の Upload ボタン (クラス名：step-upload-button) をクリック時の処理
+    // イベントデリゲーションを利用して、動的に生成されたボタンにも対応
+    contentEl.addEventListener("click", function(e) {
+      if (e.target.classList.contains("step-upload-button")) {
+        const step = e.target.getAttribute("data-step");
+        if (confirm(`ステップ ${step} のアップロードを実行しますか？`)) {
+          // ここに各ステップごとのアップロード処理を実装（例: Ajax送信、FormData など）
+          alert(`ステップ ${step} のアップロードを実行しました。`);
+        }
+      }
+    });
+  </script>
+</body>
+</html>

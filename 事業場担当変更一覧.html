@@ -1,0 +1,2339 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>保安管理支援システム - 事業場担当変更一覧</title>
+  <style>
+    /*=== 全体レイアウト用 ===*/
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      font-size: 14px;
+    }
+    header, footer {
+      background-color: #f0f0f0;
+      padding: 8px 16px;
+    }
+    .container {
+      display: flex;
+      height: calc(100vh - 50px);
+    }
+    /*=== 左メニュー ===*/
+    nav {
+      width: 200px;
+      background-color: #2c3e50;
+      color: #fff;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+    nav li {
+      margin: 8px 0;
+      cursor: pointer;
+    }
+    nav li:hover {
+      text-decoration: underline;
+    }
+    /*=== メインコンテンツ ===*/
+    .main-content {
+      flex: 1;
+      padding: 16px;
+      box-sizing: border-box;
+      overflow-y: auto;
+      background-color: #fff;
+    }
+    .search-area {
+      background-color: #fafafa;
+      border: 1px solid #ddd;
+      padding: 8px;
+      margin-bottom: 16px;
+    }
+    .display-controller {
+      margin-bottom: 8px;
+    }
+    .tabs {
+      margin-top: 16px;
+    }
+    .tab-menu {
+      display: flex;
+      border-bottom: 1px solid #ccc;
+    }
+    .tab-menu button {
+      background: none;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+    .tab-menu button.active {
+      border-bottom: 2px solid #007bff;
+      font-weight: bold;
+      color: #007bff;
+    }
+    .tab-content {
+      display: none;
+      margin-top: 16px;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    /*=== テーブル ===*/
+    table {
+      border-collapse: collapse;
+      margin-top: 8px;
+      width: 100%;
+    }
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: top;
+    }
+    .new-create-btn {
+      margin-bottom: 8px;
+      padding: 6px 12px;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    /*=== ポップアップ ===*/
+    .popup-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .popup-content {
+      background: #fff;
+      padding: 20px;
+      width: 400px;
+      max-width: 90%;
+      border-radius: 4px;
+    }
+    .close-btn {
+      margin-top: 16px;
+      background-color: #ccc;
+      border: none;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+    .popup-content-list table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .popup-content-list th, .popup-content-list td {
+      border: 1px solid #ddd;
+      padding: 4px;
+      font-size: 0.8rem;
+    }
+    /*=== 横スクロール ===*/
+    .horizontal-scroll {
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    /*=== tab2: 数字部分のみ小さく表示 ===*/
+    .small-data {
+      font-size: 0.75rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto;
+      gap: 2px;
+    }
+    /* 年次点検がある月は、セル全体の背景色を変更 */
+    .small-data.annual {
+      background-color: #f8d7da;
+    }
+    /* 1行目 左：点数現在値 */
+    .row1-left {
+      font-weight: bold;
+      color: #000;
+    }
+    /* 1行目 右：点数変動 */
+    .row1-right {
+      text-align: right;
+      font-weight: bold;
+    }
+    .row1-right.plus { color: #007bff; }
+    .row1-right.minus { color: red; }
+    .row1-right.zero-value { color: #ccc; }
+    /* 2行目 左：担当事業場数現在値 */
+    .row2-left {
+      font-weight: bold;
+      color: #000;
+    }
+    /* 2行目 右：担当事業場変動 */
+    .row2-right {
+      text-align: right;
+      font-weight: bold;
+    }
+    .row2-right.plus { color: #007bff; }
+    .row2-right.minus { color: red; }
+    .row2-right.zero-value { color: #ccc; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>保安管理支援システム - 事業場担当変更一覧</h2>
+  <div style="float: right;">
+    <a href="#">myページ</a> |
+    <a href="#">ログアウト</a>
+  </div>
+</header>
+
+<div class="container">
+  <!-- 左メニュー -->
+  <nav>
+    <ul>
+      <li>メニュー</li>
+      <li>技術者一覧</li>
+      <li>自動サブタイン名技術者検索</li>
+      <li>案件</li>
+      <li>24時間監視</li>
+      <li>報告</li>
+      <li>検査</li>
+      <li>点検</li>
+      <li>料金</li>
+      <li>スケジュール</li>
+      <li>設定</li>
+    </ul>
+  </nav>
+
+  <!-- メインコンテンツ -->
+  <div class="main-content">
+    <!-- 検索エリア（そのまま） -->
+    <div class="search-area">
+      <h3>検索</h3>
+      <div>
+        <button>基本検索</button>
+        <button>詳細検索</button>
+        <button>お気に入り</button>
+      </div>
+      <div style="margin-top: 8px;">
+        <label>キーワード: <input type="text" placeholder="キーワード検索" /></label>
+        <button>検索</button>
+      </div>
+    </div>
+
+    <!-- 表示件数 -->
+    <div class="display-controller">
+      <label>表示件数:
+        <select>
+          <option value="100">100</option>
+          <option value="200">200</option>
+          <option value="300">300</option>
+        </select>
+      </label>
+      <span style="margin-left: 16px;">検索結果: <strong>20</strong> 件</span>
+    </div>
+
+    <!-- タブ -->
+    <div class="tabs">
+      <div class="tab-menu">
+        <button class="active" data-tab="tab1">tab1(予定変更リスト)</button>
+        <button data-tab="tab2">tab2(技術者点数推移)</button>
+      </div>
+      
+      <!-- tab1：変更予定リスト（元の状態） -->
+      <div id="tab1" class="tab-content active">
+        <button class="new-create-btn">新規作成</button>
+        <table>
+          <thead>
+            <tr>
+              <th>タイトル</th>
+              <th>変更事業場数</th>
+              <th>変更技術者数</th>
+              <th>適応予定日</th>
+              <th>未来の点検計画変更</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="事業場担当変更詳細.html">2025年05月01日変更予定分</a></td>
+              <td><a href="#" class="show-popup" data-popup="businessListPopup">5</a></td>
+              <td><a href="#" class="show-popup" data-popup="technicianListPopup">3</a></td>
+              <td>2025-05-01</td>
+              <td>有</td>
+            </tr>
+            <tr>
+              <td><a href="事業場担当変更詳細.html">2025年06月15日変更予定分</a></td>
+              <td><a href="#" class="show-popup" data-popup="businessListPopup">10</a></td>
+              <td><a href="#" class="show-popup" data-popup="technicianListPopup">2</a></td>
+              <td>2025-06-15</td>
+              <td>無</td>
+            </tr>
+            <tr>
+              <td><a href="事業場担当変更詳細.html">2025年07月20日変更予定分</a></td>
+              <td><a href="#" class="show-popup" data-popup="businessListPopup">3</a></td>
+              <td><a href="#" class="show-popup" data-popup="technicianListPopup">7</a></td>
+              <td>2025-07-20</td>
+              <td>有</td>
+            </tr>
+            <tr>
+              <td><a href="事業場担当変更詳細.html">2025年08月30日変更予定分</a></td>
+              <td><a href="#" class="show-popup" data-popup="businessListPopup">2</a></td>
+              <td><a href="#" class="show-popup" data-popup="technicianListPopup">4</a></td>
+              <td>2025-08-30</td>
+              <td>無</td>
+            </tr>
+            <tr>
+              <td><a href="事業場担当変更詳細.html">2025年09月10日変更予定分</a></td>
+              <td><a href="#" class="show-popup" data-popup="businessListPopup">1</a></td>
+              <td><a href="#" class="show-popup" data-popup="technicianListPopup">5</a></td>
+              <td>2025-09-10</td>
+              <td>有</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- tab2：技術者点数推移（12ヶ月分×20件） -->
+      <div id="tab2" class="tab-content">
+        <div class="horizontal-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>技術者名</th>
+                <th>担当地域</th>
+                <th>希望点数</th>
+                <!-- 12ヶ月 -->
+                <th>25年4月</th>
+                <th>25年5月</th>
+                <th>25年6月</th>
+                <th>25年7月</th>
+                <th>25年8月</th>
+                <th>25年9月</th>
+                <th>25年10月</th>
+                <th>25年11月</th>
+                <th>25年12月</th>
+                <th>26年1月</th>
+                <th>26年2月</th>
+                <th>26年3月</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- 以下、20件分のサンプルレコード -->
+              <!-- パターンA -->
+              <tr>
+                <td>山田太郎</td>
+                <td>東京</td>
+                <td>33</td>
+                <!-- 25年4月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <!-- 25年5月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.5</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <!-- 25年6月（年次有り） -->
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right plus">(+0.6)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <!-- 25年7月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <!-- 25年8月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right minus">(-0.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <!-- 25年9月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <!-- 25年10月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <!-- 25年11月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right minus">(-1.0)</div>
+                    <div class="row2-left">30</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <!-- 25年12月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <!-- 26年1月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <!-- 26年2月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <!-- 26年3月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- パターンB -->
+              <tr>
+                <td>田中健一</td>
+                <td>神奈川</td>
+                <td>32</td>
+                <!-- 25年4月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right minus">(-2.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <!-- 25年5月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <!-- 25年6月（年次有り） -->
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <!-- 25年7月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <!-- 25年8月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right minus">(-1.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <!-- 25年9月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <!-- 25年10月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <!-- 25年11月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <!-- 25年12月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <!-- 26年1月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <!-- 26年2月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <!-- 26年3月 -->
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- 以下、パターンA/Bを交互にして合計20件になるよう作成 -->
+              <!-- 3: 佐藤花子 (パターンA) -->
+              <tr>
+                <td>佐藤花子</td>
+                <td>千葉</td>
+                <td>29</td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.5</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right plus">(+0.6)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right minus">(-0.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right minus">(-1.0)</div>
+                    <div class="row2-left">30</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- 4: 鈴木一郎 (パターンB) -->
+              <tr>
+                <td>鈴木一郎</td>
+                <td>大阪</td>
+                <td>31</td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right minus">(-2.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right minus">(-1.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- 5: 中村麻里 (パターンA) -->
+              <tr>
+                <td>中村麻里</td>
+                <td>愛知</td>
+                <td>28</td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.5</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right plus">(+0.6)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right minus">(-0.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right minus">(-1.0)</div>
+                    <div class="row2-left">30</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- 6: 高橋次郎 (パターンB) -->
+              <tr>
+                <td>高橋次郎</td>
+                <td>東京</td>
+                <td>32</td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right minus">(-2.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right minus">(-1.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- 7: 伊藤直子 (パターンA) -->
+              <tr>
+                <td>伊藤直子</td>
+                <td>神奈川</td>
+                <td>30</td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.5</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right plus">(+0.6)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right minus">(-0.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right minus">(-1.0)</div>
+                    <div class="row2-left">30</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- 8: 渡辺健太 (パターンB) -->
+              <tr>
+                <td>渡辺健太</td>
+                <td>大阪</td>
+                <td>31</td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right minus">(-2.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right minus">(-1.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- 9: 小林幸子 (パターンA) -->
+              <tr>
+                <td>小林幸子</td>
+                <td>千葉</td>
+                <td>29</td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.5</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right plus">(+0.6)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right minus">(-0.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right minus">(-1.0)</div>
+                    <div class="row2-left">30</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- 10: 加藤亮 (パターンB) -->
+              <tr>
+                <td>加藤亮</td>
+                <td>愛知</td>
+                <td>33</td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right minus">(-2.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right minus">(-1.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- 11: 斎藤友美 (パターンA) -->
+              <tr>
+                <td>斎藤友美</td>
+                <td>東京</td>
+                <td>30</td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.5</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right plus">(+0.6)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right minus">(-0.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right minus">(-1.0)</div>
+                    <div class="row2-left">30</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- 12: 村上隆 (パターンB) -->
+              <tr>
+                <td>村上隆</td>
+                <td>神奈川</td>
+                <td>32</td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right minus">(-2.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right minus">(-1.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- 13: 山本美奈子 (パターンA) -->
+              <tr>
+                <td>山本美奈子</td>
+                <td>大阪</td>
+                <td>29</td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.5</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right plus">(+0.6)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right minus">(-0.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right minus">(-1.0)</div>
+                    <div class="row2-left">30</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- 14: 藤原修 (パターンB) -->
+              <tr>
+                <td>藤原修</td>
+                <td>千葉</td>
+                <td>31</td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right minus">(-2.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right minus">(-1.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- 15: 吉田裕子 (パターンA) -->
+              <tr>
+                <td>吉田裕子</td>
+                <td>愛知</td>
+                <td>30</td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.5</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right plus">(+0.6)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right minus">(-0.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right minus">(-1.0)</div>
+                    <div class="row2-left">30</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- 16: 清水健 (パターンB) -->
+              <tr>
+                <td>清水健</td>
+                <td>東京</td>
+                <td>33</td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right minus">(-2.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right minus">(-1.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- 17: 岡田真理 (パターンA) -->
+              <tr>
+                <td>岡田真理</td>
+                <td>神奈川</td>
+                <td>29</td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.5</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right plus">(+0.6)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right minus">(-0.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right minus">(-1.0)</div>
+                    <div class="row2-left">30</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- 18: 森本貴史 (パターンB) -->
+              <tr>
+                <td>森本貴史</td>
+                <td>大阪</td>
+                <td>31</td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right minus">(-2.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right minus">(-1.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- 19: 石川涼子 (パターンA) -->
+              <tr>
+                <td>石川涼子</td>
+                <td>千葉</td>
+                <td>28</td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.5</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right plus">(+0.6)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">31.1</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right minus">(-0.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right minus">(-1.0)</div>
+                    <div class="row2-left">30</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.6</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+              <!-- 20: 大野悟 (パターンB) -->
+              <tr>
+                <td>大野悟</td>
+                <td>愛知</td>
+                <td>30</td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right minus">(-2.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">29.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data annual">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right plus">(+0.5)</div>
+                    <div class="row2-left">50</div>
+                    <div class="row2-right plus">(+1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">30.0</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right minus">(-1.5)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right minus">(-1)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="small-data">
+                    <div class="row1-left">28.5</div>
+                    <div class="row1-right zero-value">(0)</div>
+                    <div class="row2-left">40</div>
+                    <div class="row2-right zero-value">(0)</div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ポップアップ：変更事業場リスト（テーブル形式） -->
+<div id="businessListPopup" class="popup-overlay">
+  <div class="popup-content">
+    <h3>変更事業場リスト</h3>
+    <div class="popup-content-list">
+      <table>
+        <thead>
+          <tr>
+            <th>事業場名</th>
+            <th>住所</th>
+            <th>現在担当</th>
+            <th>変更予定</th>
+            <th>容量</th>
+            <th>点数</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>AAA</td>
+            <td>東京都</td>
+            <td>山田太郎</td>
+            <td>田中健一</td>
+            <td>100kW</td>
+            <td>2.0</td>
+          </tr>
+          <tr>
+            <td>BBB</td>
+            <td>神奈川県</td>
+            <td>佐藤花子</td>
+            <td>鈴木一郎</td>
+            <td>80kW</td>
+            <td>1.5</td>
+          </tr>
+          <!-- 必要に応じ、追加行 -->
+        </tbody>
+      </table>
+    </div>
+    <button class="close-btn">閉じる</button>
+  </div>
+</div>
+
+<!-- ポップアップ：変更技術者リスト（テーブル形式） -->
+<div id="technicianListPopup" class="popup-overlay">
+  <div class="popup-content">
+    <h3>変更技術者リスト</h3>
+    <div class="popup-content-list">
+      <table>
+        <thead>
+          <tr>
+            <th>技術者名</th>
+            <th>担当地域</th>
+            <th>現状利用点数</th>
+            <th>変更後</th>
+            <th>希望点数</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>山田太郎</td>
+            <td>東京</td>
+            <td>25</td>
+            <td>26</td>
+            <td>28</td>
+          </tr>
+          <tr>
+            <td>田中健一</td>
+            <td>神奈川</td>
+            <td>20</td>
+            <td>21</td>
+            <td>22</td>
+          </tr>
+          <tr>
+            <td>佐藤花子</td>
+            <td>千葉</td>
+            <td>10</td>
+            <td>9</td>
+            <td>15</td>
+          </tr>
+          <!-- 必要に応じ、追加行 -->
+        </tbody>
+      </table>
+    </div>
+    <button class="close-btn">閉じる</button>
+  </div>
+</div>
+
+<script>
+  // タブ切り替え処理
+  const tabButtons = document.querySelectorAll(".tab-menu button");
+  const tabContents = document.querySelectorAll(".tab-content");
+  tabButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      tabButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      const target = btn.getAttribute("data-tab");
+      tabContents.forEach(tab => {
+        tab.classList.remove("active");
+        if (tab.id === target) {
+          tab.classList.add("active");
+        }
+      });
+    });
+  });
+  
+  // ポップアップ表示／非表示処理
+  const showPopupLinks = document.querySelectorAll(".show-popup");
+  const popups = document.querySelectorAll(".popup-overlay");
+  const closeBtns = document.querySelectorAll(".close-btn");
+  showPopupLinks.forEach(link => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const popupId = link.getAttribute("data-popup");
+      document.getElementById(popupId).style.display = "flex";
+    });
+  });
+  closeBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      popups.forEach(popup => {
+        popup.style.display = "none";
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

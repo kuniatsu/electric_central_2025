@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <!-- レスポンシブ対応 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>電気保安点検シート</title>
+  <style>
+    body {
+      margin: 10px;
+      font-size: 14px;
+      font-family: sans-serif;
+    }
+    /* コンテナは画面幅いっぱいに */
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0 10px;
+    }
+    /* ヘッダー：タイトルと自動判定ボタン */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+    #autoJudgeButton {
+      padding: 0.4rem 0.8rem;
+      border: none;
+      background-color: #007BFF;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    /* 各項目のコンテナ */
+    .item {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 8px;
+      margin-bottom: 8px;
+    }
+    /* 1行目：タイトル */
+    .item-header {
+      margin-bottom: 6px;
+    }
+    .item-title {
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    /* 2行目：ボタン群 */
+    .toggle-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .toggle-option {
+      position: relative;
+    }
+    /* ラジオボタン本体は非表示 */
+    .toggle-option input[type="radio"] {
+      display: none;
+    }
+    /* ボタン風ラベル：大きめに調整 */
+    .toggle-option label {
+      display: inline-block;
+      padding: 0.6rem 1.0rem;
+      font-size: 0.9rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background-color 0.2s, border-color 0.2s;
+      user-select: none;
+    }
+    .toggle-option label:hover {
+      background-color: #eee;
+      border-color: #bbb;
+    }
+    /* 選択時のスタイル：選択が「良」「推奨」「否」は緑系（例として） */
+    .toggle-option input[type="radio"]:checked:not([value="none"]) + label {
+      background-color: #4CAF50;
+      color: #fff;
+      border-color: #4CAF50;
+    }
+    /* 「-」の場合は選択時に濃いグレー色に */
+    .toggle-option input[type="radio"][value="none"]:checked + label {
+      background-color: #555;
+      color: #fff;
+      border-color: #555;
+    }
+    /* メッセージ表示領域 */
+    .message {
+      margin-top: 4px;
+      color: red;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- ヘッダー：タイトルと自動判定ボタン -->
+  <div class="header">
+    <h1>電気保安点検一覧</h1>
+    <button id="autoJudgeButton">前回の点検結果をコピー</button>
+  </div>
+
+  <!-- 各項目を動的に生成（合計12項目） -->
+  <div id="inspectionItems"></div>
+</div>
+
+<script>
+  // 4択のオプション定義
+  // 「良」「推奨」「否」「-」となり、初期状態は "-"（value:"none"）
+  const options = [
+    { value: 'good', label: '良' },
+    { value: 'recommend', label: '推奨' },
+    { value: 'bad', label: '否' },
+    { value: 'none', label: '-' }
+  ];
+
+  const container = document.getElementById('inspectionItems');
+  let itemsHTML = '';
+
+  // 12項目分を動的に生成
+  for (let i = 1; i <= 12; i++) {
+    itemsHTML += `
+      <div class="item" id="item${i}">
+        <!-- 1行目：タイトル -->
+        <div class="item-header">
+          <div class="item-title">電気保安点検内容 ${i}</div>
+        </div>
+        <!-- 2行目：ボタン群 -->
+        <div class="toggle-group">`;
+    options.forEach(opt => {
+      const inputId = `evaluation${i}_${opt.value}`;
+      const checkedAttr = opt.value === 'none' ? 'checked' : '';
+      itemsHTML += `
+                <div class="toggle-option">
+                  <input type="radio" id="${inputId}" name="evaluation${i}" value="${opt.value}" ${checkedAttr}>
+                  <label for="${inputId}">${opt.label}</label>
+                </div>`;
+    });
+    itemsHTML += `
+        </div>
+        <!-- メッセージ表示領域 -->
+        <div class="message" id="message${i}"></div>
+      </div>
+    `;
+  }
+  container.innerHTML = itemsHTML;
+
+  // ラジオボタン選択時の処理：
+  // 選択が「良」または「推奨」の場合にメッセージ表示、その他はクリア
+  document.querySelectorAll('input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', function(e) {
+      const itemDiv = e.target.closest('.item');
+      const messageDiv = itemDiv.querySelector('.message');
+      if (e.target.value === 'good' || e.target.value === 'recommend') {
+        messageDiv.textContent = "この設備は更新推奨年を超過してます。製造年2001年、推奨年13年2ヶ月";
+      } else {
+        messageDiv.textContent = "";
+      }
+    });
+  });
+
+  // 自動判定ボタン：各項目でランダムに選択し、メッセージ表示を更新
+  document.getElementById('autoJudgeButton').addEventListener('click', function(){
+    for (let i = 1; i <= 12; i++) {
+      const radios = document.getElementsByName(`evaluation${i}`);
+      const randomIndex = Math.floor(Math.random() * radios.length);
+      radios[randomIndex].checked = true;
+  
+      const messageDiv = document.getElementById(`message${i}`);
+      const val = radios[randomIndex].value;
+      if (val === 'good' || val === 'recommend') {
+        messageDiv.textContent = "この設備は更新推奨年を超過してます。製造年2001年、推奨年13年2ヶ月";
+      } else {
+        messageDiv.textContent = "";
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

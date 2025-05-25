@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>グループ権限詳細</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* テーブル共通 */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      vertical-align: middle;
+      text-align: left; /* すべて左寄せ */
+    }
+    /* チェックボックスのスタイルを左寄せ */
+    table input[type="checkbox"] {
+      display: inline-block; 
+      margin: 0;
+      vertical-align: middle;
+    }
+
+    /* フォーム部分 */
+    .group-name-section,
+    .search-section {
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+      margin-right: 4px;
+    }
+    input[type="text"] {
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    /* ツールチップ例 */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      margin-left: 6px;
+    }
+    .tooltip .tooltip-text {
+      visibility: hidden;
+      width: 180px;
+      background-color: rgba(0, 0, 0, 0.75);
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 8px;
+      position: absolute;
+      z-index: 1;
+      top: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .tooltip:hover .tooltip-text {
+      visibility: visible;
+    }
+
+    /* 通知用チェックボックスを横並びで左寄せ */
+    .notif-group {
+      display: flex;
+      justify-content: flex-start; /* 左寄せ */
+      gap: 8px;
+      align-items: center;
+    }
+    .notif-group label {
+      font-weight: normal;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin: 0; /* 左に寄せるため余白をリセット */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- ヘッダー部分 -->
+    <div class="header">
+      <h1>グループ権限詳細</h1>
+      <div class="buttons">
+        <button type="button" onclick="clearForm()">戻る</button>
+        <button type="button" onclick="updateForm()">保温</button>
+      </div>
+    </div>
+
+    <!-- グループ名入力 -->
+    <div class="group-name-section">
+      <label for="groupName">グループ名</label>
+      <input type="text" id="groupName" name="groupName" placeholder="グループ名を入力">
+    </div>
+
+    <!-- グループユーザー一覧 -->
+    <h2>グループユーザー一覧</h2>
+    <div class="search-section">
+      <label for="searchUser">ユーザー検索</label>
+      <input type="text" id="searchUser" name="searchUser" placeholder="ユーザーを検索">
+      <button type="button" onclick="searchUser()">検索</button>
+    </div>
+    <div class="added-users-section">
+      <h3>追加済みユーザー</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>ユーザー名</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="addedUsersTable">
+          <!-- ここに追加されたユーザーが表示される想定 -->
+          <tr>
+            <td>Sample User 1</td>
+            <td><button type="button">削除</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 下部：技術者管理の権限設定 -->
+    <h2>付与権限管理</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 20%;">画面名</th>
+          <th>権限名
+            <span class="tooltip">💡
+              <span class="tooltip-text">
+                ・登録・更新・削除：説明<br>
+                ・閲覧：説明<br>
+                ・共有のみ：説明<br>
+                ・コメント投稿：説明
+              </span>
+            </span>
+          </th>
+          <th>権限選択</th>
+          <th>通知設定</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 1つ目のコンテンツ：マスタ管理 -->
+        <tr>
+          <td rowspan="4">マスタ一覧/詳細</td>
+          <td>登録・更新・削除</td>
+          <td><input type="checkbox"></td>
+          <td>
+            <div class="notif-group">
+              <label><input type="checkbox">登録</label>
+              <label><input type="checkbox">更新</label>
+              <label><input type="checkbox">削除</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>閲覧</td>
+          <td><input type="checkbox"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>共有のみ</td>
+          <td><input type="checkbox"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>コメント投稿</td>
+          <td><input type="checkbox"></td>
+          <td>
+            <div class="notif-group">
+              <label><input type="checkbox">通知</label>
+            </div>
+          </td>
+        </tr>
+
+        <!-- 2つ目のコンテンツ：商談管理 -->
+        <tr>
+          <td rowspan="5">商談一覧/詳細</td>
+          <td>登録・更新・削除</td>
+          <td><input type="checkbox"></td>
+          <td>
+            <div class="notif-group">
+              <label><input type="checkbox">登録</label>
+              <label><input type="checkbox">更新</label>
+              <label><input type="checkbox">削除</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>閲覧</td>
+          <td><input type="checkbox"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>単価・支払い項目非表示</td>
+          <td><input type="checkbox"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>共有のみ</td>
+          <td><input type="checkbox"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>コメント投稿</td>
+          <td><input type="checkbox"></td>
+          <td>
+            <div class="notif-group">
+              <label><input type="checkbox">通知</label>
+            </div>
+          </td>
+        </tr>
+        
+
+        <!-- 3つ目のコンテンツ：点検管理 -->
+        <tr>
+          <td rowspan="4">点検一覧/詳細</td>
+          <td>登録・更新・削除</td>
+          <td><input type="checkbox"></td>
+          <td>
+            <div class="notif-group">
+              <label><input type="checkbox">登録</label>
+              <label><input type="checkbox">更新</label>
+              <label><input type="checkbox">削除</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>閲覧</td>
+          <td><input type="checkbox"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>共有のみ</td>
+          <td><input type="checkbox"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>担当事業場のみ</td>
+          <td><input type="checkbox"></td>
+          <td>
+            <div class="notif-group">
+              <label><input type="checkbox">通知</label>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function clearForm() {
+      document.getElementById('groupName').value = '';
+      document.getElementById('searchUser').value = '';
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach(cb => cb.checked = false);
+      const addedUsersTable = document.getElementById('addedUsersTable');
+      addedUsersTable.innerHTML = '';
+    }
+    function updateForm() {
+      alert('更新ボタンがクリックされました。');
+    }
+    function searchUser() {
+      alert('検索ボタンがクリックされました。');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>画像にテキスト・図形を配置＆保存（モード持続・ドラッグ可能）</title>
+  <style>
+    /* 画像とキャンバスの重ね合わせ */
+    #container {
+      position: relative;
+      display: inline-block;
+    }
+    /* 背景画像はキャンバス描画用なので非表示 */
+    #backgroundImage {
+      display: none;
+    }
+    #myCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      border: 1px solid #ccc;
+    }
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+    }
+    button {
+      margin: 5px;
+    }
+    #status {
+      margin: 10px 0;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>画像にテキスト・図形を配置＆保存</h1>
+  <!-- 画像アップロード -->
+  <input type="file" id="uploadImage" accept="image/*">
+  <!-- 各モード切替用ボタン -->
+  <button id="addTextBtn">テキストを追加</button>
+  <button id="addRectBtn">四角形を追加</button>
+  <button id="addCircleBtn">円を追加</button>
+  <button id="deleteBtn">削除</button>
+  <!-- 保存ボタン -->
+  <button id="saveBtn">保存</button>
+  <br>
+  <!-- モード表示 -->
+  <div id="status">モード：なし</div>
+  <!-- 画像とキャンバス配置用コンテナ -->
+  <div id="container">
+    <!-- 背景画像（アップロード後、キャンバスに描画） -->
+    <img id="backgroundImage" src="" alt="背景画像">
+    <!-- キャンバス：背景画像とオブジェクトがここに描画される -->
+    <canvas id="myCanvas"></canvas>
+  </div>
+  
+  <script>
+    // DOM 要素の取得
+    const uploadImage   = document.getElementById('uploadImage');
+    const backgroundImg = document.getElementById('backgroundImage');
+    const canvas        = document.getElementById('myCanvas');
+    const ctx           = canvas.getContext('2d');
+    const addTextBtn    = document.getElementById('addTextBtn');
+    const addRectBtn    = document.getElementById('addRectBtn');
+    const addCircleBtn  = document.getElementById('addCircleBtn');
+    const deleteBtn     = document.getElementById('deleteBtn');
+    const saveBtn       = document.getElementById('saveBtn');
+    const statusDiv     = document.getElementById('status');
+    
+    // オブジェクト配列（各オブジェクトは { type, x, y, ... } の形式）
+    // type: "text" / "rect" / "circle"
+    let objects = [];
+    // 現在のモード: "none", "addText", "addRect", "addCircle", "delete"
+    let currentMode = 'none';
+    
+    // ドラッグ用の変数
+    let draggingIndex = -1;
+    let offsetX = 0, offsetY = 0;
+    let startX = 0, startY = 0;
+    // マウス移動があったかを判定し、クリックによる追加・削除処理をキャンセルするためのフラグ
+    let suppressClick = false;
+    
+    // モード表示の更新
+    function updateStatus() {
+      statusDiv.textContent = "モード：" + (currentMode === 'none' ? "なし" : currentMode);
+    }
+    updateStatus();
+    
+    // 画像アップロード処理
+    uploadImage.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        backgroundImg.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+    
+    // 画像読み込み後、キャンバスサイズと container を調整、再描画
+    backgroundImg.onload = function() {
+      canvas.width = backgroundImg.naturalWidth;
+      canvas.height = backgroundImg.naturalHeight;
+      const container = document.getElementById('container');
+      container.style.width = backgroundImg.naturalWidth + 'px';
+      container.style.height = backgroundImg.naturalHeight + 'px';
+      redraw();
+    };
+
+    // 各モード切替ボタン（モードは持続する）
+    addTextBtn.addEventListener('click', function() {
+      currentMode = 'addText';
+      updateStatus();
+    });
+    addRectBtn.addEventListener('click', function() {
+      currentMode = 'addRect';
+      updateStatus();
+    });
+    addCircleBtn.addEventListener('click', function() {
+      currentMode = 'addCircle';
+      updateStatus();
+    });
+    deleteBtn.addEventListener('click', function() {
+      currentMode = 'delete';
+      updateStatus();
+    });
+    
+    // マウス操作によるドラッグ処理（クリック時、いずれもオブジェクトがヒットすればドラッグ開始）
+    canvas.addEventListener('mousedown', function(e) {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+      
+      // オブジェクトヒット判定（上にあるものからチェック）
+      for (let i = objects.length - 1; i >= 0; i--) {
+        if (isInside(objects[i], mouseX, mouseY)) {
+          draggingIndex = i;
+          offsetX = mouseX - objects[i].x;
+          offsetY = mouseY - objects[i].y;
+          startX = mouseX;
+          startY = mouseY;
+          suppressClick = false;
+          return;
+        }
+      }
+    });
+    
+    canvas.addEventListener('mousemove', function(e) {
+      if (draggingIndex === -1) return;
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+      
+      // クリックと判定しないために、一定距離以上の移動を検知
+      if (!suppressClick && (Math.abs(mouseX - startX) > 5 || Math.abs(mouseY - startY) > 5)) {
+        suppressClick = true;
+      }
+      objects[draggingIndex].x = mouseX - offsetX;
+      objects[draggingIndex].y = mouseY - offsetY;
+      redraw();
+    });
+    
+    canvas.addEventListener('mouseup', function(e) {
+      draggingIndex = -1;
+    });
+    
+    // キャンバスクリック時の処理
+    canvas.addEventListener('click', function(e) {
+      // もしドラッグによる移動があったならクリック処理はキャンセル
+      if (suppressClick) {
+        suppressClick = false;
+        return;
+      }
+      
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      // まず、クリック位置にオブジェクトがあるかをチェック
+      let hit = false;
+      for (let i = objects.length - 1; i >= 0; i--) {
+        if (isInside(objects[i], x, y)) { hit = true; break; }
+      }
+      
+      if (hit) {
+        // オブジェクトがある場合、削除モードなら削除
+        if (currentMode === 'delete') {
+          for (let i = objects.length - 1; i >= 0; i--) {
+            if (isInside(objects[i], x, y)) {
+              objects.splice(i, 1);
+              break;
+            }
+          }
+          redraw();
+        }
+        // その他のモードの場合は、オブジェクトが存在するなら何も追加しない
+        return;
+      } else {
+        // クリック位置が空の場合、各追加モードならオブジェクトを追加
+        if (currentMode === 'addText') {
+          const text = prompt('表示するテキストを入力してください');
+          if (text) {
+            objects.push({ type: 'text', x: x, y: y, text: text });
+          }
+        } else if (currentMode === 'addRect') {
+          objects.push({ type: 'rect', x: x, y: y, width: 100, height: 50 });
+        } else if (currentMode === 'addCircle') {
+          objects.push({ type: 'circle', x: x, y: y, radius: 50 });
+        }
+        redraw();
+      }
+    });
+    
+    // オブジェクトの当たり判定関数
+    function isInside(obj, x, y) {
+      if (obj.type === 'rect') {
+        return (x >= obj.x && x <= obj.x + obj.width && y >= obj.y && y <= obj.y + obj.height);
+      } else if (obj.type === 'text') {
+        ctx.font = "20px sans-serif";
+        const metrics = ctx.measureText(obj.text);
+        const textWidth = metrics.width;
+        const textHeight = 20; // おおよそのテキスト高さ
+        // テキストは y 座標を下端として扱う
+        return (x >= obj.x && x <= obj.x + textWidth && y >= obj.y - textHeight && y <= obj.y);
+      } else if (obj.type === 'circle') {
+        const dx = x - obj.x;
+        const dy = y - obj.y;
+        return Math.sqrt(dx * dx + dy * dy) <= obj.radius;
+      }
+      return false;
+    }
+    
+    // キャンバスの再描画（背景画像も含む）
+    function redraw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // 背景画像があれば最初にキャンバス全体に描画
+      if (backgroundImg.src) {
+        ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
+      }
+      // 各オブジェクトを描画
+      objects.forEach(obj => {
+        if (obj.type === 'text') {
+          ctx.font = "24px sans-serif";
+          ctx.fillStyle = "red";
+          ctx.fillText(obj.text, obj.x, obj.y);
+        } else if (obj.type === 'rect') {
+          ctx.strokeStyle = "red";
+          ctx.lineWidth = 4;
+          ctx.strokeRect(obj.x, obj.y, obj.width, obj.height);
+        } else if (obj.type === 'circle') {
+          ctx.strokeStyle = "yellow";
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          ctx.arc(obj.x, obj.y, obj.radius, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      });
+    }
+    
+    // 保存ボタン押下時、背景画像も含めたキャンバス全体を保存
+    saveBtn.addEventListener('click', () => {
+      const dataURL = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = dataURL;
+      link.download = 'canvas_image.png';
+      link.click();
+    });
+  </script>
+</body>
+</html>

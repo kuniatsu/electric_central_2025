@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>グリッド配置：画像＆編集・削除＆画像保存（単一HTML）</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+    h1 {
+      margin: 16px;
+    }
+    #toolbar {
+      margin: 10px 16px;
+    }
+    button {
+      margin-right: 8px;
+      cursor: pointer;
+    }
+
+    /* 左側パレット */
+    #palette {
+      float: left;
+      width: 150px;
+      border-right: 1px solid #ccc;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .palette-item {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 10px;
+      cursor: grab;
+      border: 1px solid #ddd;
+    }
+    .palette-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* 右側の配置領域（グリッド） */
+    #container {
+      float: left;
+      margin-left: 10px;
+      position: relative;
+      width: 1440px;  /* 横6セル×60px×4倍 = 1440 */
+      height: 1080px; /* 縦6セル×60px×3倍 = 1080 */
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    /* グリッド上の配置要素 */
+    .grid-item {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      box-sizing: border-box;
+      border: 1px solid blue;
+    }
+    .grid-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* 削除・編集ボタン */
+    .delete-btn, .edit-btn {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border: none;
+      background: rgba(255,255,255,0.8);
+      font-size: 12px;
+      cursor: pointer;
+      line-height: 16px;
+      text-align: center;
+      padding: 0;
+    }
+    .delete-btn {
+      top: 0; right: 0;
+      color: red;
+    }
+    .edit-btn {
+      bottom: 0; left: 0;
+      color: green;
+    }
+    /* タイトルラベル */
+    .info-label {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      font-size: 10px;
+      padding: 2px;
+    }
+    /* モーダル */
+    #editorModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+    }
+    #modalContent {
+      background: #fff;
+      padding: 20px;
+      max-width: 300px;
+      margin: 100px auto;
+      border-radius: 5px;
+    }
+    #modalContent label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    #modalContent input, #modalContent textarea {
+      width: 100%;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+
+<h1>グリッド配置：画像＆編集・削除＆画像保存（単一HTML）</h1>
+
+<div id="toolbar">
+  <button id="saveImageBtn">画像として保存</button>
+</div>
+
+<!-- 左側パレット：同じフォルダに breaker.png, fuse.png, relay.png, transformer.png を置いてください -->
+<div id="palette">
+  <div class="palette-item" draggable="true" data-type="breaker" data-img="breaker.png">
+    <img src="breaker.png" alt="遮断器">
+  </div>
+  <div class="palette-item" draggable="true" data-type="fuse" data-img="fuse.png">
+    <img src="fuse.png" alt="ヒューズ">
+  </div>
+  <div class="palette-item" draggable="true" data-type="relay" data-img="relay.png">
+    <img src="relay.png" alt="継電器">
+  </div>
+  <div class="palette-item" draggable="true" data-type="transformer" data-img="transformer.png">
+    <img src="transformer.png" alt="変圧器">
+  </div>
+  <div class="palette-item" draggable="true" data-type="line1" data-img="line1.png">
+    <img src="line1.png" alt="線">
+  </div>
+  <div class="palette-item" draggable="true" data-type="line2" data-img="line2.png">
+    <img src="line2.png" alt="せん２">
+  </div>
+</div>
+
+<!-- グリッド配置エリア -->
+<div id="container"></div>
+
+<!-- 編集用モーダル -->
+<div id="editorModal">
+  <div id="modalContent">
+    <h2>オブジェクト編集</h2>
+    <label>タイトル: <input type="text" id="modalTitle"></label>
+    <label>説明: <textarea id="modalDescription"></textarea></label>
+    <label>その他: <input type="text" id="modalOther"></label>
+    <button id="modalSave">保存</button>
+    <button id="modalCancel">キャンセル</button>
+  </div>
+</div>
+
+<!-- ▼▼▼ ここに html2canvas の minify済みコードを貼り付けてください ▼▼▼ -->
+<script>
+/* 
+   html2canvas@1.4.1 の minified コードを
+   公式サイトまたはCDNから入手して、
+   このコメント部分にペーストしてください。
+*/
+</script>
+<!-- ▲▲▲ ここまでが html2canvasのコード ▲▲▲ -->
+
+<script>
+(function(){
+  const container = document.getElementById('container');
+  const cellSize = 60;  // 1セルあたりのサイズ(60px)
+  // 配置済みセルを "col,row" で管理
+  const placedCells = {};
+
+  // 配置可能かどうか
+  function isAllowed(col, row) {
+    // 最初は(0,0)のみOK
+    if(col===0 && row===0) return true;
+    // 既に埋まっていたらNG
+    if(placedCells[`${col},${row}`]) return false;
+    // 左 or 上が埋まっていればOK
+    const leftFilled = (col>0) && placedCells[`${col-1},${row}`];
+    const topFilled  = (row>0) && placedCells[`${col},${row-1}`];
+    return (leftFilled || topFilled);
+  }
+
+  // 右 or 下のセルを候補として取得
+  function getAllowedCandidates(){
+    const cands = [];
+    const keys = Object.keys(placedCells);
+    // まだ何も置かれていない場合は(0,0)のみ候補
+    if(!keys.length){
+      cands.push({col:0,row:0});
+      return cands;
+    }
+    // 既存セルを走査し、右(col+1)・下(row+1)で配置可能なセルを候補に追加
+    for(const k of keys){
+      const [c,r] = k.split(',').map(Number);
+      const rightKey = `${c+1},${r}`;
+      const downKey  = `${c},${r+1}`;
+      if(!placedCells[rightKey] && isAllowed(c+1,r)) cands.push({col:c+1,row:r});
+      if(!placedCells[downKey]  && isAllowed(c,r+1)) cands.push({col:c,row:r+1});
+    }
+    return cands;
+  }
+
+  // ユークリッド距離
+  function distance(x1,y1,x2,y2){
+    return Math.sqrt((x1-x2)**2 + (y1-y2)**2);
+  }
+
+  // ドロップ座標からスナップ先セルを決定
+  function snapToGrid(dropX, dropY){
+    let col = Math.floor(dropX / cellSize);
+    let row = Math.floor(dropY / cellSize);
+    if(isAllowed(col,row)){
+      return {col,row};
+    } else {
+      const cands = getAllowedCandidates();
+      if(!cands.length) return {col:0,row:0}; // 万一候補なしの場合
+      let best = cands[0];
+      let bestDist = distance(dropX,dropY, best.col*cellSize+cellSize/2, best.row*cellSize+cellSize/2);
+      for(const c of cands){
+        const d = distance(dropX,dropY, c.col*cellSize+cellSize/2, c.row*cellSize+cellSize/2);
+        if(d < bestDist){
+          best = c;
+          bestDist = d;
+        }
+      }
+      return best;
+    }
+  }
+
+  // パレットのドラッグ開始
+  document.querySelectorAll('.palette-item').forEach(item=>{
+    item.addEventListener('dragstart', function(e){
+      e.dataTransfer.setData('type', this.dataset.type);
+      e.dataTransfer.setData('img', this.dataset.img);
+    });
+  });
+
+  // コンテナへのドロップ
+  container.addEventListener('dragover', e=>{ e.preventDefault(); });
+  container.addEventListener('drop', e=>{
+    e.preventDefault();
+    const type = e.dataTransfer.getData('type');
+    const imgSrc = e.dataTransfer.getData('img');
+    const rect = container.getBoundingClientRect();
+    const dropX = e.clientX - rect.left;
+    const dropY = e.clientY - rect.top;
+    const {col, row} = snapToGrid(dropX, dropY);
+    createGridItem(col, row, type, imgSrc);
+  });
+
+  // 新規オブジェクトをグリッドに配置
+  function createGridItem(col, row, type, imgSrc){
+    const newItem = document.createElement('div');
+    newItem.className = 'grid-item';
+    newItem.style.left = (col*cellSize) + 'px';
+    newItem.style.top  = (row*cellSize) + 'px';
+    newItem.dataset.type = type;
+    newItem.dataset.img  = imgSrc;
+    // 編集フィールド
+    newItem.dataset.title       = "";
+    newItem.dataset.description = "";
+    newItem.dataset.other       = "";
+
+    // 画像
+    const img = document.createElement('img');
+    img.src = imgSrc;
+    img.alt = type;
+    newItem.appendChild(img);
+
+    // 削除ボタン
+    const delBtn = document.createElement('button');
+    delBtn.className = 'delete-btn';
+    delBtn.textContent = '×';
+    newItem.appendChild(delBtn);
+    delBtn.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      delete placedCells[`${col},${row}`];
+      newItem.remove();
+    });
+
+    // 編集ボタン
+    const editBtn = document.createElement('button');
+    editBtn.className = 'edit-btn';
+    editBtn.textContent = '✎';
+    newItem.appendChild(editBtn);
+    editBtn.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      openEditor(newItem);
+    });
+
+    // タイトルラベル
+    const label = document.createElement('div');
+    label.className = 'info-label';
+    label.textContent = "";
+    newItem.appendChild(label);
+
+    container.appendChild(newItem);
+    placedCells[`${col},${row}`] = newItem;
+    enableItemDrag(newItem, col, row);
+  }
+
+  // 配置済みオブジェクトのドラッグ移動
+  function enableItemDrag(item, origCol, origRow){
+    let isDragging = false;
+    let startX=0, startY=0, origX=0, origY=0;
+    item.addEventListener('mousedown', function(e){
+      // 削除・編集ボタンのクリックではドラッグしない
+      if(e.target.classList.contains('delete-btn')||e.target.classList.contains('edit-btn')) return;
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      origX = parseInt(item.style.left);
+      origY = parseInt(item.style.top);
+      delete placedCells[`${origCol},${origRow}`];
+    });
+    document.addEventListener('mousemove', function(e){
+      if(!isDragging)return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      item.style.left = (origX+dx) + 'px';
+      item.style.top  = (origY+dy) + 'px';
+    });
+    document.addEventListener('mouseup', function(e){
+      if(!isDragging)return;
+      isDragging=false;
+      const rect = container.getBoundingClientRect();
+      const dropX = e.clientX - rect.left;
+      const dropY = e.clientY - rect.top;
+      const {col, row} = snapToGrid(dropX, dropY);
+      item.style.left = (col*cellSize) + 'px';
+      item.style.top  = (row*cellSize) + 'px';
+      placedCells[`${col},${row}`] = item;
+    });
+  }
+
+  // 編集用モーダル
+  let currentEditingItem = null;
+  const modal = document.getElementById('editorModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalDescription = document.getElementById('modalDescription');
+  const modalOther = document.getElementById('modalOther');
+  const modalSave = document.getElementById('modalSave');
+  const modalCancel = document.getElementById('modalCancel');
+
+  function openEditor(item){
+    currentEditingItem = item;
+    modalTitle.value = item.dataset.title || "";
+    modalDescription.value = item.dataset.description || "";
+    modalOther.value = item.dataset.other || "";
+    modal.style.display = 'block';
+  }
+
+  modalSave.addEventListener('click', function(){
+    if(currentEditingItem){
+      currentEditingItem.dataset.title = modalTitle.value;
+      currentEditingItem.dataset.description = modalDescription.value;
+      currentEditingItem.dataset.other = modalOther.value;
+      // タイトルラベル更新
+      const label = currentEditingItem.querySelector('.info-label');
+      label.textContent = modalTitle.value;
+    }
+    modal.style.display = 'none';
+    currentEditingItem = null;
+  });
+
+  modalCancel.addEventListener('click', function(){
+    modal.style.display = 'none';
+    currentEditingItem = null;
+  });
+
+  // モーダル背景クリックで閉じる
+  modal.addEventListener('click', function(e){
+    if(e.target===modal){
+      modal.style.display='none';
+      currentEditingItem=null;
+    }
+  });
+
+  // 画像として保存
+  document.getElementById('saveImageBtn').addEventListener('click', function(){
+    // html2canvas(container) を呼び出し → キャプチャ結果を新しいタブで表示
+    html2canvas(container).then(canvas=>{
+      const dataURL = canvas.toDataURL('image/png');
+      const win = window.open();
+      win.document.body.innerHTML = `<img src="${dataURL}" alt="Saved Image">`;
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

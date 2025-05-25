@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>技術者管理 &gt; 技術者一覧</title>
+  <style>
+    /* 全体リセット */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+    body { display: flex; min-height: 100vh; background-color: #f7f7f7; }
+
+    /*────────────────────────────
+      左側サイドバー（折りたたみ機能付き）
+    ─────────────────────────────*/
+    .sidebar {
+      position: relative;
+      z-index: 9999;
+      width: 240px;
+      background-color: #005da8;
+      color: #fff;
+      padding: 0 10px 20px;
+      display: flex;
+      flex-direction: column;
+      transition: width 0.3s ease;
+    }
+    .sidebar.collapsed { width: 40px; }
+    .sidebar.collapsed .logo,
+    .sidebar.collapsed .menu-header,
+    .sidebar.collapsed .menu,
+    .sidebar.collapsed .collapsible { display: none; }
+    .sidebar-toggle {
+      background-color: #004080;
+      color: #fff;
+      text-align: center;
+      padding: 5px 0;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .sidebar .logo {
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin: 20px 0;
+      line-height: 1.4;
+    }
+    .menu-header { font-size: 1.1rem; margin-bottom: 10px; padding-left: 10px; }
+    .menu { list-style: none; padding-left: 0; }
+    .menu-item { margin-bottom: 8px; }
+    .menu-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      padding: 8px 10px;
+      color: #fff;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+    .menu-title:hover { background-color: rgba(255, 255, 255, 0.1); }
+    .sub-menu {
+      list-style: none;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      padding-left: 15px;
+    }
+    .sub-menu.open { max-height: 500px; }
+    .sub-menu li a {
+      display: block;
+      padding: 6px 10px;
+      font-size: 0.9rem;
+      color: #fff;
+      text-decoration: none;
+    }
+    .sub-menu li a:hover { background-color: rgba(255, 255, 255, 0.15); }
+    .collapsible { border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px; margin-top: 20px; }
+    .collapsible-content { display: none; margin-top: 10px; font-size: 0.9rem; color: #eee; padding-left: 10px; }
+
+    /*────────────────────────────
+      メインコンテンツ領域
+    ─────────────────────────────*/
+    .main-content {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .top-bar {
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .top-bar .location { font-size: 1rem; color: #666; }
+    .top-bar .button-group { display: flex; gap: 10px; }
+    .top-bar button {
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      cursor: pointer;
+    }
+    .top-bar button:hover { background-color: #eee; }
+    .content-area { padding: 20px; overflow-y: auto; }
+
+    /*────────────────────────────
+      検索フォーム
+    ─────────────────────────────*/
+    .search-box {
+      background-color: #fff;
+      padding: 15px;
+      border: 1px solid #ddd;
+      margin-bottom: 20px;
+    }
+    .search-heading {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+    }
+    .saved-conditions-container {
+      position: relative;
+      display: inline-block;
+      margin-left: 10px;
+    }
+    .basic-search, .advanced-search {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .advanced-search { display: none; }
+    .search-box label { font-size: 0.9rem; color: #333; }
+    .search-box input[type="text"],
+    .search-box input[type="number"] {
+      padding: 5px;
+      border: 1px solid #ccc;
+      font-size: 0.9rem;
+    }
+    .search-box button {
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      cursor: pointer;
+    }
+    .search-box button:hover { background-color: #eee; }
+    .toggle-advanced {
+      cursor: pointer;
+      color: #0073e6;
+      text-decoration: underline;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+    .favorite-link {
+      font-size: 0.9rem;
+      color: #0073e6;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    .search-button-area { margin-top: 10px; text-align: center; }
+    .saved-conditions-popup {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 200px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      padding: 10px;
+      z-index: 10;
+    }
+    .saved-conditions-popup ul { list-style: none; padding: 0; margin: 0; }
+    .saved-conditions-popup li { padding: 5px; cursor: pointer; }
+    .saved-conditions-popup li:hover { background-color: #f0f0f0; }
+
+    /*────────────────────────────
+      統計情報エリア
+    ─────────────────────────────*/
+    .results-heading {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+    }
+    .stats-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: space-between;
+    }
+    .stats-summary .stat {
+      background-color: #f0f0f0;
+      padding: 10px;
+      flex: 1 1 200px;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .stats-summary .stat span.label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #333;
+    }
+    .stats-summary .stat span.value {
+      font-size: 1.1rem;
+      color: #0073e6;
+    }
+
+    .title { font-size: 1.2rem; margin-bottom: 10px; }
+
+    /*────────────────────────────
+      リスト上のアクション領域
+    ─────────────────────────────*/
+    .list-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 5px 10px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-bottom: none;
+      margin-bottom: 10px;
+    }
+    .icon {
+      font-size: 1rem;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    .icon:hover { color: #0073e6; }
+    .new-button {
+      padding: 5px 12px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .new-button:hover { background-color: #eee; }
+
+    /*────────────────────────────
+      テーブル＆ページネーション
+    ─────────────────────────────*/
+    .table-container { background-color: #fff; border: 1px solid #ddd; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px 10px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    th { background-color: #f0f0f0; }
+    .pagination { margin-top: 10px; text-align: center; }
+    .pagination button {
+      margin: 0 2px;
+      padding: 4px 8px;
+      font-size: 0.8rem;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      cursor: pointer;
+    }
+    .pagination button:hover { background-color: #eee; }
+  </style>
+</head>
+<body>
+  <!-- 左側サイドバー -->
+  <div class="sidebar" id="sidebar">
+    <!-- 折りたたみボタン -->
+    <div class="sidebar-toggle" id="sidebar-toggle"><<</div>
+    <div class="logo">保安管理期間システム</div>
+    <div class="menu-header">メニュー</div>
+    <ul class="menu">
+      <!-- 技術者グループ -->
+      <li class="menu-item">
+        <button class="menu-title">技術者 <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">技術者一覧</a></li>
+          <li><a href="#">物件アサイン＆技術者点数推移</a></li>
+        </ul>
+      </li>
+      <!-- 商談グループ -->
+      <li class="menu-item">
+        <button class="menu-title">商談 <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">商談一覧</a></li>
+          <li><a href="#">工事見積依頼一覧</a></li>
+        </ul>
+      </li>
+      <!-- 申請・届出グループ -->
+      <li class="menu-item">
+        <button class="menu-title">申請・届出 <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">申請/届出一覧</a></li>
+        </ul>
+      </li>
+      <!-- 顧客グループ -->
+      <li class="menu-item">
+        <button class="menu-title">顧客 <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">顧客一覧</a></li>
+          <li><a href="#">取引先一覧</a></li>
+          <li><a href="#">契約一覧</a></li>
+          <li><a href="#">契約承認一覧</a></li>
+          <li><a href="#">物件一覧</a></li>
+          <li><a href="#">設備一覧</a></li>
+          <li><a href="#">設備一括登録</a></li>
+        </ul>
+      </li>
+      <!-- 点検グループ -->
+      <li class="menu-item">
+        <button class="menu-title">点検 <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">点検日程一覧</a></li>
+          <li><a href="#">対応不可日時登録</a></li>
+          <li><a href="#">点検日程自動登録一覧</a></li>
+          <li><a href="#">点検日程自動登録詳細</a></li>
+          <li><a href="#">点検計画一覧</a></li>
+          <li><a href="#">点検実施</a></li>
+          <li><a href="#">点検報告一覧</a></li>
+          <li><a href="#">差し戻し履歴一覧</a></li>
+        </ul>
+      </li>
+      <!-- 24時間監視グループ -->
+      <li class="menu-item">
+        <button class="menu-title">24時間監視 <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">監視装置一覧</a></li>
+          <li><a href="#">地図-位置情報</a></li>
+          <li><a href="#">監視ログ一覧</a></li>
+          <li><a href="#">監視装置設定</a></li>
+        </ul>
+      </li>
+      <!-- お知らせ -->
+      <li class="menu-item">
+        <button class="menu-title">お知らせ <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">お知らせ一覧</a></li>
+        </ul>
+      </li>
+      <!-- 問い合わせ -->
+      <li class="menu-item">
+        <button class="menu-title">問い合わせ <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">問い合わせ一覧</a></li>
+        </ul>
+      </li>
+      <!-- ナレッジ・共有 -->
+      <li class="menu-item">
+        <button class="menu-title">ナレッジ・共有 <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">マニュアル一覧</a></li>
+          <li><a href="#">技術者掲示板一覧</a></li>
+        </ul>
+      </li>
+      <!-- 購買・備品管理 -->
+      <li class="menu-item">
+        <button class="menu-title">購買・備品管理 <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">資産備品管理一覧</a></li>
+          <li><a href="#">試験機管理一覧</a></li>
+        </ul>
+      </li>
+      <!-- 販売管理 -->
+      <li class="menu-item">
+        <button class="menu-title">販売管理 <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">請求一覧</a></li>
+          <li><a href="#">支払い一覧</a></li>
+          <li><a href="#">売上一覧</a></li>
+        </ul>
+      </li>
+      <!-- マスタ -->
+      <li class="menu-item">
+        <button class="menu-title">マスタ <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">単価一覧</a></li>
+          <li><a href="#">設備作成マスタ一覧</a></li>
+          <li><a href="#">フォーマット一覧</a></li>
+          <li><a href="#">メールテンプレート一覧</a></li>
+          <li><a href="#">点検報告文例一覧</a></li>
+          <li><a href="#">換算値一覧</a></li>
+        </ul>
+      </li>
+      <!-- ユーザー -->
+      <li class="menu-item">
+        <button class="menu-title">ユーザー <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">ユーザー一覧</a></li>
+          <li><a href="#">グループ権限一覧</a></li>
+          <li><a href="#">顧客アカウント一覧</a></li>
+        </ul>
+      </li>
+      <!-- システム -->
+      <li class="menu-item">
+        <button class="menu-title">システム <span>＋</span></button>
+        <ul class="sub-menu">
+          <li><a href="#">外部連携</a></li>
+        </ul>
+      </li>
+    </ul>
+    <div class="collapsible">
+      <div class="collapsible-content" id="sidebar-extra">
+        <p>追加情報1</p>
+        <p>追加情報2</p>
+        <p>追加情報3</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- メインコンテンツ領域 -->
+  <div class="main-content">
+    <!-- ヘッダー -->
+    <div class="top-bar">
+      <div class="location">技術者管理 &gt; 技術者一覧</div>
+      <div class="button-group">
+        <button>通知一覧</button>
+        <button>myページ</button>
+        <button>ログアウト</button>
+      </div>
+    </div>
+
+    <!-- コンテンツ内部 -->
+    <div class="content-area">
+      <!-- 検索フォーム -->
+      <div class="search-box">
+        <div class="search-heading">
+          <span>基本検索</span>
+          <!-- 保存済み検索条件呼び出しリンク（基本検索のすぐ隣） -->
+          <div class="saved-conditions-container">
+            <span id="saved-conditions-link" class="toggle-advanced">検索条件呼び出し</span>
+            <div id="saved-conditions-popup" class="saved-conditions-popup">
+              <ul>
+                <li data-condition="cond1">検索条件セット1</li>
+                <li data-condition="cond2">検索条件セット2</li>
+                <li data-condition="cond3">検索条件セット3</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <form id="search-form">
+          <!-- 基本検索：常時表示 -->
+          <div class="basic-search">
+            <div>
+              <label for="tech-id">技術者ID:</label>
+              <input type="text" id="tech-id" name="techId" placeholder="例: T123">
+            </div>
+            <div>
+              <label for="tech-name">技術者名:</label>
+              <input type="text" id="tech-name" name="techName" placeholder="例: 佐藤太郎">
+            </div>
+            <div>
+              <label for="area">担当エリア:</label>
+              <input type="text" id="area" name="area" placeholder="例: 関東">
+            </div>
+          </div>
+          <!-- 詳細検索トグル（テキストリンク形式） -->
+          <span class="toggle-advanced" id="toggle-advanced">詳細検索 ▶︎</span>
+          <!-- 詳細検索：折りたたみ部分 -->
+          <div class="advanced-search" id="advanced-search">
+            <div>
+              <label for="utilization-points">利用点数:</label>
+              <input type="number" id="utilization-points" name="utilizationPoints" placeholder="例: 80">
+            </div>
+            <div>
+              <label for="desired-points">希望点数:</label>
+              <input type="number" id="desired-points" name="desiredPoints" placeholder="例: 90">
+            </div>
+            <div>
+              <label for="contract-area">受託可能エリア（市区郡）:</label>
+              <input type="text" id="contract-area" name="contractArea" placeholder="例: 横浜市">
+            </div>
+            <div>
+              <label for="returned-count">差戻し件数:</label>
+              <input type="number" id="returned-count" name="returnedCount" placeholder="例: 2">
+            </div>
+          </div>
+          <!-- 検索ボタンとお気に入り検索リンク（中央揃え） -->
+          <div class="search-button-area">
+            <button type="submit">検索</button>
+            <a href="#" class="favorite-link">お気に入り検索として保存</a>
+          </div>
+        </form>
+      </div>
+
+      <!-- 統計情報エリア -->
+      <div class="results-heading">検索結果</div>
+      <div class="stats-summary">
+        <div class="stat">
+          <span class="label">技術者数</span>
+          <span class="value">3</span>
+        </div>
+        <div class="stat">
+          <span class="label">技術者レベル平均</span>
+          <span class="value">4.5</span>
+        </div>
+        <div class="stat">
+          <span class="label">担当物件数</span>
+          <span class="value">12</span>
+        </div>
+        <div class="stat">
+          <span class="label">利用中平均点数</span>
+          <span class="value">25.6</span>
+        </div>
+        <div class="stat">
+          <span class="label">利用点数</span>
+          <span class="value">82</span>
+        </div>
+        <div class="stat">
+          <span class="label">余剰点数</span>
+          <span class="value">10</span>
+        </div>
+      </div>
+
+      <!-- 一覧件数とタイトル -->
+      <div class="title" id="list-title">
+        技術者一覧 (20件)
+      </div>
+
+      <!-- リスト上のアクション領域（アイコン + Newボタン） -->
+      <div class="list-actions">
+        <span class="icon">≡</span>
+        <span class="icon">✉</span>
+        <span class="icon">🔍</span>
+        <button class="new-button">New</button>
+      </div>
+
+      <!-- 一覧テーブル -->
+      <div class="table-container">
+        <table id="item-table">
+          <thead>
+            <tr>
+              <th>技術者ID</th>
+              <th>技術者名</th>
+              <th>担当エリア</th>
+              <th>担当物件数</th>
+              <th>利用点数</th>
+              <th>希望点数</th>
+              <th>受託可能エリア（市区郡）</th>
+              <th>差戻し件数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 以下、20件分のサンプルデータ -->
+            <tr>
+              <td>T001</td>
+              <td>佐藤太郎</td>
+              <td>関東</td>
+              <td>3</td>
+              <td>30</td>
+              <td>20</td>
+              <td>横浜市</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>T002</td>
+              <td>鈴木花子</td>
+              <td>関西</td>
+              <td>5</td>
+              <td>28</td>
+              <td>25</td>
+              <td>大阪市</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>T003</td>
+              <td>高橋健</td>
+              <td>中部</td>
+              <td>4</td>
+              <td>32</td>
+              <td>15</td>
+              <td>名古屋市</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>T004</td>
+              <td>田中一郎</td>
+              <td>関東</td>
+              <td>2</td>
+              <td>27</td>
+              <td>18</td>
+              <td>千葉市</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>T005</td>
+              <td>伊藤二郎</td>
+              <td>関西</td>
+              <td>6</td>
+              <td>33</td>
+              <td>22</td>
+              <td>神戸市</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>T006</td>
+              <td>渡辺三郎</td>
+              <td>中部</td>
+              <td>3</td>
+              <td>29</td>
+              <td>14</td>
+              <td>岐阜市</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>T007</td>
+              <td>山本四郎</td>
+              <td>関東</td>
+              <td>4</td>
+              <td>31</td>
+              <td>30</td>
+              <td>横浜市</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>T008</td>
+              <td>中村五郎</td>
+              <td>関西</td>
+              <td>5</td>
+              <td>26</td>
+              <td>16</td>
+              <td>大阪市</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>T009</td>
+              <td>小林六郎</td>
+              <td>中部</td>
+              <td>3</td>
+              <td>30</td>
+              <td>20</td>
+              <td>名古屋市</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>T010</td>
+              <td>加藤七郎</td>
+              <td>関東</td>
+              <td>2</td>
+              <td>27</td>
+              <td>19</td>
+              <td>千葉市</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>T011</td>
+              <td>吉田八郎</td>
+              <td>関西</td>
+              <td>4</td>
+              <td>32</td>
+              <td>23</td>
+              <td>神戸市</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>T012</td>
+              <td>佐々木九郎</td>
+              <td>中部</td>
+              <td>5</td>
+              <td>29</td>
+              <td>17</td>
+              <td>岐阜市</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>T013</td>
+              <td>山口十郎</td>
+              <td>関東</td>
+              <td>3</td>
+              <td>31</td>
+              <td>21</td>
+              <td>横浜市</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>T014</td>
+              <td>松本次郎</td>
+              <td>関西</td>
+              <td>4</td>
+              <td>26</td>
+              <td>12</td>
+              <td>大阪市</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>T015</td>
+              <td>井上三郎</td>
+              <td>中部</td>
+              <td>5</td>
+              <td>30</td>
+              <td>24</td>
+              <td>名古屋市</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>T016</td>
+              <td>木村四郎</td>
+              <td>関東</td>
+              <td>3</td>
+              <td>28</td>
+              <td>16</td>
+              <td>千葉市</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>T017</td>
+              <td>林五郎</td>
+              <td>関西</td>
+              <td>4</td>
+              <td>32</td>
+              <td>20</td>
+              <td>神戸市</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>T018</td>
+              <td>清水六郎</td>
+              <td>中部</td>
+              <td>3</td>
+              <td>29</td>
+              <td>15</td>
+              <td>岐阜市</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>T019</td>
+              <td>山崎七郎</td>
+              <td>関東</td>
+              <td>4</td>
+              <td>33</td>
+              <td>28</td>
+              <td>横浜市</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>T020</td>
+              <td>藤田八郎</td>
+              <td>関西</td>
+              <td>5</td>
+              <td>25</td>
+              <td>18</td>
+              <td>大阪市</td>
+              <td>1</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ページネーション -->
+      <div class="pagination">
+        <button>&laquo;</button>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>&raquo;</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // テーブルの行数に応じて一覧件数を更新
+      function updateItemCount() {
+        const tableBody = document.querySelector('#item-table tbody');
+        const rows = tableBody.querySelectorAll('tr');
+        document.getElementById('list-title').textContent = "技術者一覧 (" + rows.length + "件)";
+      }
+      updateItemCount();
+
+      // サイドバー折りたたみボタン
+      const sidebar = document.getElementById('sidebar');
+      const sidebarToggle = document.getElementById('sidebar-toggle');
+      sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        sidebarToggle.textContent = sidebar.classList.contains('collapsed') ? '>>' : '<<';
+      });
+
+      // サイドバーの各メニュー項目の折りたたみ切替
+      const menuTitles = document.querySelectorAll('.menu-title');
+      menuTitles.forEach(title => {
+        title.addEventListener('click', () => {
+          const subMenu = title.nextElementSibling;
+          const icon = title.querySelector('span');
+          if (subMenu && subMenu.classList.contains('sub-menu')) {
+            subMenu.classList.toggle('open');
+            icon.textContent = subMenu.classList.contains('open') ? '－' : '＋';
+          }
+        });
+      });
+
+      // 詳細検索の折りたたみ切替（テキストリンク）
+      const toggleAdvancedElem = document.getElementById('toggle-advanced');
+      const advancedSearch = document.getElementById('advanced-search');
+      toggleAdvancedElem.addEventListener('click', () => {
+        if (advancedSearch.style.display === 'none' || advancedSearch.style.display === '') {
+          advancedSearch.style.display = 'flex';
+          toggleAdvancedElem.textContent = '詳細検索 ▼';
+        } else {
+          advancedSearch.style.display = 'none';
+          toggleAdvancedElem.textContent = '詳細検索 ▶︎';
+        }
+      });
+
+      // 保存済み検索条件ポップアップの切り替え
+      const savedConditionsLink = document.getElementById('saved-conditions-link');
+      const savedConditionsPopup = document.getElementById('saved-conditions-popup');
+      savedConditionsLink.addEventListener('click', (e) => {
+        e.stopPropagation();
+        savedConditionsPopup.style.display = (savedConditionsPopup.style.display === 'none' || savedConditionsPopup.style.display === '')
+          ? 'block' : 'none';
+      });
+      // ポップアップ内の条件クリック時の動作（例：alert）
+      const conditionItems = savedConditionsPopup.querySelectorAll('li');
+      conditionItems.forEach(item => {
+        item.addEventListener('click', () => {
+          const condition = item.getAttribute('data-condition');
+          alert('選択された検索条件: ' + condition);
+          savedConditionsPopup.style.display = 'none';
+        });
+      });
+      // 画面の他の部分がクリックされたらポップアップを閉じる
+      document.addEventListener('click', (e) => {
+        if (!savedConditionsPopup.contains(e.target) && e.target !== savedConditionsLink) {
+          savedConditionsPopup.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>保安管理支援システム - 事業場担当変更詳細</title>
+  <style>
+    /*=== 基本レイアウト ===*/
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      font-size: 14px;
+    }
+    header, footer {
+      background-color: #f0f0f0;
+      padding: 8px 16px;
+    }
+    .container {
+      display: flex;
+      height: calc(100vh - 50px);
+    }
+    nav {
+      width: 200px;
+      background-color: #2c3e50;
+      color: #fff;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+    nav li {
+      margin: 8px 0;
+      cursor: pointer;
+    }
+    nav li:hover {
+      text-decoration: underline;
+    }
+    .main-content {
+      flex: 1;
+      padding: 16px;
+      box-sizing: border-box;
+      overflow-y: auto;
+      background-color: #fff;
+    }
+    .form-group {
+      margin: 16px 0;
+    }
+    .form-group label {
+      display: inline-block;
+      width: 120px;
+      font-weight: bold;
+    }
+    .form-group-inline {
+      display: inline-flex;
+      align-items: center;
+    }
+    .form-group-inline label {
+      width: auto;
+      margin-right: 8px;
+    }
+    table {
+      border-collapse: collapse;
+      margin-top: 8px;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: top;
+    }
+    .btn {
+      padding: 6px 12px;
+      border: none;
+      cursor: pointer;
+      margin-left: 4px;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      color: #fff;
+    }
+    .btn-success {
+      background-color: #28a745;
+      color: #fff;
+    }
+    .close-btn {
+      margin-top: 16px;
+      background-color: #ccc;
+      border: none;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+    /*=== ポップアップ ===*/
+    .popup-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .popup-content {
+      background: #fff;
+      padding: 20px;
+      width: 800px;
+      max-width: 90%;
+      border-radius: 4px;
+    }
+    .popup-content-list {
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      padding: 8px;
+      margin-top: 8px;
+    }
+    /*=== 横スクロール対応 ===*/
+    .horizontal-scroll {
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    /*=== +/−の色付け ===*/
+    .plus {
+      color: blue;
+      font-weight: bold;
+    }
+    .minus {
+      color: red;
+      font-weight: bold;
+    }
+    .annual-check {
+      background-color: #f8d7da;
+      color: #721c24;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-weight: bold;
+    }
+    /*=== ツールチップ ===*/
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: help;
+      margin-left: 8px;
+    }
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 240px;
+      background-color: #333;
+      color: #fff;
+      text-align: left;
+      padding: 8px;
+      border-radius: 4px;
+      position: absolute;
+      z-index: 9999;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -120px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+    /*=== ▼ 点数変更技術者リストを tab2 と同じ2行×2列にする ===*/
+    .small-data {
+      font-size: 0.75rem;
+      display: grid;
+      grid-template-columns: 1fr auto; /* 左:現在の点数, 右:変動量 */
+      grid-template-rows: auto auto;   /* 1行目:点数, 2行目:担当数 */
+      gap: 2px;
+    }
+    /* 年次点検のある月は背景色変更 */
+    .small-data.annual {
+      background-color: #f8d7da;
+    }
+    .row1-left {
+      font-weight: bold;
+      color: #000;
+    }
+    .row1-right {
+      text-align: right;
+      font-weight: bold;
+    }
+    .row1-right.plus { color: #007bff; }
+    .row1-right.minus { color: red; }
+    .row1-right.zero-value { color: #ccc; }
+    .row2-left {
+      font-weight: bold;
+      color: #000;
+    }
+    .row2-right {
+      text-align: right;
+      font-weight: bold;
+    }
+    .row2-right.plus { color: #007bff; }
+    .row2-right.minus { color: red; }
+    .row2-right.zero-value { color: #ccc; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>保安管理支援システム - 事業場担当変更詳細</h2>
+  <div style="float: right;">
+    <a href="#">myページ</a> |
+    <a href="#">ログアウト</a>
+  </div>
+</header>
+
+<div class="container">
+  <nav>
+    <ul>
+      <li><a href="事業場担当変更一覧.html" style="color: #fff;">一覧に戻る</a></li>
+      <li>メニュー</li>
+      <li>技術者一覧</li>
+      <li>自動サブタイン名技術者検索</li>
+      <li>案件</li>
+      <!-- ... 他のメニュー項目 ... -->
+    </ul>
+  </nav>
+
+  <div class="main-content">
+    <!-- フォーム群（既存そのまま） -->
+    <div class="form-group">
+      <label for="title">タイトル</label>
+      <input type="text" id="title" placeholder="タイトル" style="width: 300px;" value="2025年05月01日変更予定分" />
+    </div>
+    <div class="form-group">
+      <label for="applyDate">適応予定日</label>
+      <div class="tooltip" style="display: inline-block;">
+        <input type="date" id="applyDate" min="2025-05-01" placeholder="YYYY-MM-DD" />
+        <span class="tooltiptext">この日の3時にシステムで自動反映されます</span>
+      </div>
+    </div>
+    <div class="form-group form-group-inline">
+      <label for="futurePlanChange">未来の点検計画変更</label>
+      <select id="futurePlanChange">
+        <option value="有">有</option>
+        <option value="無" selected>無</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>変更事業場</label>
+      <button class="btn btn-primary show-popup" data-popup="changeSiteSearchPopup">変更事業場追加</button>
+    </div>
+
+    <!-- 追加した事業場リスト -->
+    <table>
+      <thead>
+        <tr>
+          <th>地域</th>
+          <th>事業場名</th>
+          <th>事業場コード</th>
+          <th>容量</th>
+          <th>事業場難易度</th>
+          <th>現担当技術者</th>
+          <th>担当予定技術者 (autocomplete)</th>
+          <th>担当予定開始月</th>
+        </tr>
+      </thead>
+      <tbody id="addedSitesBody">
+        <!-- 動的に追加される -->
+      </tbody>
+    </table>
+
+    <!-- ▼ 点数変更技術者リスト（表示のみ 2行×2列グリッドに） -->
+    <div class="form-group" style="margin-top: 24px;">
+      <h3>点数変更技術者</h3>
+      <div class="horizontal-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>技術者名</th>
+              <th>担当地域</th>
+              <th>希望点数</th>
+              <!-- 12ヶ月分 -->
+              <th>25年4月</th>
+              <th>25年5月</th>
+              <th>25年6月</th>
+              <th>25年7月</th>
+              <th>25年8月</th>
+              <th>25年9月</th>
+              <th>25年10月</th>
+              <th>25年11月</th>
+              <th>25年12月</th>
+              <th>26年1月</th>
+              <th>26年2月</th>
+              <th>26年3月</th>
+            </tr>
+          </thead>
+          <tbody id="scoreChangeBody">
+            <!-- JSの renderTechniciansTable() が生成 -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 保存・キャンセルボタン等 -->
+    <div style="margin-top: 16px;">
+      <button class="btn btn-success">保存</button>
+      <button class="btn">キャンセル</button>
+    </div>
+  </div>
+</div>
+
+<!-- 変更事業場追加ポップアップ（既存通り） -->
+<div id="changeSiteSearchPopup" class="popup-overlay">
+  <div class="popup-content">
+    <h3>事業場検索</h3>
+    <div class="form-group">
+      <label for="searchSiteName">事業場名</label>
+      <input type="text" id="searchSiteName" placeholder="事業場名" />
+    </div>
+    <div class="form-group">
+      <label for="searchSiteCode">事業場コード</label>
+      <input type="text" id="searchSiteCode" placeholder="事業場コード" />
+    </div>
+    <div class="form-group">
+      <label for="searchTechName">技術者名</label>
+      <input type="text" id="searchTechName" placeholder="技術者名" />
+    </div>
+    <div class="form-group">
+      <label for="searchRegion">地域</label>
+      <input type="text" id="searchRegion" placeholder="地域" />
+    </div>
+    <button class="btn btn-primary" id="searchBtn">検索</button>
+    <div class="popup-content-list">
+      <table>
+        <thead>
+          <tr>
+            <th>選択</th>
+            <th>事業場名</th>
+            <th>事業場コード</th>
+            <th>技術者名(現担当)</th>
+            <th>地域</th>
+          </tr>
+        </thead>
+        <tbody id="popupResultsBody">
+          <!-- 検索結果 -->
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top: 8px;">
+      <button class="btn btn-success" id="addSelectedBtn">選択を追加</button>
+      <button class="close-btn">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<!-- 担当予定技術者用 datalist -->
+<datalist id="technicians">
+  <option value="山田太郎"></option>
+  <option value="田中健一"></option>
+  <option value="佐藤花子"></option>
+  <option value="鈴木一郎"></option>
+  <option value="中村麻里"></option>
+</datalist>
+
+<script>
+  /*=== 年次点検実施月を固定するためのグローバルマップ ===*/
+  let annualMonthMap = {};
+
+  /*=== ダミーデータ（検索用） ===*/
+  const allSitesData = [
+    { siteName: "AAA事業場", siteCode: "ABC123", technicianName: "山田太郎", region: "東京" },
+    { siteName: "BBB事業場", siteCode: "BBB789", technicianName: "田中健一", region: "神奈川" },
+    { siteName: "CCC事業場", siteCode: "CCC456", technicianName: "佐藤花子", region: "千葉" },
+    { siteName: "DDD事業場", siteCode: "DDD321", technicianName: "鈴木一郎", region: "大阪" },
+    { siteName: "EEE事業場", siteCode: "EEE654", technicianName: "中村麻里", region: "愛知" }
+  ];
+
+  /*=== 技術者情報 (点数・地域・希望点数) ===*/
+  const technicianProfiles = {
+    "山田太郎": { region: "東京", kibo: 33 },
+    "田中健一": { region: "神奈川", kibo: 32 },
+    "佐藤花子": { region: "千葉", kibo: 29 },
+    "鈴木一郎": { region: "大阪", kibo: 31 },
+    "中村麻里": { region: "愛知", kibo: 28 }
+  };
+
+  /*=== 事業場検索 ===*/
+  function searchSites() {
+    const siteName = document.getElementById("searchSiteName").value.toLowerCase();
+    const siteCode = document.getElementById("searchSiteCode").value.toLowerCase();
+    const techName = document.getElementById("searchTechName").value.toLowerCase();
+    const region = document.getElementById("searchRegion").value.toLowerCase();
+
+    const results = allSitesData.filter(item => {
+      return (siteName === "" || item.siteName.toLowerCase().includes(siteName)) &&
+             (siteCode === "" || item.siteCode.toLowerCase().includes(siteCode)) &&
+             (techName === "" || item.technicianName.toLowerCase().includes(techName)) &&
+             (region === "" || item.region.toLowerCase().includes(region));
+    });
+
+    const tbody = document.getElementById("popupResultsBody");
+    tbody.innerHTML = "";
+    results.forEach(item => {
+      const tr = document.createElement("tr");
+
+      // 選択チェックボックス
+      const tdSelect = document.createElement("td");
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.dataset.siteName = item.siteName;
+      checkbox.dataset.siteCode = item.siteCode;
+      checkbox.dataset.techName = item.technicianName;
+      checkbox.dataset.region = item.region;
+      tdSelect.appendChild(checkbox);
+      tr.appendChild(tdSelect);
+
+      // 各セル
+      const tdSiteName = document.createElement("td");
+      tdSiteName.textContent = item.siteName;
+      const tdSiteCode = document.createElement("td");
+      tdSiteCode.textContent = item.siteCode;
+      const tdTechName = document.createElement("td");
+      tdTechName.textContent = item.technicianName;
+      const tdRegion = document.createElement("td");
+      tdRegion.textContent = item.region;
+
+      tr.appendChild(tdSiteName);
+      tr.appendChild(tdSiteCode);
+      tr.appendChild(tdTechName);
+      tr.appendChild(tdRegion);
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  /*=== 事業場を追加する処理 ===*/
+  function addSelectedSites() {
+    const checkboxes = document.querySelectorAll('#popupResultsBody input[type="checkbox"]:checked');
+    const addedSitesBody = document.getElementById("addedSitesBody");
+
+    checkboxes.forEach(box => {
+      const region = box.dataset.region;
+      const siteName = box.dataset.siteName;
+      const siteCode = box.dataset.siteCode;
+      const currentTech = box.dataset.techName;
+
+      const tr = document.createElement("tr");
+
+      // 地域
+      const tdRegion = document.createElement("td");
+      tdRegion.textContent = region;
+      // 事業場名
+      const tdSiteName = document.createElement("td");
+      tdSiteName.textContent = siteName;
+      // 事業場コード
+      const tdSiteCode = document.createElement("td");
+      tdSiteCode.textContent = siteCode;
+      // 容量
+      const tdCapacity = document.createElement("td");
+      tdCapacity.textContent = "100kW";
+      // 難易度
+      const tdDifficulty = document.createElement("td");
+      tdDifficulty.textContent = "中";
+      // 現担当技術者
+      const tdCurrentTech = document.createElement("td");
+      tdCurrentTech.textContent = currentTech;
+
+      // 担当予定技術者 (autocomplete)
+      const tdPlannedTech = document.createElement("td");
+      const inputPlannedTech = document.createElement("input");
+      inputPlannedTech.type = "text";
+      inputPlannedTech.setAttribute("list", "technicians");
+      inputPlannedTech.placeholder = "担当予定技術者";
+      // 入力が変わったら点数変更リストを再描画（既存通り）
+      inputPlannedTech.addEventListener("change", updateTechniciansList);
+      inputPlannedTech.addEventListener("input", updateTechniciansList);
+      tdPlannedTech.appendChild(inputPlannedTech);
+
+      // 担当予定開始月
+      const tdPlannedMonth = document.createElement("td");
+      const inputPlannedMonth = document.createElement("input");
+      inputPlannedMonth.type = "month";
+      inputPlannedMonth.min = "2025-05";
+      tdPlannedMonth.appendChild(inputPlannedMonth);
+
+      tr.appendChild(tdRegion);
+      tr.appendChild(tdSiteName);
+      tr.appendChild(tdSiteCode);
+      tr.appendChild(tdCapacity);
+      tr.appendChild(tdDifficulty);
+      tr.appendChild(tdCurrentTech);
+      tr.appendChild(tdPlannedTech);
+      tr.appendChild(tdPlannedMonth);
+
+      addedSitesBody.appendChild(tr);
+    });
+
+    document.getElementById("changeSiteSearchPopup").style.display = "none";
+    updateTechniciansList();
+  }
+
+  /*=== 点数変更技術者テーブルの再描画 ===*/
+  function updateTechniciansList() {
+    const addedSitesBody = document.getElementById("addedSitesBody");
+    const rows = addedSitesBody.querySelectorAll("tr");
+    const techSet = new Set();
+    rows.forEach(row => {
+      const cells = row.querySelectorAll("td");
+      // 現担当技術者（セル index=5）
+      const currentTech = cells[5].textContent.trim();
+      if (currentTech) {
+        techSet.add(currentTech);
+      }
+      // 担当予定技術者（セル index=6 の input）
+      const plannedTechInput = cells[6].querySelector("input");
+      if (plannedTechInput) {
+        const plannedTechVal = plannedTechInput.value.trim();
+        if (plannedTechVal) {
+          techSet.add(plannedTechVal);
+        }
+      }
+    });
+    // 20件に満たない場合はダミーで補う
+    while (techSet.size < 20) {
+      techSet.add("Dummy" + (techSet.size + 1));
+    }
+    renderTechniciansTable(Array.from(techSet));
+  }
+
+  /*=== 1年間で3回だけプラス/マイナスが起こり、それ以外は0になる仕組み ===*/
+  // 例：pick3ChangeMonths() で 3つの月をランダム選択（0～11）
+  function pick3ChangeMonths() {
+    const chosen = [];
+    while (chosen.length < 3) {
+      const r = Math.floor(Math.random() * 12);
+      if (!chosen.includes(r)) {
+        chosen.push(r);
+      }
+    }
+    return chosen.sort((a,b) => a-b);
+  }
+
+  /*=== テーブル描画: 技術者ごとに12ヶ月分を表示 ===*/
+  function renderTechniciansTable(techNames) {
+    const scoreChangeBody = document.getElementById("scoreChangeBody");
+    scoreChangeBody.innerHTML = "";
+
+    techNames.forEach(name => {
+      const profile = technicianProfiles[name] || { region: "不明", kibo: 20 };
+      const tr = document.createElement("tr");
+
+      // 技術者名
+      const tdName = document.createElement("td");
+      tdName.textContent = name;
+      // 担当地域
+      const tdRegion = document.createElement("td");
+      tdRegion.textContent = profile.region;
+      // 希望点数
+      const tdKibo = document.createElement("td");
+      tdKibo.textContent = profile.kibo;
+
+      tr.appendChild(tdName);
+      tr.appendChild(tdRegion);
+      tr.appendChild(tdKibo);
+
+      // 年次点検実施月は技術者ごとに一度だけ固定
+      if (annualMonthMap[name] === undefined) {
+        annualMonthMap[name] = Math.floor(Math.random() * 12);
+      }
+      const annualMonth = annualMonthMap[name];
+
+      // "1年間に3回だけ変動" 用の月を選ぶ
+      const changeMonths = pick3ChangeMonths();  // 0～11 の中から3つ
+
+      // baseScore
+      let baseScore = profile.kibo - 3;
+
+      for (let i = 0; i < 12; i++) {
+        let diff = 0;
+        if (changeMonths.includes(i)) {
+          // この月は変動あり => プラスorマイナス
+          const sign = Math.random() < 0.5 ? 1 : -1;
+          // 適度な変動幅（例：0.5～3.0）をランダム
+          const magnitude = 0.5 + Math.random() * 2.5; 
+          diff = sign * magnitude;
+        }
+        // セルを作成
+        const td = createScoreCell(baseScore, diff, i, annualMonth);
+        tr.appendChild(td);
+
+        // 次月のベース点数を加味
+        baseScore = Math.round((baseScore + diff) * 10) / 10;
+      }
+      scoreChangeBody.appendChild(tr);
+    });
+  }
+
+  /*=== createScoreCell(): 2行×2列、年次月なら背景色。かつ1行と2行の符号を一致 ===*/
+  function createScoreCell(baseScore, diff, monthIndex, annualMonth) {
+    // 1行目 (点数) と 2行目 (担当事業場数) の符号を一致させる
+    // => diff がプラスなら 2行目もプラス、マイナスなら 2行目もマイナス、0 なら両方 0
+    const newScore = Math.round((baseScore + diff) * 10) / 10;
+
+    // 担当事業場数のベース
+    const bizBase = 50;
+    // 2行目も同じ符号・大きさ => ここでは ±1 (簡易)
+    let bizDiff = 0;
+    if (Math.abs(diff) > 0.01) {
+      // プラス or マイナスを diff の符号に合わせる
+      bizDiff = diff > 0 ? 1 : -1;
+    }
+
+    const newBizVal = bizBase;  // 2行目左(数値) は固定 50 としておく
+
+    // 1行目右の表示
+    let diffClass = "";
+    let diffText = "";
+    if (Math.abs(diff) < 0.01) {
+      diffClass = "zero-value";
+      diffText = "(0)";
+    } else if (diff > 0) {
+      diffClass = "plus";
+      diffText = `(+${diff.toFixed(1)})`;
+    } else {
+      diffClass = "minus";
+      diffText = `(${diff.toFixed(1)})`;
+    }
+
+    // 2行目右の表示 => diff の符号と同じ
+    let bizDiffClass = "";
+    let bizDiffText = "";
+    if (bizDiff === 0) {
+      bizDiffClass = "zero-value";
+      bizDiffText = "(0)";
+    } else if (bizDiff > 0) {
+      bizDiffClass = "plus";
+      bizDiffText = `(+${bizDiff})`;
+    } else {
+      bizDiffClass = "minus";
+      bizDiffText = `(${bizDiff})`;
+    }
+
+    // HTML生成
+    const td = document.createElement("td");
+    td.innerHTML = `
+      <div class="small-data${monthIndex === annualMonth ? " annual" : ""}">
+        <!-- 1行目：点数 -->
+        <div class="row1-left">${newScore}</div>
+        <div class="row1-right ${diffClass}">${diffText}</div>
+        <!-- 2行目：担当数 -->
+        <div class="row2-left">${newBizVal}</div>
+        <div class="row2-right ${bizDiffClass}">${bizDiffText}</div>
+      </div>
+    `;
+    return td;
+  }
+
+  // === イベントリスナー ===
+  document.getElementById("searchBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    searchSites();
+  });
+  document.getElementById("addSelectedBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    addSelectedSites();
+  });
+  const showPopupLinks = document.querySelectorAll(".show-popup");
+  const popups = document.querySelectorAll(".popup-overlay");
+  const closeBtns = document.querySelectorAll(".close-btn");
+
+  showPopupLinks.forEach(link => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const popupId = link.getAttribute("data-popup");
+      document.getElementById(popupId).style.display = "flex";
+      searchSites(); // 検索リセット
+    });
+  });
+  closeBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      popups.forEach(popup => {
+        popup.style.display = "none";
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>お客様 &gt; 設備一括登録</title>
+  <style>
+    /* グローバルリセット */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: sans-serif;
+    }
+    body {
+      min-height: 100vh;
+      background-color: #f7f7f7;
+      display: flex;
+    }
+    /* サイドバー（メニュー）: 幅を固定 */
+    .sidebar {
+      width: 240px;
+      min-width: 240px;
+      max-width: 240px;
+      background-color: #005da8;
+      color: #fff;
+      padding: 10px;
+    }
+    .sidebar .logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .sidebar .menu {
+      list-style: none;
+    }
+    .sidebar .menu li {
+      margin: 8px 0;
+    }
+    /* メインコンテンツ全体 */
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    /* ヘッダー */
+    .header {
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .header-left .title {
+      font-size: 1rem;
+      color: #666;
+    }
+    .header-right {
+      display: flex;
+      gap: 10px;
+    }
+    .header-right button {
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      cursor: pointer;
+    }
+    .header-right button:hover {
+      background-color: #eee;
+    }
+    /* 顧客情報フォーム */
+    .customer-form {
+      padding: 10px 20px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .customer-form label {
+      font-size: 0.9rem;
+    }
+    .customer-form input {
+      padding: 4px 6px;
+      font-size: 0.9rem;
+      width: 120px;
+    }
+    .customer-form button {
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      cursor: pointer;
+    }
+    .customer-form button:hover {
+      background-color: #eee;
+    }
+    /* 3カラムレイアウト */
+    .main {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+    /* 左ペイン: 設備マスタ（全情報そのまま） */
+    .left-pane {
+      background-color: #fafafa;
+      border-right: 1px solid #ddd;
+      width: 300px;
+      min-width: 250px;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    /* 中央ペイン: ドラッグ＆ドロップツリー */
+    .right-pane {
+      background-color: #fff;
+      border-right: 1px solid #ddd;
+      width: 450px;
+      min-width: 300px;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    /* 第3ペイン: テーブル表示／個別登録フォーム */
+    .third-pane {
+      background-color: #fff;
+      flex: 1;
+      border-left: 1px solid #ddd;
+      padding: 20px;
+      overflow-x: auto;
+      overflow-y: auto;
+      white-space: nowrap;
+    }
+    .pane-title {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    /* 中央ペインのツリー操作用 */
+    .right-toolbar {
+      margin-bottom: 10px;
+      display: flex;
+      gap: 10px;
+    }
+    .right-toolbar button {
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      cursor: pointer;
+    }
+    .right-toolbar button:hover {
+      background-color: #eee;
+    }
+    /* ツリー用スタイル */
+    .tree ul {
+      list-style: none;
+      margin-left: 20px;
+    }
+    .tree li {
+      margin: 4px 0;
+      padding: 2px 4px;
+      position: relative;
+    }
+    .toggle {
+      cursor: pointer;
+      margin-right: 4px;
+      user-select: none;
+      draggable: false;
+    }
+    .node-label {
+      cursor: move;
+    }
+    .dragging {
+      opacity: 0.4;
+    }
+    .over {
+      outline: 2px dashed #000;
+    }
+    .selected {
+      background-color: #cde4ff;
+    }
+    /* カテゴリタグ */
+    .category-tag {
+      display: inline-block;
+      padding: 2px 4px;
+      border-radius: 3px;
+      margin-right: 4px;
+      font-size: 0.8rem;
+      color: #fff;
+    }
+    .category-high { background-color: #e74c3c; }
+    .category-low  { background-color: #27ae60; }
+    .category-gen  { background-color: #f39c12; }
+    .category-other{ background-color: #95a5a6; }
+    /* 空間タグ */
+    .category-space { background-color: #3498db; }
+    /* 番号表示 */
+    .node-number {
+      font-weight: bold;
+      margin-right: 4px;
+      color: #333;
+    }
+    /* 第3ペインのボタン */
+    .third-pane-toolbar {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .third-pane-toolbar button {
+      padding: 6px 12px;
+      margin-right: 5px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      cursor: pointer;
+    }
+    .third-pane-toolbar button:hover {
+      background-color: #eee;
+    }
+    /* 第3ペインのテーブル */
+    .third-pane-table {
+      width: 1300px;
+      border-collapse: collapse;
+      border: 1px solid #ccc;
+    }
+    .third-pane-table th,
+    .third-pane-table td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .col-category {
+      width: 250px;
+    }
+    .highlight {
+      background-color: #ffffcc;
+    }
+    /* 個別登録フォーム */
+    #individual-registration form > div {
+      margin-bottom: 10px;
+    }
+    #individual-registration label {
+      margin-right: 5px;
+    }
+    /* 選択設備表示 */
+    #selected-equipment-display {
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    /* 設備写真 */
+    #photo-section {
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+    #photo-container .photo-input {
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .thumbnail {
+      width: 60px;
+      height: auto;
+      display: none;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <!-- サイドバー -->
+  <div class="sidebar">
+    <div class="logo">保安管理期間システム</div>
+    <ul class="menu">
+      <li>技術者</li>
+      <li>商談</li>
+      <li>申請・届出</li>
+      <!-- 他のメニュー項目 -->
+    </ul>
+  </div>
+
+  <!-- メインコンテンツ -->
+  <div class="content-area">
+    <!-- ヘッダー -->
+    <div class="header">
+      <div class="header-left">
+        <div class="title">お客様 &gt; 設備一括登録</div>
+      </div>
+      <div class="header-right">
+        <button>通知一覧</button>
+        <button>myページ</button>
+        <button>ログアウト</button>
+      </div>
+    </div>
+
+    <!-- 顧客情報フォーム -->
+    <div class="customer-form">
+      <label for="customer-no">顧客No</label>
+      <input type="text" id="customer-no" value="10000004">
+      <button>検索</button>
+      <label for="customer-name">顧客名称</label>
+      <input type="text" id="customer-name" value="ケイティス">
+      <button>選択</button>
+    </div>
+
+    <!-- 3カラムレイアウト -->
+    <div class="main">
+      <!-- 左ペイン：全設備リスト（完全版） -->
+      <div class="left-pane">
+        <div class="pane-title">全設備リスト</div>
+        <div class="tree" id="left-tree">
+          <ul>
+            <!-- 【高圧】太陽光発電 -->
+            <li>
+              <span class="toggle">▶︎</span>
+              <span class="node-label" draggable="true">
+                <span class="category-tag category-high">高圧</span>太陽光発電
+              </span>
+              <ul style="display: none;">
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-high">高圧</span>用キュービクル
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-high">高圧</span>用変圧器
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-high">高圧</span>用CB
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-high">高圧</span>用DS
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-high">高圧</span>用LA
+                  </span>
+                </li>
+              </ul>
+            </li>
+            <!-- 【低圧】風力発電 -->
+            <li>
+              <span class="toggle">▶︎</span>
+              <span class="node-label" draggable="true">
+                <span class="category-tag category-low">低圧</span>風力発電
+              </span>
+              <ul style="display: none;">
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-low">低圧</span>用キュービクル
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-low">低圧</span>用変圧器
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-low">低圧</span>用CB
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-low">低圧</span>用DS
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-low">低圧</span>用LA
+                  </span>
+                </li>
+              </ul>
+            </li>
+            <!-- 【発電】バイオマス -->
+            <li>
+              <span class="toggle">▶︎</span>
+              <span class="node-label" draggable="true">
+                <span class="category-tag category-gen">発電</span>バイオマス
+              </span>
+              <ul style="display: none;">
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-gen">発電</span>用ボイラ
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-gen">発電</span>用タービン
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-gen">発電</span>用発電機
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-gen">発電</span>用制御盤
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-gen">発電</span>用インバータ
+                  </span>
+                </li>
+              </ul>
+            </li>
+            <!-- 【その他】地熱発電 -->
+            <li>
+              <span class="toggle">▶︎</span>
+              <span class="node-label" draggable="true">
+                <span class="category-tag category-other">その他</span>地熱発電
+              </span>
+              <ul style="display: none;">
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-other">その他</span>地熱タービン
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-other">その他</span>地熱制御盤
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-other">その他</span>地熱ポンプ
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-other">その他</span>地熱配管
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-other">その他</span>地熱回路
+                  </span>
+                </li>
+              </ul>
+            </li>
+            <!-- 【高圧】水力発電 -->
+            <li>
+              <span class="toggle">▶︎</span>
+              <span class="node-label" draggable="true">
+                <span class="category-tag category-high">高圧</span>水力発電
+              </span>
+              <ul style="display: none;">
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-high">高圧</span>水力タービン
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-high">高圧</span>水力発電機
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-high">高圧</span>水力制御盤
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-high">高圧</span>用変圧器
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-high">高圧</span>用遮断器
+                  </span>
+                </li>
+              </ul>
+            </li>
+            <!-- 【低圧】火力発電 -->
+            <li>
+              <span class="toggle">▶︎</span>
+              <span class="node-label" draggable="true">
+                <span class="category-tag category-low">低圧</span>火力発電
+              </span>
+              <ul style="display: none;">
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-low">低圧</span>火力ボイラ
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-low">低圧</span>火力タービン
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-low">低圧</span>火力制御盤
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-low">低圧</span>用変圧器
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-low">低圧</span>用遮断器
+                  </span>
+                </li>
+              </ul>
+            </li>
+            <!-- 【発電】原子力発電 -->
+            <li>
+              <span class="toggle">▶︎</span>
+              <span class="node-label" draggable="true">
+                <span class="category-tag category-gen">発電</span>原子力発電
+              </span>
+              <ul style="display: none;">
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-gen">発電</span>制御棒
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-gen">発電</span>原子炉格納容器
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-gen">発電</span>蒸気発生器
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-gen">発電</span>原子力制御盤
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-gen">発電</span>原子力用タービン
+                  </span>
+                </li>
+              </ul>
+            </li>
+            <!-- 【その他】受変電設備 -->
+            <li>
+              <span class="toggle">▶︎</span>
+              <span class="node-label" draggable="true">
+                <span class="category-tag category-other">その他</span>受変電設備
+              </span>
+              <ul style="display: none;">
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-other">その他</span>LBS
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-other">その他</span>MOF
+                  </span>
+                </li>
+                <li>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-other">その他</span>PF
+                  </span>
+                </li>
+                <li>
+                  <span class="toggle">▶︎</span>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-other">その他</span>VCB
+                  </span>
+                  <ul style="display: none;">
+                    <li>
+                      <span class="node-label" draggable="true">B1</span>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <span class="toggle">▶︎</span>
+                  <span class="node-label" draggable="true">
+                    <span class="category-tag category-other">その他</span>GCB
+                  </span>
+                  <ul style="display: none;">
+                    <li>
+                      <span class="node-label" draggable="true">OCB</span>
+                    </li>
+                    <li>
+                      <span class="node-label" draggable="true">MBB</span>
+                    </li>
+                    <li>
+                      <span class="node-label" draggable="true">ABB</span>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 中央ペイン：ドラッグ＆ドロップツリー -->
+      <div class="right-pane">
+        <div class="right-toolbar">
+          <button id="btn-add-space">空間追加</button>
+          <button id="btn-copy-equipment">設備コピー</button>
+          <button id="btn-delete-equipment">設備削除</button>
+        </div>
+        <div class="tree" id="right-tree">
+          <ul>
+            <!-- ドラッグ＆ドロップや空間追加で要素が追加されます -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- 第3ペイン：ボタン＆テーブル／個別登録フォーム -->
+      <div class="third-pane">
+        <div class="third-pane-toolbar">
+          <select id="registration-type" onchange="toggleRegistrationType()">
+            <option value="bulk" selected>一括等登録</option>
+            <option value="individual">個別登録</option>
+          </select>
+          <button onclick="alert('基準値一括設定のポップアップ例')">基準値一括設定</button>
+          <button onclick="resetAll()">リセット</button>
+          <button onclick="alert('export処理を実装してください')">export</button>
+          <button onclick="alert('保存処理を実装してください')">保存</button>
+        </div>
+        <!-- 一括登録画面 -->
+        <div id="bulk-registration">
+          <table class="third-pane-table">
+            <thead>
+              <tr>
+                <th class="col-category">カテゴリ</th>
+                <th>バー番号</th>
+                <th>設備</th>
+                <th class="highlight">計測1(W)</th>
+                <th class="highlight">計測2(Ω)</th>
+                <th class="highlight">計測3</th>
+                <th class="highlight">計測4</th>
+                <th class="highlight">計測5</th>
+                <th class="highlight">計測6</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody id="third-pane-tbody">
+              <!-- JSで動的に行生成 -->
+            </tbody>
+          </table>
+        </div>
+        <!-- 個別登録画面 -->
+        <div id="individual-registration" style="display:none;">
+          <!-- 選択設備の表示 -->
+          <div id="selected-equipment-display">
+            選択設備：<span id="selected-equipment-name">-</span>
+          </div>
+          <form id="individual-form">
+            <div>
+              <label for="eq-name">設備名:</label>
+              <input type="text" id="eq-name" name="eq-name">
+            </div>
+            <div>
+              <label for="eq-category">カテゴリ:</label>
+              <select id="eq-category" name="eq-category">
+                <option value="高圧">高圧</option>
+                <option value="低圧">低圧</option>
+                <option value="発電">発電</option>
+                <option value="その他">その他</option>
+              </select>
+            </div>
+            <div>
+              <label for="eq-detail">詳細:</label>
+              <textarea id="eq-detail" name="eq-detail" rows="3" cols="50"></textarea>
+            </div>
+            <!-- 設備写真（サムネイル表示付き、無限追加可能） -->
+            <div id="photo-section">
+              <label>設備写真:</label>
+              <div id="photo-container">
+                <div class="photo-input">
+                  <input type="file" name="eq-photo[]" accept="image/*" onchange="handlePhotoChange(event)">
+                  <img class="thumbnail" alt="サムネイル">
+                </div>
+              </div>
+              <button type="button" onclick="addPhoto()">写真追加</button>
+            </div>
+            <div>
+              <button type="submit">登録</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 折りたたみ機能
+    function initTreeToggle(container) {
+      const toggles = container.querySelectorAll('.toggle');
+      toggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+          const li = toggle.parentNode;
+          const childUl = li.querySelector('ul');
+          if (childUl) {
+            if (childUl.style.display === 'none') {
+              childUl.style.display = 'block';
+              toggle.textContent = '▼';
+            } else {
+              childUl.style.display = 'none';
+              toggle.textContent = '▶︎';
+            }
+          }
+          e.stopPropagation();
+        });
+      });
+    }
+
+    let dragSrcEl = null;
+    // ドラッグ開始
+    function handleDragStart(e) {
+      const label = e.target;
+      const li = label.closest('li');
+      if (!li) return;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', '');
+      dragSrcEl = li;
+      li.classList.add('dragging');
+    }
+    // ドラッグ終了
+    function handleDragEnd(e) {
+      const li = e.target.closest('li');
+      if (li) li.classList.remove('dragging');
+      document.querySelectorAll('.over').forEach(el => el.classList.remove('over'));
+    }
+    // dragover
+    function handleDragOver(e) {
+      if (e.preventDefault) e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      e.currentTarget.classList.add('over');
+      return false;
+    }
+    // dragleave
+    function handleDragLeave(e) {
+      e.currentTarget.classList.remove('over');
+    }
+    // drop
+    function handleDrop(e) {
+      if (e.preventDefault) e.preventDefault();
+      if (e.stopPropagation) e.stopPropagation();
+      const target = e.currentTarget;
+      target.classList.remove('over');
+
+      const leftTree = document.getElementById('left-tree');
+      const fromLeft = leftTree.contains(dragSrcEl);
+      let newElem;
+      if (fromLeft) {
+        newElem = dragSrcEl.cloneNode(true);
+        newElem.querySelectorAll('.node-label').forEach(lbl => {
+          addDnDHandlers(lbl);
+          lbl.addEventListener('click', handleSelectItem, false);
+        });
+      } else {
+        newElem = dragSrcEl;
+      }
+
+      if (target.tagName.toLowerCase() === 'li') {
+        let childUl = target.querySelector('ul');
+        if (childUl) {
+          childUl.appendChild(newElem);
+          const toggle = target.querySelector('.toggle');
+          if (toggle) {
+            toggle.textContent = '▼';
+            childUl.style.display = 'block';
+          }
+        } else {
+          target.parentNode.insertBefore(newElem, target.nextSibling);
+        }
+      } else {
+        target.appendChild(newElem);
+      }
+
+      newElem.classList.remove('dragging', 'selected');
+      newElem.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
+      newElem.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+
+      initTreeToggle(document.getElementById('right-tree'));
+      updateNumbering();
+      return false;
+    }
+    // ドロップ先設定
+    function addDropToTree(tree) {
+      tree.querySelectorAll('li, ul').forEach(elem => {
+        elem.addEventListener('dragover', handleDragOver, false);
+        elem.addEventListener('dragleave', handleDragLeave, false);
+        elem.addEventListener('drop', handleDrop, false);
+      });
+    }
+    // ドラッグハンドラ付与
+    function addDnDHandlers(label) {
+      label.addEventListener('dragstart', handleDragStart, false);
+      label.addEventListener('dragend', handleDragEnd, false);
+    }
+    // シングルセレクト＋選択設備表示更新
+    function handleSelectItem(e) {
+      e.stopPropagation();
+      document.querySelectorAll('#right-tree li.selected').forEach(li => li.classList.remove('selected'));
+      const label = e.currentTarget;
+      const li = label.closest('li');
+      if (li) {
+        li.classList.add('selected');
+        updateSelectedEquipmentDisplay(li);
+      }
+    }
+    // 選択設備を個別登録エリアに表示
+    function updateSelectedEquipmentDisplay(li) {
+      const numSpan = li.querySelector('.node-number');
+      let numbering = numSpan ? numSpan.textContent.trim() : '';
+      const labelSpan = li.querySelector('.node-label');
+      if (!labelSpan) {
+        document.getElementById('selected-equipment-name').textContent = '-';
+        return;
+      }
+      let fullText = labelSpan.textContent.trim();
+      if (numbering && fullText.startsWith(numbering)) {
+        fullText = fullText.slice(numbering.length).trim();
+      }
+      document.getElementById('selected-equipment-name').textContent = numbering + fullText;
+    }
+    // 空間追加
+    function addSpace() {
+      const name = prompt("空間の名前を入力してください");
+      if (!name) return;
+      const newLi = document.createElement('li');
+      const toggleSpan = document.createElement('span');
+      toggleSpan.className = 'toggle';
+      toggleSpan.textContent = '▶︎';
+      const labelSpan = document.createElement('span');
+      labelSpan.className = 'node-label';
+      labelSpan.innerHTML = `<span class="category-tag category-space">空間</span>${name}`;
+      labelSpan.setAttribute('draggable', 'true');
+      const childUl = document.createElement('ul');
+      childUl.style.display = 'none';
+      newLi.appendChild(toggleSpan);
+      newLi.appendChild(labelSpan);
+      newLi.appendChild(childUl);
+      addDnDHandlers(labelSpan);
+      labelSpan.addEventListener('click', handleSelectItem, false);
+      newLi.addEventListener('dragover', handleDragOver, false);
+      newLi.addEventListener('dragleave', handleDragLeave, false);
+      newLi.addEventListener('drop', handleDrop, false);
+      const selectedLi = document.querySelector('#right-tree li.selected');
+      if (!selectedLi) {
+        const rightUl = document.querySelector('#right-tree > ul');
+        rightUl.appendChild(newLi);
+      } else {
+        let cUl = selectedLi.querySelector('ul');
+        if (!cUl) {
+          cUl = document.createElement('ul');
+          cUl.style.display = 'block';
+          selectedLi.appendChild(cUl);
+        } else {
+          cUl.style.display = 'block';
+        }
+        let tSpan = selectedLi.querySelector('.toggle');
+        if (!tSpan) {
+          tSpan = document.createElement('span');
+          tSpan.className = 'toggle';
+          tSpan.textContent = '▼';
+          selectedLi.insertBefore(tSpan, selectedLi.firstChild);
+        } else {
+          tSpan.textContent = '▼';
+        }
+        cUl.appendChild(newLi);
+      }
+      initTreeToggle(document.getElementById('right-tree'));
+      updateNumbering();
+    }
+    // 設備コピー
+    function copyEquipment() {
+      const selectedLi = document.querySelector('#right-tree li.selected');
+      if (!selectedLi) {
+        alert("コピーする設備が選択されていません。");
+        return;
+      }
+      const countStr = prompt("何個コピーしますか？");
+      if (!countStr) return;
+      const count = parseInt(countStr, 10);
+      if (isNaN(count) || count <= 0) {
+        alert("正しい数字を入力してください。");
+        return;
+      }
+      const parent = selectedLi.parentNode;
+      for (let i = 0; i < count; i++) {
+        const clone = selectedLi.cloneNode(true);
+        clone.classList.remove('selected', 'dragging');
+        clone.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+        clone.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
+        clone.querySelectorAll('.node-label').forEach(lbl => {
+          lbl.addEventListener('dragstart', handleDragStart, false);
+          lbl.addEventListener('dragend', handleDragEnd, false);
+          lbl.addEventListener('click', handleSelectItem, false);
+        });
+        clone.querySelectorAll('li, ul').forEach(elem => {
+          elem.addEventListener('dragover', handleDragOver, false);
+          elem.addEventListener('dragleave', handleDragLeave, false);
+          elem.addEventListener('drop', handleDrop, false);
+        });
+        parent.insertBefore(clone, selectedLi.nextSibling);
+      }
+      initTreeToggle(document.getElementById('right-tree'));
+      updateNumbering();
+    }
+    // 設備削除
+    function deleteEquipment() {
+      const selectedLi = document.querySelector('#right-tree li.selected');
+      if (!selectedLi) {
+        alert("削除する設備が選択されていません。");
+        return;
+      }
+      if (!confirm("選択された設備を削除しますか？")) return;
+      selectedLi.parentNode.removeChild(selectedLi);
+      updateNumbering();
+      document.getElementById('selected-equipment-name').textContent = '-';
+    }
+    // 階層番号付与＋テーブル再描画
+    function updateNumbering() {
+      const rightUl = document.querySelector('#right-tree > ul');
+      if (!rightUl) return;
+      function traverseUl(ul, prefix) {
+        let index = 1;
+        const children = ul.children;
+        for (let i = 0; i < children.length; i++) {
+          const li = children[i];
+          if (li.tagName.toLowerCase() !== 'li') continue;
+          const numbering = prefix ? prefix + '.' + index : '' + index;
+          const label = li.querySelector('.node-label');
+          if (label) {
+            let numSpan = label.querySelector('.node-number');
+            if (!numSpan) {
+              numSpan = document.createElement('span');
+              numSpan.className = 'node-number';
+              label.prepend(numSpan);
+            }
+            numSpan.textContent = numbering + ' ';
+          }
+          const childUl = li.querySelector(':scope > ul');
+          if (childUl && childUl.children.length > 0) {
+            traverseUl(childUl, numbering);
+          }
+          index++;
+        }
+      }
+      traverseUl(rightUl, '');
+      updateRightTable();
+    }
+    // テーブル再描画（計測1～6）
+    function updateRightTable() {
+      const tbody = document.getElementById('third-pane-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      function traverseUl(ul) {
+        const children = ul.children;
+        for (let i = 0; i < children.length; i++) {
+          const li = children[i];
+          if (li.tagName.toLowerCase() !== 'li') continue;
+          const label = li.querySelector('.node-label');
+          if (label) {
+            const numSpan = label.querySelector('.node-number');
+            const numbering = numSpan ? numSpan.textContent.trim() : '';
+            const catSpace = label.querySelector('.category-space');
+            const catTag = label.querySelector('.category-tag:not(.category-space)');
+            let categoryText = '';
+            if (catSpace) {
+              categoryText = '空間';
+            } else if (catTag) {
+              categoryText = catTag.textContent.trim();
+            }
+            let fullText = label.textContent.trim();
+            if (fullText.startsWith(numbering)) {
+              fullText = fullText.slice(numbering.length).trim();
+            }
+            if (categoryText && fullText.startsWith(categoryText)) {
+              fullText = fullText.slice(categoryText.length).trim();
+            }
+            const tr = document.createElement('tr');
+            const tdCat = document.createElement('td');
+            tdCat.classList.add('col-category');
+            if (catSpace) {
+              tdCat.textContent = '空間';
+            } else if (catTag) {
+              tdCat.textContent = categoryText;
+            } else {
+              tdCat.textContent = '';
+            }
+            tr.appendChild(tdCat);
+            const tdNumber = document.createElement('td');
+            tdNumber.textContent = numbering;
+            tr.appendChild(tdNumber);
+            const tdEquip = document.createElement('td');
+            if (catSpace) {
+              tdEquip.textContent = fullText;
+            } else if (catTag) {
+              tdEquip.textContent = fullText;
+            } else {
+              const inputEquip = document.createElement('input');
+              inputEquip.type = 'text';
+              inputEquip.value = fullText;
+              inputEquip.style.width = '120px';
+              tdEquip.appendChild(inputEquip);
+            }
+            tr.appendChild(tdEquip);
+            for (let m = 1; m <= 6; m++) {
+              const tdM = document.createElement('td');
+              tdM.classList.add('highlight');
+              if (catSpace) {
+                tdM.textContent = '';
+              } else {
+                const inp = document.createElement('input');
+                inp.type = 'text';
+                if (m === 1) inp.placeholder = 'W';
+                else if (m === 2) inp.placeholder = 'Ω';
+                else inp.placeholder = `計測${m}`;
+                inp.style.width = '80px';
+                tdM.appendChild(inp);
+              }
+              tr.appendChild(tdM);
+            }
+            const tdNote = document.createElement('td');
+            if (catSpace) {
+              tdNote.textContent = '';
+            } else {
+              const inpNote = document.createElement('input');
+              inpNote.type = 'text';
+              inpNote.placeholder = '備考';
+              inpNote.style.width = '120px';
+              tdNote.appendChild(inpNote);
+            }
+            tr.appendChild(tdNote);
+            tbody.appendChild(tr);
+          }
+          const childUl = li.querySelector(':scope > ul');
+          if (childUl && childUl.children.length > 0) {
+            traverseUl(childUl);
+          }
+        }
+      }
+      traverseUl(document.querySelector('#right-tree > ul'));
+    }
+    // リセットボタン
+    function resetAll() {
+      const rightUl = document.querySelector('#right-tree > ul');
+      rightUl.innerHTML = '';
+      document.getElementById('third-pane-tbody').innerHTML = '';
+      document.getElementById('selected-equipment-name').textContent = '-';
+    }
+
+    // 登録画面切替
+    function toggleRegistrationType() {
+      var type = document.getElementById('registration-type').value;
+      if (type === 'bulk') {
+        document.getElementById('bulk-registration').style.display = '';
+        document.getElementById('individual-registration').style.display = 'none';
+      } else {
+        document.getElementById('bulk-registration').style.display = 'none';
+        document.getElementById('individual-registration').style.display = '';
+      }
+    }
+
+    // 設備写真の追加（無限追加＋サムネイル表示）
+    function addPhoto() {
+      var container = document.getElementById('photo-container');
+      var newDiv = document.createElement('div');
+      newDiv.className = 'photo-input';
+      var input = document.createElement('input');
+      input.type = 'file';
+      input.name = 'eq-photo[]';
+      input.accept = 'image/*';
+      input.setAttribute('onchange', 'handlePhotoChange(event)');
+      var thumb = document.createElement('img');
+      thumb.className = 'thumbnail';
+      thumb.alt = 'サムネイル';
+      newDiv.appendChild(input);
+      newDiv.appendChild(thumb);
+      container.appendChild(newDiv);
+    }
+
+    // ファイル選択時にサムネイル表示
+    function handlePhotoChange(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const img = e.target.parentNode.querySelector('.thumbnail');
+        if (img) {
+          img.src = ev.target.result;
+          img.style.display = 'inline-block';
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initTreeToggle(document.getElementById('left-tree'));
+      initTreeToggle(document.getElementById('right-tree'));
+      addDropToTree(document.getElementById('right-tree'));
+      document.querySelectorAll('#left-tree .node-label').forEach(label => {
+        addDnDHandlers(label);
+      });
+      document.getElementById('btn-add-space').addEventListener('click', addSpace);
+      document.getElementById('btn-copy-equipment').addEventListener('click', copyEquipment);
+      document.getElementById('btn-delete-equipment').addEventListener('click', deleteEquipment);
+      updateNumbering();
+    });
+  </script>
+</body>
+</html>
