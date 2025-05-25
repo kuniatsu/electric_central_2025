@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>点検報告詳細 | 顧客ポータル</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#082f49',
+            },
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen">
+  <!-- ヘッダー -->
+  <header class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <a href="index.html" class="text-xl font-bold text-primary-600">電気保安 顧客ポータル</a>
+        </div>
+        <div class="flex items-center space-x-4">
+          <button type="button" class="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none">
+            <span class="sr-only">通知を見る</span>
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+          </button>
+          <div class="flex items-center">
+            <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="ユーザーアバター">
+            <span class="ml-2 text-sm font-medium text-gray-700">株式会社サンプル</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ナビゲーション -->
+  <nav class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-12">
+        <div class="flex">
+          <a href="index.html" class="inline-flex items-center px-3 py-2 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+            ホーム
+          </a>
+          <a href="#" class="inline-flex items-center px-3 py-2 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+            契約情報
+          </a>
+          <a href="設備詳細.html" class="inline-flex items-center px-3 py-2 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+            設備情報
+          </a>
+          <a href="#" class="inline-flex items-center px-3 py-2 border-b-2 border-primary-500 text-sm font-medium text-primary-600">
+            点検報告
+          </a>
+          <a href="#" class="inline-flex items-center px-3 py-2 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+            お知らせ
+          </a>
+          <a href="#" class="inline-flex items-center px-3 py-2 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+            問い合わせ
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- パンくずリスト -->
+  <div class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+      <nav class="flex" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-2">
+          <li>
+            <div>
+              <a href="index.html" class="text-gray-400 hover:text-gray-500">
+                <svg class="flex-shrink-0 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                </svg>
+              </a>
+            </div>
+          </li>
+          <li>
+            <div class="flex items-center">
+              <svg class="flex-shrink-0 h-5 w-5 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
+              </svg>
+              <a href="#" class="ml-2 text-sm font-medium text-gray-500 hover:text-gray-700">点検報告一覧</a>
+            </div>
+          </li>
+          <li>
+            <div class="flex items-center">
+              <svg class="flex-shrink-0 h-5 w-5 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
+              </svg>
+              <span class="ml-2 text-sm font-medium text-gray-500">点検報告詳細</span>
+            </div>
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- メインコンテンツ -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+      <!-- 点検報告ヘッダー -->
+      <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 class="text-lg leading-6 font-medium text-gray-900">点検報告書</h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">本社ビル キュービクル 月次点検</p>
+          </div>
+          <div class="flex space-x-3">
+            <button type="button" class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none">
+              <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              PDFダウンロード
+            </button>
+            <button type="button" class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none">
+              <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              カレンダーに追加
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 点検基本情報 -->
+      <div class="border-b border-gray-200 px-4 py-5 sm:px-6">
+        <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 md:grid-cols-3">
+          <div>
+            <dt class="text-sm font-medium text-gray-500">点検ID</dt>
+            <dd class="mt-1 text-sm text-gray-900">INS-2025-0115</dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500">点検日</dt>
+            <dd class="mt-1 text-sm text-gray-900">2025年4月25日</dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500">点検時間</dt>
+            <dd class="mt-1 text-sm text-gray-900">9:00 - 11:00</dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500">点検種別</dt>
+            <dd class="mt-1 text-sm text-gray-900">月次点検</dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500">点検担当者</dt>
+            <dd class="mt-1 text-sm text-gray-900">山田 太郎</dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500">総合判定</dt>
+            <dd class="mt-1 text-sm text-gray-900">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                良好
+              </span>
+            </dd>
+          </div>
+        </dl>
+      </div>
+      
+      <!-- 点検対象設備 -->
+      <div class="border-b border-gray-200 px-4 py-5 sm:px-6">
+        <h4 class="text-base font-medium text-gray-900 mb-4">点検対象設備</h4>
+        <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 md:grid-cols-3">
+          <div>
+            <dt class="text-sm font-medium text-gray-500">設備名</dt>
+            <dd class="mt-1 text-sm text-gray-900">本社ビル キュービクル</dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500">設備ID</dt>
+            <dd class="mt-1 text-sm text-gray-900">EQ-2023-0001</dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500">設備種別</dt>
+            <dd class="mt-1 text-sm text-gray-900">高圧受電設備</dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500">設置場所</dt>
+            <dd class="mt-1 text-sm text-gray-900">本社ビル 1階 電気室</dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500">メーカー</dt>
+            <dd class="mt-1 text-sm text-gray-900">電気機器株式会社</dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500">設置日</dt>
+            <dd class="mt-1 text-sm text-gray-900">2020年4月1日</dd>
+          </div>
+        </dl>
+      </div>
+      
+      <!-- 点検結果サマリー -->
+      <div class="border-b border-gray-200 px-4 py-5 sm:px-6">
+        <h4 class="text-base font-medium text-gray-900 mb-4">点検結果サマリー</h4>
+        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg mb-6">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">点検項目カテゴリ</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">点検項目数</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">良好</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">注意</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">要対応</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <tr>
+                <td class="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">外観点検</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">10</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">10</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">0</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">0</td>
+              </tr>
+              <tr>
+                <td class="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">機械的動作点検</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">5</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">4</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">1</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">0</td>
+              </tr>
+              <tr>
+                <td class="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">電気的特性点検</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">8</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">7</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">1</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">0</td>
+              </tr>
+              <tr>
+                <td class="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">保護装置点検</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">6</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">6</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">0</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">0</td>
+              </tr>
+              <tr>
+                <td class="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">環境点検</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">4</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">3</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">1</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">0</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="bg-gray-50">
+                <th scope="row" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">合計</th>
+                <td class="whitespace-nowrap px-3 py-3.5 text-sm font-semibold text-gray-900">33</td>
+                <td class="whitespace-nowrap px-3 py-3.5 text-sm font-semibold text-gray-900">30</td>
+                <td class="whitespace-nowrap px-3 py-3.5 text-sm font-semibold text-gray-900">3</td>
+                <td class="whitespace-nowrap px-3 py-3.5 text-sm font-semibold text-gray-900">0</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        
+        <!-- グラフ表示（プレースホルダー） -->
+        <div class="bg-gray-50 rounded-lg p-4 flex justify-center items-center">
+          <div class="text-center">
+            <div class="flex justify-center space-x-8">
+              <!-- 円グラフ（プレースホルダー） -->
+              <div class="w-40 h-40 rounded-full border-8 border-primary-500 relative flex items-center justify-center">
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="text-center">
+                    <div class="text-3xl font-bold text-primary-600">91%</div>
+                    <div class="text-xs text-gray-500">良好</div>
+                  </div>
+                </div>
+                <div class="absolute top-0 right-0 w-10 h-10 rounded-full border-4 border-yellow-400 bg-white transform translate-x-1/4 -translate-y-1/4 flex items-center justify-center">
+                  <span class="text-xs font-bold">9%</span>
+                </div>
+              </div>
+              
+              <!-- 棒グラフ（プレースホルダー） -->
+              <div class="flex items-end space-x-4 h-40">
+                <div class="flex flex-col items-center">
+                  <div class="w-12 bg-green-500 rounded-t" style="height: 100px;"></div>
+                  <div class="mt-2 text-xs">良好</div>
+                  <div class="text-xs font-bold">30</div>
+                </div>
+                <div class="flex flex-col items-center">
+                  <div class="w-12 bg-yellow-500 rounded-t" style="height: 10px;"></div>
+                  <div class="mt-2 text-xs">注意</div>
+                  <div class="text-xs font-bold">3</div>
+                </div>
+                <div class="flex flex-col items-center">
+                  <div class="w-12 bg-red-500 rounded-t" style="height: 0px;"></div>
+                  <div class="mt-2 text-xs">要対応</div>
+                  <div class="text-xs font-bold">0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 指摘事項 -->
+      <div class="border-b border-gray-200 px-4 py-5 sm:px-6">
+        <h4 class="text-base font-medium text-gray-900 mb-4">指摘事項</h4>
+        <div class="space-y-4">
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-yellow-800">遮断器操作機構の動作音に異常</h3>
+                <div class="mt-2 text-sm text-yellow-700">
+                  <p>遮断器操作機構の動作時に通常より大きな音がします。現時点では動作に問題はありませんが、次回の点検までに注油を推奨します。</p>
+                </div>
+                <div class="mt-2">
+                  <div class="flex items-center">
+                    <img src="https://images.unsplash.com/photo-1579548122080-c35fd6820ecb?ixlib=rb-1.2.1&auto=format&fit=crop&w=2850&q=80" alt="点検写真" class="h-24 w-32 object-cover rounded">
+                    <div class="ml-4">
+                      <p class="text-sm text-yellow-700">推奨対応: 注油・グリスアップ</p>
+                      <p class="text-sm text-yellow-700">対応期限: 次回点検まで</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-yellow-800">変圧器周辺の埃の蓄積</h3>
+                <div class="mt-2 text-sm text-yellow-700">
+                  <p>変圧器周辺に埃が蓄積しています。現時点では温度上昇等の問題は見られませんが、放熱性低下の原因となる可能性があります。清掃を推奨します。</p>
+                </div>
+                <div class="mt-2">
+                  <div class="flex items-center">
+                    <img src="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?ixlib=rb-1.2.1&auto=format&fit=crop&w=2850&q=80" alt="点検写真" class="h-24 w-32 object-cover rounded">
+                    <div class="ml-4">
+                      <p class="text-sm text-yellow-700">推奨対応: 清掃</p>
+                      <p class="text-sm text-yellow-700">対応期限: 1ヶ月以内</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-yellow-800">電気室内の湿度が高い</h3>
+                <div class="mt-2 text-sm text-yellow-700">
+                  <p>電気室内の湿度が65%と推奨値（60%以下）よりやや高くなっています。長期的には機器の劣化を早める可能性があります。除湿器の設置または換気の改善を検討してください。</p>
+                </div>
+                <div class="mt-2">
+                  <div class="flex items-center">
+                    <div class="ml-4">
+                      <p class="text-sm text-yellow-700">推奨対応: 除湿器設置または換気改善</p>
+                      <p class="text-sm text-yellow-700">対応期限: 3ヶ月以内</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 測定データ -->
+      <div class="border-b border-gray-200 px-4 py-5 sm:px-6">
+        <h4 class="text-base font-medium text-gray-900 mb-4">測定データ</h4>
+        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">測定項目</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">測定値</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">基準値</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">判定</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <tr>
+                <td class="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">絶縁抵抗値（高圧側）</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">1000MΩ以上</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">100MΩ以上</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    良好
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td class="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">絶縁抵抗値（低圧側）</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">200MΩ</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">5MΩ以上</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    良好
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td class="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">接地抵抗値</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">8.5Ω</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">10Ω以下</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    良好
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td class="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">変圧器温度</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">65℃</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">80℃以下</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    良好
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td class="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">負荷電流（R相）</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">120A</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">200A以下</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    良好
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td class="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">負荷電流（S相）</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">115A</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">200A以下</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    良好
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td class="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">負荷電流（T相）</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">125A</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">200A以下</td>
+                <td class="whitespace-nowrap px-3 py-3 text-sm text-gray-500">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    良好
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- 点検者コメント -->
+      <div class="px-4 py-5 sm:px-6">
+        <h4 class="text-base font-medium text-gray-900 mb-4">点検者コメント</h4>
+        <div class="bg-gray-50 rounded-lg p-4">
+          <p class="text-sm text-gray-700">
+            今回の点検では、全体的に設備の状態は良好でした。いくつかの軽微な指摘事項がありますが、いずれも早急な対応が必要なものではありません。ただし、変圧器周辺の埃については、次回点検までに清掃されることをお勧めします。また、電気室内の湿度が高めなので、長期的な設備保全の観点から、除湿対策を検討されることをお勧めします。
+            <br><br>
+            次回点検は2025年5月25日を予定しています。何かご不明な点がございましたら、お気軽にお問い合わせください。
+          </p>
+          <div class="mt-4 flex items-center">
+            <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="点検者アバター">
+            <div class="ml-3">
+              <p class="text-sm font-medium text-gray-900">山田 太郎</p>
+              <p class="text-xs text-gray-500">電気主任技術者 第二種</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- アクションボタン -->
+    <div class="mt-6 flex justify-between">
+      <a href="#" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none">
+        <svg class="h-5 w-5 mr-2 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        点検報告一覧に戻る
+      </a>
+      <div class="flex space-x-3">
+        <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none">
+          <svg class="h-5 w-5 mr-2 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          問い合わせする
+        </button>
+        <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none">
+          <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+          </svg>
+          指摘事項に対応する
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- フッター -->
+  <footer class="bg-white mt-12">
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 border-t border-gray-200">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="flex items-center">
+          <span class="text-sm text-gray-500">© 2025 電気保安管理システム All rights reserved.</span>
+        </div>
+        <div class="mt-4 md:mt-0">
+          <div class="flex space-x-6">
+            <a href="#" class="text-gray-400 hover:text-gray-500">
+              <span class="sr-only">プライバシーポリシー</span>
+              <span class="text-sm">プライバシーポリシー</span>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-gray-500">
+              <span class="sr-only">利用規約</span>
+              <span class="text-sm">利用規約</span>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-gray-500">
+              <span class="sr-only">お問い合わせ</span>
+              <span class="text-sm">お問い合わせ</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

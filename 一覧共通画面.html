@@ -2,311 +2,344 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>メニュー＋ヘッダーのみ</title>
-  <style>
-    /* 全体リセット */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: sans-serif;
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>電気保安管理システム - ダッシュボード</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#082f49',
+            },
+          }
+        }
+      }
     }
-    body {
-      display: flex;
-      min-height: 100vh;
-      background-color: #f7f7f7;
-    }
-
-    /*────────────────────────────
-      左側サイドバー（折りたたみ機能付き）
-    ─────────────────────────────*/
-    .sidebar {
-      position: relative;
-      z-index: 9999;
-      width: 240px;
-      background-color: #005da8;
-      color: #fff;
-      padding: 0 10px 20px;
-      display: flex;
-      flex-direction: column;
-      transition: width 0.3s ease;
-    }
-    .sidebar.collapsed {
-      width: 40px;
-    }
-    .sidebar.collapsed .logo,
-    .sidebar.collapsed .menu-header,
-    .sidebar.collapsed .menu,
-    .sidebar.collapsed .collapsible {
-      display: none;
-    }
-    .sidebar-toggle {
-      background-color: #004080;
-      color: #fff;
-      text-align: center;
-      padding: 5px 0;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-    .sidebar .logo {
-      text-align: center;
-      font-size: 1.3rem;
-      font-weight: bold;
-      margin: 20px 0;
-      line-height: 1.4;
-    }
-    .menu-header {
-      font-size: 1.1rem;
-      margin-bottom: 10px;
-      padding-left: 10px;
-    }
-    .menu {
-      list-style: none;
-      padding-left: 0;
-    }
-    .menu-item {
-      margin-bottom: 8px;
-    }
-    .menu-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: none;
-      border: none;
-      width: 100%;
-      text-align: left;
-      padding: 8px 10px;
-      color: #fff;
-      font-size: 0.95rem;
-      cursor: pointer;
-    }
-    .menu-title:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-    .sub-menu {
-      list-style: none;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-      padding-left: 15px;
-    }
-    .sub-menu.open {
-      max-height: 500px;
-    }
-    .sub-menu li a {
-      display: block;
-      padding: 6px 10px;
-      font-size: 0.9rem;
-      color: #fff;
-      text-decoration: none;
-    }
-    .sub-menu li a:hover {
-      background-color: rgba(255, 255, 255, 0.15);
-    }
-    .collapsible {
-      border-top: 1px solid rgba(255,255,255,0.3);
-      padding-top: 10px;
-      margin-top: 20px;
-    }
-    .collapsible-content {
-      display: none;
-      margin-top: 10px;
-      font-size: 0.9rem;
-      color: #eee;
-      padding-left: 10px;
-    }
-
-    /*────────────────────────────
-      メインコンテンツ領域（ヘッダーのみ）
-    ─────────────────────────────*/
-    .main-content {
-      position: relative;
-      z-index: 1;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    .top-bar {
-      background-color: #fff;
-      border-bottom: 1px solid #ddd;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .top-bar .location {
-      font-size: 1rem;
-      color: #666;
-    }
-    .top-bar .button-group {
-      display: flex;
-      gap: 10px;
-    }
-    .top-bar button {
-      padding: 6px 12px;
-      font-size: 0.9rem;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      cursor: pointer;
-    }
-    .top-bar button:hover {
-      background-color: #eee;
-    }
-  </style>
+  </script>
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen flex">
   <!-- 左側サイドバー -->
-  <div class="sidebar" id="sidebar">
+  <div class="sidebar bg-primary-800 text-white w-60 flex flex-col transition-all duration-300 ease-in-out z-50" id="sidebar">
     <!-- 折りたたみボタン -->
-    <div class="sidebar-toggle" id="sidebar-toggle"><<</div>
-    <div class="logo">保安管理期間システム</div>
-    <div class="menu-header">メニュー</div>
-    <ul class="menu">
+    <div class="bg-primary-900 text-white text-center py-2 cursor-pointer text-sm" id="sidebar-toggle">&lt;&lt;</div>
+    <div class="text-center text-xl font-bold my-5 leading-tight">電気保安管理システム</div>
+    <div class="text-lg mb-3 pl-3">メニュー</div>
+    <ul class="menu space-y-1">
       <!-- 技術者グループ -->
-      <li class="menu-item">
-        <button class="menu-title">技術者 <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">技術者一覧</a></li>
-          <li><a href="#">物件アサイン＆技術者点数推移</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          技術者 <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="技術者一覧.html" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">技術者一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">物件アサイン＆技術者点数推移</a></li>
         </ul>
       </li>
       <!-- 商談グループ -->
-      <li class="menu-item">
-        <button class="menu-title">商談 <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">商談一覧</a></li>
-          <li><a href="#">工事見積依頼一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          商談 <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">商談一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">工事見積依頼一覧</a></li>
         </ul>
       </li>
       <!-- 申請・届出グループ -->
-      <li class="menu-item">
-        <button class="menu-title">申請・届出 <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">申請/届出一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          申請・届出 <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">申請/届出一覧</a></li>
         </ul>
       </li>
       <!-- 顧客グループ -->
-      <li class="menu-item">
-        <button class="menu-title">顧客 <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">顧客一覧</a></li>
-          <li><a href="#">取引先一覧</a></li>
-          <li><a href="#">契約一覧</a></li>
-          <li><a href="#">契約承認一覧</a></li>
-          <li><a href="#">物件一覧</a></li>
-          <li><a href="#">設備一覧</a></li>
-          <li><a href="#">設備一括登録</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          顧客 <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">顧客一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">取引先一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">契約一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">契約承認一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">物件一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">設備一覧</a></li>
+          <li><a href="設備一括登録.html" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">設備一括登録</a></li>
         </ul>
       </li>
       <!-- 点検グループ -->
-      <li class="menu-item">
-        <button class="menu-title">点検 <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">点検日程一覧</a></li>
-          <li><a href="#">対応不可日時登録</a></li>
-          <li><a href="#">点検日程自動登録一覧</a></li>
-          <li><a href="#">点検日程自動登録詳細</a></li>
-          <li><a href="#">点検計画一覧</a></li>
-          <li><a href="#">点検実施</a></li>
-          <li><a href="#">点検報告一覧</a></li>
-          <li><a href="#">差し戻し履歴一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          点検 <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">点検日程一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">対応不可日時登録</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">点検日程自動登録一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">点検日程自動登録詳細</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">点検計画一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">点検実施</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">点検報告一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">差し戻し履歴一覧</a></li>
         </ul>
       </li>
       <!-- 24時間監視グループ -->
-      <li class="menu-item">
-        <button class="menu-title">24時間監視 <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">監視装置一覧</a></li>
-          <li><a href="#">地図-位置情報</a></li>
-          <li><a href="#">監視ログ一覧</a></li>
-          <li><a href="#">監視装置設定</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          24時間監視 <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">監視装置一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">地図-位置情報</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">監視ログ一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">監視装置設定</a></li>
         </ul>
       </li>
       <!-- お知らせ -->
-      <li class="menu-item">
-        <button class="menu-title">お知らせ <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">お知らせ一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          お知らせ <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">お知らせ一覧</a></li>
         </ul>
       </li>
       <!-- 問い合わせ -->
-      <li class="menu-item">
-        <button class="menu-title">問い合わせ <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">問い合わせ一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          問い合わせ <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">問い合わせ一覧</a></li>
         </ul>
       </li>
       <!-- ナレッジ・共有 -->
-      <li class="menu-item">
-        <button class="menu-title">ナレッジ・共有 <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">マニュアル一覧</a></li>
-          <li><a href="#">技術者掲示板一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          ナレッジ・共有 <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">マニュアル一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">技術者掲示板一覧</a></li>
         </ul>
       </li>
       <!-- 購買・備品管理 -->
-      <li class="menu-item">
-        <button class="menu-title">購買・備品管理 <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">資産備品管理一覧</a></li>
-          <li><a href="#">試験機管理一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          購買・備品管理 <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">資産備品管理一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">試験機管理一覧</a></li>
         </ul>
       </li>
       <!-- 販売管理 -->
-      <li class="menu-item">
-        <button class="menu-title">販売管理 <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">請求一覧</a></li>
-          <li><a href="#">支払い一覧</a></li>
-          <li><a href="#">売上一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          販売管理 <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">請求一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">支払い一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">売上一覧</a></li>
         </ul>
       </li>
       <!-- マスタ -->
-      <li class="menu-item">
-        <button class="menu-title">マスタ <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">単価一覧</a></li>
-          <li><a href="#">設備作成マスタ一覧</a></li>
-          <li><a href="#">フォーマット一覧</a></li>
-          <li><a href="#">メールテンプレート一覧</a></li>
-          <li><a href="#">点検報告文例一覧</a></li>
-          <li><a href="#">換算値一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          マスタ <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">単価一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">設備作成マスタ一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">フォーマット一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">メールテンプレート一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">点検報告文例一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">換算値一覧</a></li>
         </ul>
       </li>
       <!-- ユーザー -->
-      <li class="menu-item">
-        <button class="menu-title">ユーザー <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">ユーザー一覧</a></li>
-          <li><a href="#">グループ権限一覧</a></li>
-          <li><a href="#">顧客アカウント一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          ユーザー <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">ユーザー一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">グループ権限一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">顧客アカウント一覧</a></li>
         </ul>
       </li>
       <!-- システム -->
-      <li class="menu-item">
-        <button class="menu-title">システム <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">外部連携</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          システム <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">外部連携</a></li>
         </ul>
       </li>
     </ul>
-    <div class="collapsible">
-      <div class="collapsible-content">
-        <p>追加情報1</p>
-        <p>追加情報2</p>
-        <p>追加情報3</p>
-      </div>
+    <div class="mt-auto pt-4 border-t border-primary-700 mt-4 px-3">
+      <p class="text-sm text-primary-200">ログインユーザー: 管理者</p>
+      <p class="text-xs text-primary-300 mt-1">最終ログイン: 2025/05/25 15:00</p>
     </div>
   </div>
 
-  <!-- メインコンテンツ領域 (ヘッダーのみ表示) -->
-  <div class="main-content">
-    <div class="top-bar">
-      <div class="location">1 depth &gt; 2 depth</div>
-      <div class="button-group">
-        <button>通知一覧</button>
-        <button>myページ</button>
-        <button>ログアウト</button>
+  <!-- メインコンテンツ領域 -->
+  <div class="flex-1 flex flex-col">
+    <!-- ヘッダー -->
+    <div class="bg-white border-b border-gray-200 py-3 px-6 flex items-center justify-between shadow-sm">
+      <div class="flex items-center">
+        <span class="text-gray-600">ダッシュボード</span>
+      </div>
+      <div class="flex items-center space-x-3">
+        <button class="flex items-center px-3 py-1.5 text-sm border border-gray-300 rounded hover:bg-gray-50">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+          通知一覧
+        </button>
+        <button class="flex items-center px-3 py-1.5 text-sm border border-gray-300 rounded hover:bg-gray-50">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          マイページ
+        </button>
+        <a href="login.html" class="flex items-center px-3 py-1.5 text-sm border border-gray-300 rounded hover:bg-gray-50">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+          ログアウト
+        </a>
+      </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="flex-1 p-6 overflow-auto">
+      <!-- ダッシュボードコンテンツ -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- 本日の点検予定 -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden col-span-2">
+          <div class="bg-primary-700 text-white px-4 py-3 flex justify-between items-center">
+            <h2 class="font-medium">本日の点検予定</h2>
+            <span class="text-sm">2025年5月25日</span>
+          </div>
+          <div class="p-4">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr>
+                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">時間</th>
+                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">顧客名</th>
+                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">物件名</th>
+                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">担当技術者</th>
+                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ステータス</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr>
+                  <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">09:00-10:30</td>
+                  <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">株式会社ABC商事</td>
+                  <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">ABC本社ビル</td>
+                  <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">山田太郎</td>
+                  <td class="px-3 py-2 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">完了</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">11:00-12:30</td>
+                  <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">株式会社DEF工業</td>
+                  <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">DEF第二工場</td>
+                  <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">佐藤次郎</td>
+                  <td class="px-3 py-2 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">実施中</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">14:00-16:00</td>
+                  <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">GHI物流株式会社</td>
+                  <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">GHI東京倉庫</td>
+                  <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">鈴木三郎</td>
+                  <td class="px-3 py-2 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">未実施</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">16:30-18:00</td>
+                  <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">JKL電機株式会社</td>
+                  <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">JKL本社</td>
+                  <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">田中四郎</td>
+                  <td class="px-3 py-2 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">未実施</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="bg-gray-50 px-4 py-3 text-right">
+            <a href="#" class="text-primary-600 hover:text-primary-800 text-sm font-medium">すべての予定を表示 →</a>
+          </div>
+        </div>
+
+        <!-- 未対応の指摘事項 -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <div class="bg-red-600 text-white px-4 py-3">
+            <h2 class="font-medium">未対応の指摘事項</h2>
+          </div>
+          <div class="p-4">
+            <ul class="divide-y divide-gray-200">
+              <li class="py-3">
+                <div class="flex justify-between">
+                  <span class="text-sm font-medium text-gray-900">ABC本社ビル</span>
+                  <span class="text-xs text-red-600 font-medium">緊急</span>
+                </div>
+                <p class="text-sm text-gray-600 mt-1">分電盤内部の配線接続部に緩みがあります。</p>
+                <div class="mt-1 flex justify-between items-center">
+                  <span class="text-xs text-gray-500">2025/05/20 報告</span>
+                  <a href="#" class="text-xs text-primary-600 hover:text-primary-800">詳細</a>
+                </div>
+              </li>
+              <li class="py-3">
+                <div class="flex justify-between">
+                  <span class="text-sm font-medium text-gray-900">DEF第二工場</span>
+                  <span class="text-xs text-orange-600 font-medium">要対応</span>
+                </div>
+                <p class="text-sm text-gray-600 mt-1">非常用照明の一部が点灯しません。</p>
+                <div class="mt-1 flex justify-between items-center">
+                  <span class="text-xs text-gray-500">2025/05/18 報告</span>
+                  <a href="#" class="text-xs text-primary-600 hover:text-primary-800">詳細</a>
+                </div>
+              </li>
+              <li class="py-3">
+                <div class="flex justify-between">
+                  <span class="text-sm font-medium text-gray-900">GHI東京倉庫</span>
+                  <span class="text-xs text-yellow-600 font-medium">要注意</span>
+                </div>
+                <p class="text-sm text-gray-600 mt-1">屋外キュービクル周辺の除草が必要です。</p>
+                <div class="mt-1 flex justify-between items-center">
+                  <span class="text-xs text-gray-500">2025/05/15 報告</span>
+                  <a href="#" class="text-xs text-primary-600 hover:text-primary-800">詳細</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="bg-gray-50 px-4 py-3 text-right">
+            <a href="#" class="text-primary-600 hover:text-primary-800 text-sm font-medium">すべての指摘事項を表示 →</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -317,19 +350,27 @@
       const sidebar = document.getElementById('sidebar');
       const sidebarToggle = document.getElementById('sidebar-toggle');
       sidebarToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('collapsed');
-        sidebarToggle.textContent = sidebar.classList.contains('collapsed') ? '>>' : '<<';
+        sidebar.classList.toggle('w-60');
+        sidebar.classList.toggle('w-10');
+        const isCollapsed = !sidebar.classList.contains('w-60');
+        sidebarToggle.textContent = isCollapsed ? '>>' : '<<';
+        
+        // 子要素の表示/非表示
+        const elementsToToggle = sidebar.querySelectorAll('.sidebar > *:not(#sidebar-toggle)');
+        elementsToToggle.forEach(el => {
+          el.classList.toggle('hidden', isCollapsed);
+        });
       });
 
       // サイドバーの各メニュー項目の折りたたみ切替
-      const menuTitles = document.querySelectorAll('.menu-title');
-      menuTitles.forEach(title => {
-        title.addEventListener('click', () => {
-          const subMenu = title.nextElementSibling;
-          const icon = title.querySelector('span');
-          if (subMenu && subMenu.classList.contains('sub-menu')) {
-            subMenu.classList.toggle('open');
-            icon.textContent = subMenu.classList.contains('open') ? '－' : '＋';
+      const menuButtons = document.querySelectorAll('.sidebar button');
+      menuButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const subMenu = button.nextElementSibling;
+          const icon = button.querySelector('span');
+          if (subMenu && subMenu.tagName === 'UL') {
+            subMenu.classList.toggle('hidden');
+            icon.textContent = subMenu.classList.contains('hidden') ? '＋' : '－';
           }
         });
       });
