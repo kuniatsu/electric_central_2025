@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>契約詳細 | 顧客ポータル</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#082f49',
+            },
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-50">
+  <!-- ヘッダー -->
+  <header class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex">
+          <div class="flex-shrink-0 flex items-center">
+            <img class="block h-8 w-auto" src="https://placehold.jp/3d4070/ffffff/200x80.png?text=電気保安管理" alt="電気保安管理システム">
+          </div>
+          <nav class="ml-6 flex space-x-8" aria-label="Global">
+            <a href="index.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+              ホーム
+            </a>
+            <a href="設備詳細.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+              設備情報
+            </a>
+            <a href="点検報告詳細.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+              点検報告
+            </a>
+            <a href="契約情報.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-primary-500 text-sm font-medium text-gray-900">
+              契約情報
+            </a>
+            <a href="お知らせ.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+              お知らせ
+            </a>
+            <a href="お問い合わせ.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+              お問い合わせ
+            </a>
+          </nav>
+        </div>
+        <div class="flex items-center">
+          <div class="ml-4 flex items-center md:ml-6">
+            <button type="button" class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+              <span class="sr-only">通知を見る</span>
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+            </button>
+            <div class="ml-3 relative">
+              <div>
+                <button type="button" class="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                  <span class="sr-only">ユーザーメニューを開く</span>
+                  <img class="h-8 w-8 rounded-full" src="https://placehold.jp/150x150.png" alt="">
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- メインコンテンツ -->
+  <main class="py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- パンくずリスト -->
+      <nav class="flex mb-5" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-4">
+          <li>
+            <div>
+              <a href="index.html" class="text-gray-400 hover:text-gray-500">
+                <svg class="flex-shrink-0 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                </svg>
+                <span class="sr-only">ホーム</span>
+              </a>
+            </div>
+          </li>
+          <li>
+            <div class="flex items-center">
+              <svg class="flex-shrink-0 h-5 w-5 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
+              </svg>
+              <a href="契約情報.html" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">契約情報</a>
+            </div>
+          </li>
+          <li>
+            <div class="flex items-center">
+              <svg class="flex-shrink-0 h-5 w-5 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
+              </svg>
+              <span class="ml-4 text-sm font-medium text-gray-500" aria-current="page">契約詳細 #CT-2023-0156</span>
+            </div>
+          </li>
+        </ol>
+      </nav>
+
+      <!-- ヘッダー部分 -->
+      <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+        <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
+          <div>
+            <h1 class="text-xl font-semibold text-gray-900">契約詳細 #CT-2023-0156</h1>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">電気保安管理サービス契約</p>
+          </div>
+          <div class="flex space-x-3">
+            <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+              <svg class="-ml-0.5 mr-2 h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              契約書ダウンロード
+            </button>
+            <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+              <svg class="-ml-0.5 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              点検予定確認
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ステータスバッジ -->
+      <div class="mb-6">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+          <svg class="-ml-1 mr-1.5 h-2 w-2 text-green-400" fill="currentColor" viewBox="0 0 8 8">
+            <circle cx="4" cy="4" r="3" />
+          </svg>
+          有効
+        </span>
+        <span class="ml-3 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+          自家用電気工作物保安管理
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <!-- 左カラム：契約基本情報 -->
+        <div>
+          <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">契約基本情報</h3>
+              <p class="mt-1 max-w-2xl text-sm text-gray-500">契約の基本情報と条件</p>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">契約ID</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">CT-2023-0156</dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">契約名</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">電気保安管理サービス契約</dd>
+                </div>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">契約種別</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">自家用電気工作物保安管理</dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">契約開始日</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">2023年9月1日</dd>
+                </div>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">契約終了日</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">2026年8月31日</dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">自動更新</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">あり（1年ごと）</dd>
+                </div>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">契約金額</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">¥1,200,000/年（税別）</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右カラム：サービス内容と対象設備 -->
+        <div>
+          <!-- サービス内容 -->
+          <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">サービス内容</h3>
+              <p class="mt-1 max-w-2xl text-sm text-gray-500">契約に含まれるサービス内容</p>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">点検頻度</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    <ul class="list-disc pl-5 space-y-1">
+                      <li>月次点検: 毎月15日前後</li>
+                      <li>年次点検: 年1回（8月予定）</li>
+                    </ul>
+                  </dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">点検内容</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    <ul class="list-disc pl-5 space-y-1">
+                      <li>外観点検</li>
+                      <li>機器動作確認</li>
+                      <li>保護装置試験</li>
+                      <li>絶縁抵抗測定</li>
+                      <li>接地抵抗測定（年次点検時）</li>
+                    </ul>
+                  </dd>
+                </div>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">緊急対応</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    <ul class="list-disc pl-5 space-y-1">
+                      <li>24時間365日対応</li>
+                      <li>緊急時駆けつけ（原則2時間以内）</li>
+                    </ul>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 対象設備 -->
+      <div class="mt-6">
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">対象設備</h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">契約の対象となる電気設備</p>
+          </div>
+          <div class="border-t border-gray-200">
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      設備ID
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      設備名
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      設備種別
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      設置場所
+                    </th>
+                    <th scope="col" class="relative px-6 py-3">
+                      <span class="sr-only">詳細</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      EQ-2025-0042
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      高圧受電設備
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      高圧受電設備
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      地下1階 電気室
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <a href="設備詳細.html" class="text-primary-600 hover:text-primary-900">詳細</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      EQ-2025-0043
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      変圧器 (1号機)
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      変圧器
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      地下1階 電気室
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <a href="設備詳細.html" class="text-primary-600 hover:text-primary-900">詳細</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 契約ドキュメント -->
+      <div class="mt-6">
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">契約ドキュメント</h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">契約に関連するドキュメント</p>
+          </div>
+          <div class="border-t border-gray-200">
+            <ul class="divide-y divide-gray-200">
+              <li class="px-4 py-4 flex items-center justify-between">
+                <div class="flex items-center">
+                  <svg class="h-5 w-5 text-gray-400 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                  <div>
+                    <p class="text-sm font-medium text-gray-900">電気保安管理サービス契約書</p>
+                    <p class="text-xs text-gray-500">PDF, 2.4MB, 2023年8月25日</p>
+                  </div>
+                </div>
+                <button type="button" class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                  <svg class="-ml-0.5 mr-2 h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  ダウンロード
+                </button>
+              </li>
+              <li class="px-4 py-4 flex items-center justify-between">
+                <div class="flex items-center">
+                  <svg class="h-5 w-5 text-gray-400 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                  <div>
+                    <p class="text-sm font-medium text-gray-900">サービス仕様書</p>
+                    <p class="text-xs text-gray-500">PDF, 1.8MB, 2023年8月25日</p>
+                  </div>
+                </div>
+                <button type="button" class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                  <svg class="-ml-0.5 mr-2 h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  ダウンロード
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- フッター -->
+  <footer class="bg-white">
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <div class="mt-8 border-t border-gray-200 pt-8 md:flex md:items-center md:justify-between">
+        <div class="flex space-x-6 md:order-2">
+          <a href="#" class="text-gray-400 hover:text-gray-500">
+            <span class="sr-only">サポート</span>
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 16a6 6 0 100-12 6 6 0 000 12zm0-9a1 1 0 011 1v4a1 1 0 01-2 0V10a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+        <p class="mt-8 text-base text-gray-400 md:mt-0 md:order-1">
+          &copy; 2025 電気保安管理システム. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
