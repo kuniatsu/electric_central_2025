@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>設定 | 点検モバイルアプリ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              200: '#fed7aa',
+              300: '#fdba74',
+              400: '#fb923c',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c',
+              800: '#9a3412',
+              900: '#7c2d12',
+              950: '#431407',
+            },
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .safe-top {
+      padding-top: env(safe-area-inset-top);
+    }
+    .safe-bottom {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .safe-left {
+      padding-left: env(safe-area-inset-left);
+    }
+    .safe-right {
+      padding-right: env(safe-area-inset-right);
+    }
+    .toggle-checkbox:checked {
+      right: 0;
+      border-color: #f97316;
+    }
+    .toggle-checkbox:checked + .toggle-label {
+      background-color: #f97316;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- ヘッダー -->
+  <header class="bg-primary-600 text-white safe-top safe-left safe-right">
+    <div class="px-4 py-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <a href="index.html" class="mr-2">
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </a>
+          <h1 class="text-xl font-bold">設定</h1>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- メインコンテンツ -->
+  <main class="pb-20 safe-left safe-right">
+    <!-- アカウント情報 -->
+    <div class="bg-white mt-4 rounded-md overflow-hidden">
+      <div class="p-4 border-b border-gray-200">
+        <div class="flex items-center">
+          <div class="h-12 w-12 rounded-full bg-primary-100 flex items-center justify-center">
+            <svg class="h-6 w-6 text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <div class="ml-4">
+            <h2 class="text-lg font-medium text-gray-900">佐藤 太郎</h2>
+            <p class="text-sm text-gray-500">技術者ID: T-2025-0042</p>
+          </div>
+        </div>
+      </div>
+      <div class="p-4">
+        <div class="flex justify-between items-center py-2">
+          <span class="text-sm text-gray-700">メールアドレス</span>
+          <span class="text-sm text-gray-900">taro.sato@example.com</span>
+        </div>
+        <div class="flex justify-between items-center py-2">
+          <span class="text-sm text-gray-700">所属事業所</span>
+          <span class="text-sm text-gray-900">東京支店</span>
+        </div>
+        <div class="flex justify-between items-center py-2">
+          <span class="text-sm text-gray-700">資格</span>
+          <span class="text-sm text-gray-900">第一種電気主任技術者</span>
+        </div>
+        <div class="mt-4">
+          <a href="#" class="block w-full text-center py-2 px-4 border border-primary-600 rounded-md text-primary-600 font-medium hover:bg-primary-50">
+            プロフィール編集
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- アプリ設定 -->
+    <div class="bg-white mt-4 rounded-md overflow-hidden">
+      <div class="px-4 py-3 border-b border-gray-200">
+        <h3 class="text-base font-medium text-gray-900">アプリ設定</h3>
+      </div>
+      <div class="divide-y divide-gray-200">
+        <!-- オフラインモード -->
+        <div class="px-4 py-3 flex justify-between items-center">
+          <div>
+            <h4 class="text-sm font-medium text-gray-900">オフラインモード</h4>
+            <p class="text-xs text-gray-500 mt-1">通信環境のない場所でも点検データを保存</p>
+          </div>
+          <div class="relative inline-block w-12 mr-2 align-middle select-none">
+            <input type="checkbox" name="toggle" id="toggle-offline" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" checked />
+            <label for="toggle-offline" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+          </div>
+        </div>
+        
+        <!-- 自動同期 -->
+        <div class="px-4 py-3 flex justify-between items-center">
+          <div>
+            <h4 class="text-sm font-medium text-gray-900">自動同期</h4>
+            <p class="text-xs text-gray-500 mt-1">Wi-Fi接続時に自動的にデータを同期</p>
+          </div>
+          <div class="relative inline-block w-12 mr-2 align-middle select-none">
+            <input type="checkbox" name="toggle" id="toggle-sync" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" checked />
+            <label for="toggle-sync" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+          </div>
+        </div>
+        
+        <!-- 位置情報 -->
+        <div class="px-4 py-3 flex justify-between items-center">
+          <div>
+            <h4 class="text-sm font-medium text-gray-900">位置情報</h4>
+            <p class="text-xs text-gray-500 mt-1">点検場所の自動記録に使用</p>
+          </div>
+          <div class="relative inline-block w-12 mr-2 align-middle select-none">
+            <input type="checkbox" name="toggle" id="toggle-location" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" checked />
+            <label for="toggle-location" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+          </div>
+        </div>
+        
+        <!-- 通知 -->
+        <div class="px-4 py-3 flex justify-between items-center">
+          <div>
+            <h4 class="text-sm font-medium text-gray-900">通知</h4>
+            <p class="text-xs text-gray-500 mt-1">点検予定や重要なお知らせを通知</p>
+          </div>
+          <div class="relative inline-block w-12 mr-2 align-middle select-none">
+            <input type="checkbox" name="toggle" id="toggle-notification" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" checked />
+            <label for="toggle-notification" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+          </div>
+        </div>
+        
+        <!-- テーマ -->
+        <div class="px-4 py-3 flex justify-between items-center">
+          <div>
+            <h4 class="text-sm font-medium text-gray-900">テーマ</h4>
+            <p class="text-xs text-gray-500 mt-1">アプリの表示テーマを選択</p>
+          </div>
+          <select class="text-sm text-gray-900 border border-gray-300 rounded-md px-2 py-1">
+            <option>システム設定に合わせる</option>
+            <option>ライトモード</option>
+            <option>ダークモード</option>
+          </select>
+        </div>
+        
+        <!-- 文字サイズ -->
+        <div class="px-4 py-3 flex justify-between items-center">
+          <div>
+            <h4 class="text-sm font-medium text-gray-900">文字サイズ</h4>
+            <p class="text-xs text-gray-500 mt-1">アプリ内のテキストサイズを調整</p>
+          </div>
+          <select class="text-sm text-gray-900 border border-gray-300 rounded-md px-2 py-1">
+            <option>小</option>
+            <option selected>中</option>
+            <option>大</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    
+    <!-- データ管理 -->
+    <div class="bg-white mt-4 rounded-md overflow-hidden">
+      <div class="px-4 py-3 border-b border-gray-200">
+        <h3 class="text-base font-medium text-gray-900">データ管理</h3>
+      </div>
+      <div class="divide-y divide-gray-200">
+        <div class="px-4 py-3">
+          <div class="flex justify-between items-center">
+            <h4 class="text-sm font-medium text-gray-900">キャッシュデータ</h4>
+            <span class="text-xs text-gray-500">42.8 MB</span>
+          </div>
+          <button class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+            キャッシュをクリア
+          </button>
+        </div>
+        
+        <div class="px-4 py-3">
+          <div class="flex justify-between items-center">
+            <h4 class="text-sm font-medium text-gray-900">オフラインデータ</h4>
+            <span class="text-xs text-gray-500">156.2 MB</span>
+          </div>
+          <div class="mt-2 flex space-x-2">
+            <button class="flex-1 py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+              データをエクスポート
+            </button>
+            <button class="flex-1 py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+              データを削除
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- その他 -->
+    <div class="bg-white mt-4 rounded-md overflow-hidden">
+      <div class="divide-y divide-gray-200">
+        <a href="#" class="block px-4 py-3">
+          <div class="flex justify-between items-center">
+            <h4 class="text-sm font-medium text-gray-900">ヘルプ・サポート</h4>
+            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </a>
+        
+        <a href="#" class="block px-4 py-3">
+          <div class="flex justify-between items-center">
+            <h4 class="text-sm font-medium text-gray-900">プライバシーポリシー</h4>
+            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </a>
+        
+        <a href="#" class="block px-4 py-3">
+          <div class="flex justify-between items-center">
+            <h4 class="text-sm font-medium text-gray-900">利用規約</h4>
+            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </a>
+        
+        <a href="#" class="block px-4 py-3">
+          <div class="flex justify-between items-center">
+            <h4 class="text-sm font-medium text-gray-900">アプリについて</h4>
+            <div class="flex items-center">
+              <span class="text-xs text-gray-500 mr-2">バージョン 1.2.3</span>
+              <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </div>
+        </a>
+        
+        <div class="px-4 py-3">
+          <button class="w-full py-2 px-4 bg-red-50 border border-red-300 rounded-md text-sm font-medium text-red-600 hover:bg-red-100">
+            ログアウト
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- フッターナビゲーション -->
+  <footer class="fixed bottom-0 w-full bg-white border-t border-gray-200 safe-bottom safe-left safe-right">
+    <div class="flex justify-around">
+      <a href="index.html" class="flex flex-col items-center py-2 px-3 text-gray-600">
+        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+        <span class="text-xs mt-1">ホーム</span>
+      </a>
+      <a href="点検選択.html" class="flex flex-col items-center py-2 px-3 text-gray-600">
+        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+        </svg>
+        <span class="text-xs mt-1">点検</span>
+      </a>
+      <a href="お知らせ.html" class="flex flex-col items-center py-2 px-3 text-gray-600">
+        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+        <span class="text-xs mt-1">お知らせ</span>
+      </a>
+      <a href="設定.html" class="flex flex-col items-center py-2 px-3 text-primary-600">
+        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span class="text-xs mt-1">設定</span>
+      </a>
+    </div>
+  </footer>
+</body>
+</html>

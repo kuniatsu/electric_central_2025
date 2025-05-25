@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>商談管理 | 電気保安管理システム</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#082f49',
+            },
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+  <!-- ヘッダー -->
+  <header class="bg-white shadow">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+      <div class="flex items-center">
+        <h1 class="text-2xl font-bold text-primary-800">電気保安管理システム</h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <button class="bg-gray-100 p-2 rounded-full text-gray-600 hover:text-gray-900 focus:outline-none">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+        </button>
+        <div class="relative">
+          <button class="flex items-center text-gray-700 hover:text-gray-900">
+            <span class="mr-2">管理者</span>
+            <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="User avatar">
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex flex-1">
+    <!-- サイドバー -->
+    <div class="w-64 bg-primary-800 text-white">
+      <div class="p-4 border-b border-primary-700">
+        <div class="text-lg font-semibold">保安管理基幹システム</div>
+      </div>
+      <nav class="mt-4">
+        <div class="px-4 py-2 text-primary-200 text-sm font-medium">メニュー</div>
+        
+        <!-- ダッシュボード -->
+        <div class="mt-1">
+          <a href="index.html" class="w-full flex items-center px-4 py-2 text-white hover:bg-primary-700 focus:outline-none">
+            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            <span>ダッシュボード</span>
+          </a>
+        </div>
+        
+        <!-- ユーザー管理グループ -->
+        <div class="mt-1">
+          <a href="ユーザー管理.html" class="w-full flex items-center px-4 py-2 text-white hover:bg-primary-700 focus:outline-none">
+            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            <span>ユーザー管理</span>
+          </a>
+        </div>
+        
+        <!-- 契約管理グループ -->
+        <div class="mt-1">
+          <a href="契約管理.html" class="w-full flex items-center px-4 py-2 text-white hover:bg-primary-700 focus:outline-none">
+            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span>契約管理</span>
+          </a>
+        </div>
+        
+        <!-- 商談グループ -->
+        <div class="mt-1">
+          <a href="商談管理.html" class="w-full flex items-center px-4 py-2 text-white bg-primary-700 focus:outline-none">
+            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span>商談管理</span>
+          </a>
+        </div>
+        
+        <!-- 設備管理グループ -->
+        <div class="mt-1">
+          <a href="設備管理.html" class="w-full flex items-center px-4 py-2 text-white hover:bg-primary-700 focus:outline-none">
+            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>設備管理</span>
+          </a>
+        </div>
+        
+        <!-- 点検計画・実施グループ -->
+        <div class="mt-1">
+          <a href="点検計画.html" class="w-full flex items-center px-4 py-2 text-white hover:bg-primary-700 focus:outline-none">
+            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
+            <span>点検計画</span>
+          </a>
+        </div>
+        
+        <!-- 指摘事項管理 -->
+        <div class="mt-1">
+          <a href="指摘事項一覧.html" class="w-full flex items-center px-4 py-2 text-white hover:bg-primary-700 focus:outline-none">
+            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <span>指摘事項管理</span>
+          </a>
+        </div>
+      </nav>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="flex-1 overflow-auto">
+      <div class="py-6 px-8">
+        <!-- パンくずリスト -->
+        <nav class="text-sm mb-6">
+          <ol class="list-none p-0 inline-flex">
+            <li class="flex items-center">
+              <a href="index.html" class="text-primary-600 hover:text-primary-800">ホーム</a>
+              <svg class="h-4 w-4 fill-current text-gray-400 mx-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" />
+              </svg>
+            </li>
+            <li class="flex items-center text-gray-700">商談管理</li>
+          </ol>
+        </nav>
+
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-semibold text-gray-800">商談管理</h2>
+          <div class="flex space-x-2">
+            <button class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-md flex items-center">
+              <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              エクスポート
+            </button>
+            <button class="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-md flex items-center">
+              <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              新規商談登録
+            </button>
+          </div>
+        </div>
+        
+        <!-- 商談パイプライン -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+          <h3 class="text-lg font-medium text-gray-800 mb-4">商談パイプライン</h3>
+          <div class="grid grid-cols-5 gap-4">
+            <div class="bg-gray-50 rounded-lg p-4">
+              <div class="flex justify-between items-center mb-2">
+                <h4 class="font-medium text-gray-700">新規</h4>
+                <span class="bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full">5</span>
+              </div>
+              <div class="space-y-2">
+                <div class="bg-white p-3 rounded shadow-sm border-l-4 border-gray-400">
+                  <div class="text-sm font-medium text-gray-800">株式会社東京電機</div>
+                  <div class="text-xs text-gray-500 mt-1">初回問い合わせ</div>
+                  <div class="flex justify-between items-center mt-2">
+                    <span class="text-xs text-gray-500">2025/05/20</span>
+                    <span class="text-xs font-medium text-primary-600">¥800,000</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <div class="flex justify-between items-center mb-2">
+                <h4 class="font-medium text-gray-700">ヒアリング</h4>
+                <span class="bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full">3</span>
+              </div>
+              <div class="space-y-2">
+                <div class="bg-white p-3 rounded shadow-sm border-l-4 border-blue-400">
+                  <div class="text-sm font-medium text-gray-800">埼玉電力設備株式会社</div>
+                  <div class="text-xs text-gray-500 mt-1">ヒアリング予定</div>
+                  <div class="flex justify-between items-center mt-2">
+                    <span class="text-xs text-gray-500">2025/05/25</span>
+                    <span class="text-xs font-medium text-primary-600">¥600,000</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <div class="flex justify-between items-center mb-2">
+                <h4 class="font-medium text-gray-700">提案</h4>
+                <span class="bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full">4</span>
+              </div>
+              <div class="space-y-2">
+                <div class="bg-white p-3 rounded shadow-sm border-l-4 border-yellow-400">
+                  <div class="text-sm font-medium text-gray-800">茨城工業株式会社</div>
+                  <div class="text-xs text-gray-500 mt-1">提案書作成中</div>
+                  <div class="flex justify-between items-center mt-2">
+                    <span class="text-xs text-gray-500">2025/05/28</span>
+                    <span class="text-xs font-medium text-primary-600">¥1,500,000</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <div class="flex justify-between items-center mb-2">
+                <h4 class="font-medium text-gray-700">交渉</h4>
+                <span class="bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full">2</span>
+              </div>
+              <div class="space-y-2">
+                <div class="bg-white p-3 rounded shadow-sm border-l-4 border-purple-400">
+                  <div class="text-sm font-medium text-gray-800">群馬産業株式会社</div>
+                  <div class="text-xs text-gray-500 mt-1">価格交渉中</div>
+                  <div class="flex justify-between items-center mt-2">
+                    <span class="text-xs text-gray-500">2025/06/02</span>
+                    <span class="text-xs font-medium text-primary-600">¥1,800,000</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <div class="flex justify-between items-center mb-2">
+                <h4 class="font-medium text-gray-700">成約</h4>
+                <span class="bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full">3</span>
+              </div>
+              <div class="space-y-2">
+                <div class="bg-white p-3 rounded shadow-sm border-l-4 border-green-400">
+                  <div class="text-sm font-medium text-gray-800">長野設備工業株式会社</div>
+                  <div class="text-xs text-gray-500 mt-1">契約締結</div>
+                  <div class="flex justify-between items-center mt-2">
+                    <span class="text-xs text-gray-500">2025/05/15</span>
+                    <span class="text-xs font-medium text-primary-600">¥1,350,000</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 検索フィルター -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+          <h3 class="text-lg font-medium text-gray-800 mb-4">検索条件</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">顧客名</label>
+              <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">商談ステージ</label>
+              <select class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                <option value="">すべて</option>
+                <option value="new">新規</option>
+                <option value="hearing">ヒアリング</option>
+                <option value="proposal">提案</option>
+                <option value="negotiation">交渉</option>
+                <option value="closed">成約</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">担当者</label>
+              <select class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                <option value="">すべて</option>
+                <option value="user1">山田 花子</option>
+                <option value="user2">佐藤 太郎</option>
+                <option value="user3">鈴木 一郎</option>
+              </select>
+            </div>
+          </div>
+          <div class="mt-4 flex justify-end">
+            <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-md mr-2">
+              リセット
+            </button>
+            <button class="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-md">
+              検索
+            </button>
+          </div>
+        </div>
+        
+        <!-- 商談一覧テーブル -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  商談名
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  顧客名
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ステージ
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  予定金額
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  担当者
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  期日
+                </th>
+                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  操作
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm font-medium text-gray-900">年間保守契約</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-900">株式会社東京電機</div>
+                  <div class="text-xs text-gray-500">東京都千代田区</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                    新規
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  ¥800,000
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div class="h-8 w-8 flex-shrink-0">
+                      <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                    </div>
+                    <div class="ml-3">
+                      <div class="text-sm font-medium text-gray-900">山田 花子</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  2025/06/15
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <a href="#" class="text-primary-600 hover:text-primary-900 mr-3">詳細</a>
+                  <a href="#" class="text-primary-600 hover:text-primary-900 mr-3">編集</a>
+                </td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm font-medium text-gray-900">月次点検サービス</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-900">横浜工業株式会社</div>
+                  <div class="text-xs text-gray-500">神奈川県横浜市</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                    新規
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  ¥1,200,000
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div class="h-8 w-8 flex-shrink-0">
+                      <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                    </div>
+                    <div class="ml-3">
+                      <div class="text-sm font-medium text-gray-900">佐藤 太郎</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  2025/06/20
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <a href="#" class="text-primary-600 hover:text-primary-900 mr-3">詳細</a>
+                  <a href="#" class="text-primary-600 hover:text-primary-900 mr-3">編集</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+            <div class="flex-1 flex justify-between">
+              <p class="text-sm text-gray-700">
+                <span class="font-medium">1</span> - <span class="font-medium">10</span> / <span class="font-medium">17</span> 件
+              </p>
+              <div>
+                <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                  <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <span class="sr-only">前へ</span>
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                  </a>
+                  <a href="#" aria-current="page" class="z-10 bg-primary-50 border-primary-500 text-primary-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    1
+                  </a>
+                  <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                    2
+                  </a>
+                  <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <span class="sr-only">次へ</span>
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                  </a>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
