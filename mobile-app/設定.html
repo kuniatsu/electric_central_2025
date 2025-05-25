@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>設定 | 点検モバイルアプリ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            200: '#fed7aa',
+                            300: '#fdba74',
+                            400: '#fb923c',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                            800: '#9a3412',
+                            900: '#7c2d12',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* iPhone 16 Safari 最適化スタイル */
+        body {
+            max-width: 393px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background-color: #f9fafb;
+        }
+        
+        /* タップ領域を広くする */
+        .tap-target {
+            min-height: 44px;
+        }
+        
+        /* スイッチコンポーネント */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 32px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 24px;
+            width: 24px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #f97316;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- ヘッダー -->
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <div class="px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="index.html" class="text-gray-500">
+                    <i class="fas fa-arrow-left text-lg"></i>
+                </a>
+                <h1 class="ml-4 text-xl font-semibold text-gray-900">設定</h1>
+            </div>
+            <div>
+                <a href="index.html" class="text-primary-600 font-medium text-sm">
+                    完了
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="pb-20">
+        <!-- アカウント設定 -->
+        <div class="mt-4 px-4">
+            <h2 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">アカウント</h2>
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="p-4 flex items-center justify-between border-b border-gray-200">
+                    <div class="flex items-center">
+                        <div class="h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center">
+                            <span class="text-primary-700 font-medium">YT</span>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-base font-medium text-gray-900">山田 太郎</p>
+                            <p class="text-sm text-gray-500">第二種電気主任技術者</p>
+                        </div>
+                    </div>
+                    <a href="プロフィール編集.html" class="text-primary-600">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+                <a href="パスワード変更.html" class="block p-4 flex items-center justify-between tap-target border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-lock text-gray-400 w-6"></i>
+                        <span class="ml-3 text-base text-gray-900">パスワード変更</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                </a>
+                <a href="通知設定.html" class="block p-4 flex items-center justify-between tap-target">
+                    <div class="flex items-center">
+                        <i class="fas fa-bell text-gray-400 w-6"></i>
+                        <span class="ml-3 text-base text-gray-900">通知設定</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- アプリ設定 -->
+        <div class="mt-6 px-4">
+            <h2 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">アプリ設定</h2>
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="p-4 flex items-center justify-between border-b border-gray-200 tap-target">
+                    <div class="flex items-center">
+                        <i class="fas fa-wifi text-gray-400 w-6"></i>
+                        <span class="ml-3 text-base text-gray-900">オフラインモード</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="p-4 flex items-center justify-between border-b border-gray-200 tap-target">
+                    <div class="flex items-center">
+                        <i class="fas fa-location-dot text-gray-400 w-6"></i>
+                        <span class="ml-3 text-base text-gray-900">位置情報の使用</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="p-4 flex items-center justify-between border-b border-gray-200 tap-target">
+                    <div class="flex items-center">
+                        <i class="fas fa-camera text-gray-400 w-6"></i>
+                        <span class="ml-3 text-base text-gray-900">カメラアクセス</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="p-4 flex items-center justify-between border-b border-gray-200 tap-target">
+                    <div class="flex items-center">
+                        <i class="fas fa-photo-film text-gray-400 w-6"></i>
+                        <span class="ml-3 text-base text-gray-900">写真ライブラリアクセス</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <a href="データ同期設定.html" class="block p-4 flex items-center justify-between tap-target">
+                    <div class="flex items-center">
+                        <i class="fas fa-sync text-gray-400 w-6"></i>
+                        <span class="ml-3 text-base text-gray-900">データ同期設定</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- 表示設定 -->
+        <div class="mt-6 px-4">
+            <h2 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">表示設定</h2>
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="p-4 flex items-center justify-between border-b border-gray-200 tap-target">
+                    <div class="flex items-center">
+                        <i class="fas fa-moon text-gray-400 w-6"></i>
+                        <span class="ml-3 text-base text-gray-900">ダークモード</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <a href="フォントサイズ設定.html" class="block p-4 flex items-center justify-between tap-target border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-text-height text-gray-400 w-6"></i>
+                        <span class="ml-3 text-base text-gray-900">フォントサイズ</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-sm text-gray-500 mr-2">標準</span>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                </a>
+                <a href="言語設定.html" class="block p-4 flex items-center justify-between tap-target">
+                    <div class="flex items-center">
+                        <i class="fas fa-language text-gray-400 w-6"></i>
+                        <span class="ml-3 text-base text-gray-900">言語</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-sm text-gray-500 mr-2">日本語</span>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- データ管理 -->
+        <div class="mt-6 px-4">
+            <h2 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">データ管理</h2>
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <a href="キャッシュクリア.html" class="block p-4 flex items-center justify-between tap-target border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-broom text-gray-400 w-6"></i>
+                        <span class="ml-3 text-base text-gray-900">キャッシュをクリア</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-sm text-gray-500 mr-2">45.2 MB</span>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                </a>
+                <a href="データエクスポート.html" class="block p-4 flex items-center justify-between tap-target border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-file-export text-gray-400 w-6"></i>
+                        <span class="ml-3 text-base text-gray-900">データのエクスポート</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                </a>
+                <button class="w-full p-4 flex items-center justify-between tap-target text-left">
+                    <div class="flex items-center">
+                        <i class="fas fa-trash text-red-500 w-6"></i>
+                        <span class="ml-3 text-base text-red-600">すべてのデータを削除</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- サポート -->
+        <div class="mt-6 px-4">
+            <h2 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">サポート</h2>
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <a href="ヘルプセンター.html" class="block p-4 flex items-center justify-between tap-target border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-circle-question text-gray-400 w-6"></i>
+                        <span class="ml-3 text-base text-gray-900">ヘルプセンター</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                </a>
+                <a href="お問い合わせ.html" class="block p-4 flex items-center justify-between tap-target border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-headset text-gray-400 w-6"></i>
+                        <span class="ml-3 text-base text-gray-900">お問い合わせ</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                </a>
+                <a href="利用規約.html" class="block p-4 flex items-center justify-between tap-target border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-file-contract text-gray-400 w-6"></i>
+                        <span class="ml-3 text-base text-gray-900">利用規約</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                </a>
+                <a href="プライバシーポリシー.html" class="block p-4 flex items-center justify-between tap-target">
+                    <div class="flex items-center">
+                        <i class="fas fa-shield-halved text-gray-400 w-6"></i>
+                        <span class="ml-3 text-base text-gray-900">プライバシーポリシー</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- アプリ情報 -->
+        <div class="mt-6 px-4">
+            <h2 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">アプリ情報</h2>
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="p-4 flex items-center justify-between border-b border-gray-200 tap-target">
+                    <div class="flex items-center">
+                        <i class="fas fa-code-branch text-gray-400 w-6"></i>
+                        <span class="ml-3 text-base text-gray-900">バージョン</span>
+                    </div>
+                    <span class="text-sm text-gray-500">1.0.0 (25)</span>
+                </div>
+                <div class="p-4 flex items-center justify-between tap-target">
+                    <div class="flex items-center">
+                        <i class="fas fa-copyright text-gray-400 w-6"></i>
+                        <span class="ml-3 text-base text-gray-900">著作権</span>
+                    </div>
+                    <span class="text-sm text-gray-500">© 2025 電気保安管理株式会社</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ログアウト -->
+        <div class="mt-6 px-4 mb-8">
+            <button class="w-full bg-white rounded-lg shadow p-4 text-center text-primary-600 font-medium tap-target">
+                ログアウト
+            </button>
+        </div>
+    </main>
+
+    <!-- ナビゲーションバー -->
+    <nav class="bg-white shadow-lg fixed bottom-0 w-full max-w-[393px] border-t border-gray-200">
+        <div class="flex justify-around">
+            <a href="index.html" class="flex flex-col items-center py-2 px-4">
+                <i class="fas fa-home text-gray-400 text-xl"></i>
+                <span class="mt-1 text-xs text-gray-500">ホーム</span>
+            </a>
+            <a href="点検選択.html" class="flex flex-col items-center py-2 px-4">
+                <i class="fas fa-clipboard-check text-gray-400 text-xl"></i>
+                <span class="mt-1 text-xs text-gray-500">点検</span>
+            </a>
+            <a href="点検履歴.html" class="flex flex-col items-center py-2 px-4">
+                <i class="fas fa-history text-gray-400 text-xl"></i>
+                <span class="mt-1 text-xs text-gray-500">履歴</span>
+            </a>
+            <a href="ナレッジベース.html" class="flex flex-col items-center py-2 px-4">
+                <i class="fas fa-book text-gray-400 text-xl"></i>
+                <span class="mt-1 text-xs text-gray-500">知識</span>
+            </a>
+            <a href="設定.html" class="flex flex-col items-center py-2 px-4">
+                <i class="fas fa-cog text-primary-500 text-xl"></i>
+                <span class="mt-1 text-xs text-primary-500">設定</span>
+            </a>
+        </div>
+    </nav>
+</body>
+</html>
