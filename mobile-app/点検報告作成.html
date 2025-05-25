@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>点検報告作成 | 点検モバイルアプリ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            200: '#fed7aa',
+                            300: '#fdba74',
+                            400: '#fb923c',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                            800: '#9a3412',
+                            900: '#7c2d12',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- ヘッダー -->
+    <header class="bg-white shadow-sm fixed top-0 left-0 right-0 z-10">
+        <div class="max-w-md mx-auto px-4 flex justify-between items-center h-14">
+            <div class="flex items-center">
+                <a href="点検実施.html" class="text-gray-500">
+                    <i class="fas fa-arrow-left text-lg"></i>
+                </a>
+                <h1 class="ml-4 text-lg font-medium text-gray-900">点検報告作成</h1>
+            </div>
+            <div>
+                <button class="bg-primary-500 text-white px-4 py-1.5 rounded-md text-sm font-medium">
+                    保存
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="max-w-md mx-auto px-4 pt-20 pb-24">
+        <!-- 基本情報セクション -->
+        <div class="bg-white rounded-lg shadow-sm mb-4 p-4">
+            <h2 class="text-base font-medium text-gray-900 mb-3">基本情報</h2>
+            
+            <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-700 mb-1">顧客名</label>
+                <div class="text-sm text-gray-900 bg-gray-50 p-2 rounded border border-gray-200">
+                    株式会社東京電機
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-700 mb-1">設備名</label>
+                <div class="text-sm text-gray-900 bg-gray-50 p-2 rounded border border-gray-200">
+                    本社ビル高圧受電設備
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-700 mb-1">点検種別</label>
+                <div class="text-sm text-gray-900 bg-gray-50 p-2 rounded border border-gray-200">
+                    月次点検
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-700 mb-1">点検日</label>
+                <div class="text-sm text-gray-900 bg-gray-50 p-2 rounded border border-gray-200">
+                    2025年5月25日
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">担当技術者</label>
+                <div class="text-sm text-gray-900 bg-gray-50 p-2 rounded border border-gray-200">
+                    山田太郎
+                </div>
+            </div>
+        </div>
+        
+        <!-- 点検結果サマリー -->
+        <div class="bg-white rounded-lg shadow-sm mb-4 p-4">
+            <h2 class="text-base font-medium text-gray-900 mb-3">点検結果サマリー</h2>
+            
+            <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-700 mb-1">総合判定</label>
+                <select class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 bg-white p-2 text-sm border">
+                    <option>良好</option>
+                    <option>要注意</option>
+                    <option>要修理</option>
+                    <option>危険</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">総評</label>
+                <textarea class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 bg-white p-2 text-sm border" rows="3" placeholder="点検の総評を入力してください">全体的に良好な状態です。一部経年劣化が見られますが、現時点では問題ありません。</textarea>
+            </div>
+        </div>
+        
+        <!-- 点検項目リスト -->
+        <div class="bg-white rounded-lg shadow-sm mb-4 p-4">
+            <h2 class="text-base font-medium text-gray-900 mb-3">点検項目</h2>
+            
+            <div class="space-y-4">
+                <!-- 点検項目1 -->
+                <div class="border border-gray-200 rounded-md p-3">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-sm font-medium text-gray-900">1. 高圧受電盤外観</h3>
+                        <div class="flex space-x-2">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                                良好
+                            </span>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <textarea class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 bg-white p-2 text-sm border" rows="2" placeholder="コメントを入力">外観に異常なし。清掃状態良好。</textarea>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <button class="inline-flex items-center px-2 py-1 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50">
+                            <i class="fas fa-camera mr-1"></i> 写真追加
+                        </button>
+                        <div class="text-xs text-gray-500">
+                            写真: 0枚
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 点検項目2 -->
+                <div class="border border-gray-200 rounded-md p-3">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-sm font-medium text-gray-900">2. 高圧遮断器動作確認</h3>
+                        <div class="flex space-x-2">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                                良好
+                            </span>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <textarea class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 bg-white p-2 text-sm border" rows="2" placeholder="コメントを入力">動作確認済み。問題なく作動。</textarea>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <button class="inline-flex items-center px-2 py-1 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50">
+                            <i class="fas fa-camera mr-1"></i> 写真追加
+                        </button>
+                        <div class="text-xs text-gray-500">
+                            写真: 0枚
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 点検項目3 -->
+                <div class="border border-gray-200 rounded-md p-3">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-sm font-medium text-gray-900">3. 保護継電器動作試験</h3>
+                        <div class="flex space-x-2">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                                良好
+                            </span>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <textarea class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 bg-white p-2 text-sm border" rows="2" placeholder="コメントを入力">OCR、GR動作試験実施。設定値内で正常に動作。</textarea>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <button class="inline-flex items-center px-2 py-1 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50">
+                            <i class="fas fa-camera mr-1"></i> 写真追加
+                        </button>
+                        <div class="text-xs text-gray-500">
+                            写真: 2枚
+                        </div>
+                    </div>
+                    <div class="mt-2 flex space-x-2 overflow-x-auto">
+                        <div class="w-16 h-16 bg-gray-200 rounded-md flex-shrink-0 relative">
+                            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=64&h=64&q=80" alt="保護継電器写真" class="w-full h-full object-cover rounded-md">
+                            <button class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center">
+                                <i class="fas fa-times text-xs"></i>
+                            </button>
+                        </div>
+                        <div class="w-16 h-16 bg-gray-200 rounded-md flex-shrink-0 relative">
+                            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=64&h=64&q=80" alt="保護継電器写真" class="w-full h-full object-cover rounded-md">
+                            <button class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center">
+                                <i class="fas fa-times text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 点検項目4 -->
+                <div class="border border-gray-200 rounded-md p-3">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-sm font-medium text-gray-900">4. 接地抵抗測定</h3>
+                        <div class="flex space-x-2">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
+                                要注意
+                            </span>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <textarea class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 bg-white p-2 text-sm border" rows="2" placeholder="コメントを入力">A種接地：測定値8.2Ω（基準値10Ω以下）。値は基準内だが、前回より上昇傾向。経過観察推奨。</textarea>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <button class="inline-flex items-center px-2 py-1 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50">
+                            <i class="fas fa-camera mr-1"></i> 写真追加
+                        </button>
+                        <div class="text-xs text-gray-500">
+                            写真: 1枚
+                        </div>
+                    </div>
+                    <div class="mt-2 flex space-x-2 overflow-x-auto">
+                        <div class="w-16 h-16 bg-gray-200 rounded-md flex-shrink-0 relative">
+                            <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-1.2.1&auto=format&fit=crop&w=64&h=64&q=80" alt="接地抵抗測定器" class="w-full h-full object-cover rounded-md">
+                            <button class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center">
+                                <i class="fas fa-times text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 点検項目5 -->
+                <div class="border border-gray-200 rounded-md p-3">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-sm font-medium text-gray-900">5. 絶縁抵抗測定</h3>
+                        <div class="flex space-x-2">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                                良好
+                            </span>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <textarea class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 bg-white p-2 text-sm border" rows="2" placeholder="コメントを入力">高圧回路：1000MΩ以上（基準値5MΩ以上）。低圧回路：100MΩ以上（基準値1MΩ以上）。問題なし。</textarea>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <button class="inline-flex items-center px-2 py-1 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50">
+                            <i class="fas fa-camera mr-1"></i> 写真追加
+                        </button>
+                        <div class="text-xs text-gray-500">
+                            写真: 0枚
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="mt-4 w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <i class="fas fa-plus mr-1"></i> 点検項目を追加
+            </button>
+        </div>
+        
+        <!-- 指摘事項 -->
+        <div class="bg-white rounded-lg shadow-sm mb-4 p-4">
+            <h2 class="text-base font-medium text-gray-900 mb-3">指摘事項</h2>
+            
+            <div class="mb-4 border border-gray-200 rounded-md p-3">
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-sm font-medium text-gray-900">接地抵抗値の上昇</h3>
+                    <div class="flex space-x-2">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
+                            要注意
+                        </span>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <textarea class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 bg-white p-2 text-sm border" rows="3" placeholder="指摘内容を入力">A種接地抵抗値が前回測定時（7.5Ω）より上昇しています。現在は基準値内ですが、今後の点検で注意深く監視が必要です。次回点検時に再度測定し、上昇傾向が続く場合は接地極の改修を検討してください。</textarea>
+                </div>
+                <div class="mb-2">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">対応期限</label>
+                    <input type="date" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 bg-white p-2 text-sm border" value="2025-08-25">
+                </div>
+                <div class="flex items-center justify-between">
+                    <button class="inline-flex items-center px-2 py-1 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50">
+                        <i class="fas fa-camera mr-1"></i> 写真追加
+                    </button>
+                    <button class="inline-flex items-center px-2 py-1 border border-red-300 shadow-sm text-xs font-medium rounded text-red-700 bg-white hover:bg-red-50">
+                        <i class="fas fa-trash mr-1"></i> 削除
+                    </button>
+                </div>
+            </div>
+            
+            <button class="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <i class="fas fa-plus mr-1"></i> 指摘事項を追加
+            </button>
+        </div>
+        
+        <!-- 添付資料 -->
+        <div class="bg-white rounded-lg shadow-sm mb-4 p-4">
+            <h2 class="text-base font-medium text-gray-900 mb-3">添付資料</h2>
+            
+            <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-700 mb-1">測定データシート</label>
+                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                    <div class="space-y-1 text-center">
+                        <i class="fas fa-file-upload text-gray-400 text-2xl"></i>
+                        <div class="flex text-sm text-gray-600">
+                            <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-primary-600 hover:text-primary-500">
+                                <span>ファイルをアップロード</span>
+                                <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                            </label>
+                            <p class="pl-1">またはドラッグ＆ドロップ</p>
+                        </div>
+                        <p class="text-xs text-gray-500">
+                            PDF, Excel, Word, JPG, PNG (最大10MB)
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border border-gray-200 rounded-md p-3 flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas fa-file-pdf text-red-500 text-xl mr-2"></i>
+                    <div>
+                        <p class="text-sm font-medium text-gray-900">測定結果.pdf</p>
+                        <p class="text-xs text-gray-500">2.4 MB</p>
+                    </div>
+                </div>
+                <button class="text-gray-400 hover:text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 顧客確認 -->
+        <div class="bg-white rounded-lg shadow-sm mb-4 p-4">
+            <h2 class="text-base font-medium text-gray-900 mb-3">顧客確認</h2>
+            
+            <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-700 mb-1">顧客担当者</label>
+                <input type="text" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 bg-white p-2 text-sm border" placeholder="担当者名" value="鈴木一郎">
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">確認方法</label>
+                <div class="mt-1 space-y-2">
+                    <div class="flex items-center">
+                        <input id="confirm-method-sign" name="confirm-method" type="radio" class="h-4 w-4 text-primary-600 border-gray-300" checked>
+                        <label for="confirm-method-sign" class="ml-2 block text-sm text-gray-700">
+                            サイン
+                        </label>
+                    </div>
+                    <div class="flex items-center">
+                        <input id="confirm-method-email" name="confirm-method" type="radio" class="h-4 w-4 text-primary-600 border-gray-300">
+                        <label for="confirm-method-email" class="ml-2 block text-sm text-gray-700">
+                            メール
+                        </label>
+                    </div>
+                    <div class="flex items-center">
+                        <input id="confirm-method-later" name="confirm-method" type="radio" class="h-4 w-4 text-primary-600 border-gray-300">
+                        <label for="confirm-method-later" class="ml-2 block text-sm text-gray-700">
+                            後日確認
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-2 border-dashed border-gray-300 rounded-md p-4 mb-3">
+                <div class="text-center mb-2">
+                    <p class="text-sm text-gray-500">サインエリア</p>
+                </div>
+                <div class="h-32 bg-gray-50 rounded-md"></div>
+                <div class="mt-2 text-center">
+                    <button class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        クリア
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- フッターナビゲーション -->
+    <footer class="bg-white shadow-md fixed bottom-0 left-0 right-0 z-10">
+        <div class="max-w-md mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <a href="index.html" class="flex flex-col items-center text-gray-500">
+                    <i class="fas fa-home text-lg"></i>
+                    <span class="text-xs mt-1">ホーム</span>
+                </a>
+                <a href="点検選択.html" class="flex flex-col items-center text-gray-500">
+                    <i class="fas fa-clipboard-check text-lg"></i>
+                    <span class="text-xs mt-1">点検</span>
+                </a>
+                <a href="点検履歴.html" class="flex flex-col items-center text-gray-500">
+                    <i class="fas fa-history text-lg"></i>
+                    <span class="text-xs mt-1">履歴</span>
+                </a>
+                <a href="ナレッジベース.html" class="flex flex-col items-center text-gray-500">
+                    <i class="fas fa-book text-lg"></i>
+                    <span class="text-xs mt-1">ナレッジ</span>
+                </a>
+                <a href="設定.html" class="flex flex-col items-center text-gray-500">
+                    <i class="fas fa-cog text-lg"></i>
+                    <span class="text-xs mt-1">設定</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
