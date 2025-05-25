@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>指摘事項詳細 | 電気保安管理システム</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#082f49',
+            },
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-100 min-h-screen flex">
+  <!-- サイドバー -->
+  <aside class="bg-gray-800 text-white w-64 flex-shrink-0 hidden md:block">
+    <div class="p-4">
+      <div class="flex items-center">
+        <img class="h-8 w-auto" src="https://placehold.jp/ffffff/000000/200x80.png?text=電気保安管理" alt="電気保安管理システム">
+      </div>
+    </div>
+    <nav class="mt-5 px-2">
+      <a href="index.html" class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">
+        <svg class="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+        ダッシュボード
+      </a>
+
+      <a href="点検計画.html" class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">
+        <svg class="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        点検計画
+      </a>
+
+      <a href="設備管理.html" class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">
+        <svg class="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+        </svg>
+        設備管理
+      </a>
+
+      <a href="指摘事項一覧.html" class="group flex items-center px-2 py-2 text-base font-medium rounded-md bg-gray-700 text-white">
+        <svg class="mr-3 h-6 w-6 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        指摘事項管理
+      </a>
+
+      <a href="単線結線図編集.html" class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">
+        <svg class="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+        </svg>
+        単線結線図
+      </a>
+
+      <a href="契約管理.html" class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">
+        <svg class="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        契約管理
+      </a>
+
+      <a href="商談管理.html" class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">
+        <svg class="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+        </svg>
+        商談管理
+      </a>
+
+      <a href="ユーザー管理.html" class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">
+        <svg class="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        ユーザー管理
+      </a>
+    </nav>
+  </aside>
+
+  <!-- メインコンテンツ -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <!-- ヘッダー -->
+    <header class="bg-white shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex">
+            <div class="flex-shrink-0 flex items-center md:hidden">
+              <img class="h-8 w-auto" src="https://placehold.jp/3d4070/ffffff/200x80.png?text=電気保安管理" alt="電気保安管理システム">
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <button type="button" class="relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                <span>新規作成</span>
+              </button>
+            </div>
+            <div class="hidden md:ml-4 md:flex-shrink-0 md:flex md:items-center">
+              <button class="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                <span class="sr-only">通知を表示</span>
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+              </button>
+
+              <!-- プロフィールドロップダウン -->
+              <div class="ml-3 relative">
+                <div>
+                  <button type="button" class="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                    <span class="sr-only">メニューを開く</span>
+                    <img class="h-8 w-8 rounded-full" src="https://placehold.jp/150x150.png" alt="">
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- メインコンテンツエリア -->
+    <main class="flex-1 overflow-y-auto bg-gray-100">
+      <div class="py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+          <!-- パンくずリスト -->
+          <nav class="flex" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-4">
+              <li>
+                <div>
+                  <a href="index.html" class="text-gray-400 hover:text-gray-500">
+                    <svg class="flex-shrink-0 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                    </svg>
+                    <span class="sr-only">ホーム</span>
+                  </a>
+                </div>
+              </li>
+              <li>
+                <div class="flex items-center">
+                  <svg class="flex-shrink-0 h-5 w-5 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
+                  </svg>
+                  <a href="指摘事項一覧.html" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">指摘事項管理</a>
+                </div>
+              </li>
+              <li>
+                <div class="flex items-center">
+                  <svg class="flex-shrink-0 h-5 w-5 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
+                  </svg>
+                  <span class="ml-4 text-sm font-medium text-gray-500" aria-current="page">指摘事項詳細 #IS-2025-0042</span>
+                </div>
+              </li>
+            </ol>
+          </nav>
+
+          <!-- ヘッダー -->
+          <div class="mt-4 flex flex-col md:flex-row md:items-center md:justify-between">
+            <div class="flex-1 min-w-0">
+              <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                指摘事項詳細 #IS-2025-0042
+              </h2>
+            </div>
+            <div class="mt-4 flex md:mt-0 md:ml-4 space-x-3">
+              <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                <svg class="-ml-1 mr-2 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+                編集
+              </button>
+              <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                ステータス更新
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mt-6">
+          <!-- ステータスバッジ -->
+          <div class="mb-6">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+              <svg class="-ml-1 mr-1.5 h-2 w-2 text-yellow-400" fill="currentColor" viewBox="0 0 8 8">
+                <circle cx="4" cy="4" r="3" />
+              </svg>
+              対応中
+            </span>
+            <span class="ml-3 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+              優先度: 高
+            </span>
+          </div>
+
+          <!-- 指摘事項基本情報 -->
+          <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+                指摘事項基本情報
+              </h3>
+              <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                点検時に発見された指摘事項の詳細
+              </p>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">
+                    指摘事項ID
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    IS-2025-0042
+                  </dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">
+                    タイトル
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    高圧受電設備 VCB操作機構部の異常音
+                  </dd>
+                </div>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">
+                    顧客名
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    <a href="#" class="text-primary-600 hover:text-primary-900">株式会社テクノ電機</a>
+                  </dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">
+                    設備
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    <a href="設備詳細.html" class="text-primary-600 hover:text-primary-900">本社ビル高圧受電設備 (EQ-2025-0042)</a>
+                  </dd>
+                </div>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">
+                    発見日
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    2025年5月15日
+                  </dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">
+                    点検種別
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    月次点検
+                  </dd>
+                </div>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">
+                    担当技術者
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-8 w-8">
+                        <img class="h-8 w-8 rounded-full" src="https://placehold.jp/150x150.png" alt="">
+                      </div>
+                      <div class="ml-3">
+                        <a href="ユーザー詳細.html" class="text-sm font-medium text-primary-600 hover:text-primary-900">山田 太郎</a>
+                        <p class="text-xs text-gray-500">t.yamada@denki-hoan.co.jp</p>
+                      </div>
+                    </div>
+                  </dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">
+                    対応期限
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    2025年6月15日
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+
+          <!-- 指摘内容 -->
+          <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+                指摘内容
+              </h3>
+              <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                指摘事項の詳細な内容と対応方法
+              </p>
+            </div>
+            <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+              <div class="prose max-w-none text-sm text-gray-900">
+                <h4 class="text-base font-medium text-gray-900 mb-2">問題の詳細</h4>
+                <p>月次点検実施中、高圧受電設備のVCB（真空遮断器）操作時に異常音が確認されました。操作機構部からの金属音で、摩耗または潤滑不足が疑われます。現時点では動作に問題はありませんが、放置すると操作不良や遮断不良につながる可能性があります。</p>
+                
+                <h4 class="text-base font-medium text-gray-900 mt-4 mb-2">想定される原因</h4>
+                <ul class="list-disc pl-5 space-y-1">
+                  <li>操作機構部の潤滑油の劣化</li>
+                  <li>操作機構部の摩耗</li>
+                  <li>操作機構部の部品の緩み</li>
+                </ul>
+                
+                <h4 class="text-base font-medium text-gray-900 mt-4 mb-2">推奨される対応</h4>
+                <p>年次点検時（2025年6月25日予定）に以下の作業を実施することを推奨します：</p>
+                <ol class="list-decimal pl-5 space-y-1">
+                  <li>VCB操作機構部の分解点検</li>
+                  <li>摩耗部品の交換</li>
+                  <li>潤滑油の塗布</li>
+                  <li>動作試験の実施</li>
+                </ol>
+                
+                <h4 class="text-base font-medium text-gray-900 mt-4 mb-2">リスク評価</h4>
+                <p>現状のリスク：<span class="font-medium text-yellow-600">中</span> - 現時点では動作に問題はないが、放置すると重大な故障につながる可能性がある。</p>
+                <p>対応後のリスク：<span class="font-medium text-green-600">低</span> - 適切なメンテナンスにより正常動作が期待できる。</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 添付写真 -->
+          <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+                添付写真
+              </h3>
+              <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                指摘事項の現場写真
+              </p>
+            </div>
+            <div class="border-t border-gray-200">
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
+                <div>
+                  <img src="https://placehold.jp/400x300.png" alt="VCB操作機構部の写真1" class="rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+                  <p class="mt-2 text-sm text-gray-500">VCB操作機構部 全体</p>
+                </div>
+                <div>
+                  <img src="https://placehold.jp/400x300.png" alt="VCB操作機構部の写真2" class="rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+                  <p class="mt-2 text-sm text-gray-500">VCB操作機構部 摩耗箇所</p>
+                </div>
+                <div>
+                  <img src="https://placehold.jp/400x300.png" alt="VCB操作機構部の写真3" class="rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+                  <p class="mt-2 text-sm text-gray-500">VCB操作機構部 潤滑油劣化箇所</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 対応履歴 -->
+          <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+            <div class="px-4 py-5 sm:px-6 flex justify-between">
+              <div>
+                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                  対応履歴
+                </h3>
+                <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                  指摘事項への対応履歴
+                </p>
+              </div>
+              <div>
+                <button type="button" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-primary-700 bg-primary-100 hover:bg-primary-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                  <svg class="-ml-0.5 mr-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  コメント追加
+                </button>
+              </div>
+            </div>
+            <div class="border-t border-gray-200">
+              <ul class="divide-y divide-gray-200">
+                <li class="p-4">
+                  <div class="flex space-x-3">
+                    <div class="flex-shrink-0">
+                      <img class="h-10 w-10 rounded-full" src="https://placehold.jp/150x150.png" alt="">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-medium text-gray-900">
+                        山田 太郎
+                      </p>
+                      <p class="text-sm text-gray-500">
+                        <time datetime="2025-05-15T14:30:00">2025年5月15日 14:30</time>
+                      </p>
+                      <div class="mt-2 text-sm text-gray-700">
+                        <p>月次点検中にVCB操作機構部から異常音を確認。操作は正常だが、年次点検時に詳細点検が必要と判断。顧客担当者にも状況を説明済み。</p>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="p-4">
+                  <div class="flex space-x-3">
+                    <div class="flex-shrink-0">
+                      <img class="h-10 w-10 rounded-full" src="https://placehold.jp/150x150.png" alt="">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-medium text-gray-900">
+                        佐藤 健太
+                      </p>
+                      <p class="text-sm text-gray-500">
+                        <time datetime="2025-05-16T10:15:00">2025年5月16日 10:15</time>
+                      </p>
+                      <div class="mt-2 text-sm text-gray-700">
+                        <p>報告を確認。年次点検時の作業計画に追加。必要な部品の在庫確認を行い、不足分は発注手配済み。</p>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="p-4">
+                  <div class="flex space-x-3">
+                    <div class="flex-shrink-0">
+                      <img class="h-10 w-10 rounded-full" src="https://placehold.jp/150x150.png" alt="">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-medium text-gray-900">
+                        鈴木 美咲
+                      </p>
+                      <p class="text-sm text-gray-500">
+                        <time datetime="2025-05-20T16:45:00">2025年5月20日 16:45</time>
+                      </p>
+                      <div class="mt-2 text-sm text-gray-700">
+                        <p>顧客に年次点検時の作業内容について説明し、了承を得ました。停電作業の日程調整も完了。作業予定日：2025年6月25日 9:00-12:00</p>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 関連指摘事項 -->
+          <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+                関連指摘事項
+              </h3>
+              <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                同じ設備または類似の問題に関する指摘事項
+              </p>
+            </div>
+            <div class="border-t border-gray-200">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      ID
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      タイトル
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      発見日
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      ステータス
+                    </th>
+                    <th scope="col" class="relative px-6 py-3">
+                      <span class="sr-only">詳細</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      IS-2024-0128
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      高圧受電設備 VCB操作回数超過
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      2024年11月15日
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                        完了
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <a href="#" class="text-primary-600 hover:text-primary-900">詳細</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      IS-2023-0076
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      高圧受電設備 VCB絶縁油漏れ
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      2023年7月20日
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                        完了
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <a href="#" class="text-primary-600 hover:text-primary-900">詳細</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
