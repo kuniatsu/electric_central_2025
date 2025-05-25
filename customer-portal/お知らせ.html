@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>お知らせ | 顧客ポータル</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#082f49',
+            },
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <!-- ヘッダー -->
+  <header class="bg-white shadow">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex">
+          <div class="flex-shrink-0 flex items-center">
+            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-primary-600.svg" alt="電気保安管理">
+            <span class="ml-2 text-xl font-bold text-primary-800">電気保安顧客ポータル</span>
+          </div>
+        </div>
+        <div class="flex items-center">
+          <div class="hidden md:ml-4 md:flex-shrink-0 md:flex md:items-center">
+            <button class="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+              <span class="sr-only">通知を見る</span>
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+            </button>
+
+            <!-- プロフィールドロップダウン -->
+            <div class="ml-3 relative">
+              <div>
+                <button type="button" class="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                  <span class="sr-only">メニューを開く</span>
+                  <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ナビゲーション -->
+  <nav class="bg-white border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-12">
+        <div class="flex">
+          <div class="hidden sm:-my-px sm:flex sm:space-x-8">
+            <a href="index.html" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+              ホーム
+            </a>
+            <a href="契約情報.html" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+              契約情報
+            </a>
+            <a href="設備詳細.html" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+              設備情報
+            </a>
+            <a href="点検報告詳細.html" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+              点検報告
+            </a>
+            <a href="お知らせ.html" class="border-primary-500 text-primary-600 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" aria-current="page">
+              お知らせ
+            </a>
+            <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+              お問い合わせ
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- メインコンテンツ -->
+  <main class="flex-grow">
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <!-- パンくずリスト -->
+      <nav class="flex mb-5" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+          <li class="inline-flex items-center">
+            <a href="index.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary-600">
+              <svg class="mr-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+              ホーム
+            </a>
+          </li>
+          <li aria-current="page">
+            <div class="flex items-center">
+              <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+              <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">お知らせ</span>
+            </div>
+          </li>
+        </ol>
+      </nav>
+
+      <!-- ページタイトル -->
+      <div class="md:flex md:items-center md:justify-between mb-6">
+        <div class="flex-1 min-w-0">
+          <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">お知らせ</h2>
+        </div>
+      </div>
+
+      <!-- タブ -->
+      <div class="border-b border-gray-200 mb-6">
+        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+          <a href="#" class="border-primary-500 text-primary-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" aria-current="page">
+            すべて
+          </a>
+          <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+            重要なお知らせ
+          </a>
+          <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+            点検関連
+          </a>
+          <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+            契約関連
+          </a>
+        </nav>
+      </div>
+
+      <!-- お知らせリスト -->
+      <div class="bg-white shadow overflow-hidden sm:rounded-md">
+        <ul class="divide-y divide-gray-200">
+          <!-- 重要なお知らせ -->
+          <li>
+            <a href="#" class="block hover:bg-gray-50">
+              <div class="px-4 py-4 sm:px-6">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 mr-3">
+                      重要
+                    </span>
+                    <p class="text-sm font-medium text-primary-600 truncate">
+                      定期点検日程変更のお知らせ
+                    </p>
+                  </div>
+                  <div class="ml-2 flex-shrink-0 flex">
+                    <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      新着
+                    </p>
+                  </div>
+                </div>
+                <div class="mt-2 sm:flex sm:justify-between">
+                  <div class="sm:flex">
+                    <p class="flex items-center text-sm text-gray-500">
+                      <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                      </svg>
+                      台風接近に伴い、5月30日に予定されていた定期点検が6月5日に変更となりました。
+                    </p>
+                  </div>
+                  <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                    </svg>
+                    <p>
+                      2025年5月25日
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </li>
+
+          <!-- 点検関連 -->
+          <li>
+            <a href="#" class="block hover:bg-gray-50">
+              <div class="px-4 py-4 sm:px-6">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 mr-3">
+                      点検
+                    </span>
+                    <p class="text-sm font-medium text-primary-600 truncate">
+                      4月度定期点検報告書のご確認
+                    </p>
+                  </div>
+                  <div class="ml-2 flex-shrink-0 flex">
+                    <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                      既読
+                    </p>
+                  </div>
+                </div>
+                <div class="mt-2 sm:flex sm:justify-between">
+                  <div class="sm:flex">
+                    <p class="flex items-center text-sm text-gray-500">
+                      <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                      </svg>
+                      4月15日に実施した定期点検の報告書が公開されました。点検報告ページからご確認ください。
+                    </p>
+                  </div>
+                  <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                    </svg>
+                    <p>
+                      2025年4月20日
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </li>
+
+          <!-- 契約関連 -->
+          <li>
+            <a href="#" class="block hover:bg-gray-50">
+              <div class="px-4 py-4 sm:px-6">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 mr-3">
+                      契約
+                    </span>
+                    <p class="text-sm font-medium text-primary-600 truncate">
+                      保守契約更新のご案内
+                    </p>
+                  </div>
+                  <div class="ml-2 flex-shrink-0 flex">
+                    <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                      既読
+                    </p>
+                  </div>
+                </div>
+                <div class="mt-2 sm:flex sm:justify-between">
+                  <div class="sm:flex">
+                    <p class="flex items-center text-sm text-gray-500">
+                      <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                      </svg>
+                      現在ご契約中の保守契約が2025年6月30日に満了となります。更新手続きについてご案内いたします。
+                    </p>
+                  </div>
+                  <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                    </svg>
+                    <p>
+                      2025年4月1日
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </li>
+
+          <!-- 設備関連 -->
+          <li>
+            <a href="#" class="block hover:bg-gray-50">
+              <div class="px-4 py-4 sm:px-6">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 mr-3">
+                      設備
+                    </span>
+                    <p class="text-sm font-medium text-primary-600 truncate">
+                      高圧設備更新工事完了のお知らせ
+                    </p>
+                  </div>
+                  <div class="ml-2 flex-shrink-0 flex">
+                    <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                      既読
+                    </p>
+                  </div>
+                </div>
+                <div class="mt-2 sm:flex sm:justify-between">
+                  <div class="sm:flex">
+                    <p class="flex items-center text-sm text-gray-500">
+                      <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                      </svg>
+                      3月15日〜20日に実施した高圧設備更新工事が無事完了しました。設備情報が更新されています。
+                    </p>
+                  </div>
+                  <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                    </svg>
+                    <p>
+                      2025年3月22日
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </li>
+
+          <!-- 法令関連 -->
+          <li>
+            <a href="#" class="block hover:bg-gray-50">
+              <div class="px-4 py-4 sm:px-6">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800 mr-3">
+                      法令
+                    </span>
+                    <p class="text-sm font-medium text-primary-600 truncate">
+                      電気事業法施行規則改正のお知らせ
+                    </p>
+                  </div>
+                  <div class="ml-2 flex-shrink-0 flex">
+                    <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                      既読
+                    </p>
+                  </div>
+                </div>
+                <div class="mt-2 sm:flex sm:justify-between">
+                  <div class="sm:flex">
+                    <p class="flex items-center text-sm text-gray-500">
+                      <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                      </svg>
+                      2025年4月1日より電気事業法施行規則が改正され、点検頻度や報告方法に変更があります。
+                    </p>
+                  </div>
+                  <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                    </svg>
+                    <p>
+                      2025年2月15日
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- ページネーション -->
+      <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 mt-4 rounded-md shadow">
+        <div class="flex-1 flex justify-between sm:hidden">
+          <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+            前へ
+          </a>
+          <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+            次へ
+          </a>
+        </div>
+        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+          <div>
+            <p class="text-sm text-gray-700">
+              <span class="font-medium">1</span> - <span class="font-medium">5</span> / <span class="font-medium">12</span> 件
+            </p>
+          </div>
+          <div>
+            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+              <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                <span class="sr-only">前へ</span>
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+              </a>
+              <a href="#" aria-current="page" class="z-10 bg-primary-50 border-primary-500 text-primary-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                1
+              </a>
+              <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                2
+              </a>
+              <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium">
+                3
+              </a>
+              <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                ...
+              </span>
+              <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                8
+              </a>
+              <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                <span class="sr-only">次へ</span>
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+              </a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- フッター -->
+  <footer class="bg-white">
+    <div class="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8">
+      <nav class="-mx-5 -my-2 flex flex-wrap justify-center" aria-label="Footer">
+        <div class="px-5 py-2">
+          <a href="#" class="text-base text-gray-500 hover:text-gray-900">
+            会社概要
+          </a>
+        </div>
+        <div class="px-5 py-2">
+          <a href="#" class="text-base text-gray-500 hover:text-gray-900">
+            プライバシーポリシー
+          </a>
+        </div>
+        <div class="px-5 py-2">
+          <a href="#" class="text-base text-gray-500 hover:text-gray-900">
+            利用規約
+          </a>
+        </div>
+        <div class="px-5 py-2">
+          <a href="#" class="text-base text-gray-500 hover:text-gray-900">
+            お問い合わせ
+          </a>
+        </div>
+      </nav>
+      <p class="mt-8 text-center text-base text-gray-400">
+        &copy; 2025 電気保安管理株式会社. All rights reserved.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
