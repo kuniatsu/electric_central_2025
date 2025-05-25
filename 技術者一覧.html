@@ -2,767 +2,520 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>技術者管理 &gt; 技術者一覧</title>
-  <style>
-    /* 全体リセット */
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-    body { display: flex; min-height: 100vh; background-color: #f7f7f7; }
-
-    /*────────────────────────────
-      左側サイドバー（折りたたみ機能付き）
-    ─────────────────────────────*/
-    .sidebar {
-      position: relative;
-      z-index: 9999;
-      width: 240px;
-      background-color: #005da8;
-      color: #fff;
-      padding: 0 10px 20px;
-      display: flex;
-      flex-direction: column;
-      transition: width 0.3s ease;
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>技術者管理 &gt; 技術者一覧 | 電気保安管理システム</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#082f49',
+            },
+          }
+        }
+      }
     }
-    .sidebar.collapsed { width: 40px; }
-    .sidebar.collapsed .logo,
-    .sidebar.collapsed .menu-header,
-    .sidebar.collapsed .menu,
-    .sidebar.collapsed .collapsible { display: none; }
-    .sidebar-toggle {
-      background-color: #004080;
-      color: #fff;
-      text-align: center;
-      padding: 5px 0;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-    .sidebar .logo {
-      text-align: center;
-      font-size: 1.3rem;
-      font-weight: bold;
-      margin: 20px 0;
-      line-height: 1.4;
-    }
-    .menu-header { font-size: 1.1rem; margin-bottom: 10px; padding-left: 10px; }
-    .menu { list-style: none; padding-left: 0; }
-    .menu-item { margin-bottom: 8px; }
-    .menu-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: none;
-      border: none;
-      width: 100%;
-      text-align: left;
-      padding: 8px 10px;
-      color: #fff;
-      font-size: 0.95rem;
-      cursor: pointer;
-    }
-    .menu-title:hover { background-color: rgba(255, 255, 255, 0.1); }
-    .sub-menu {
-      list-style: none;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-      padding-left: 15px;
-    }
-    .sub-menu.open { max-height: 500px; }
-    .sub-menu li a {
-      display: block;
-      padding: 6px 10px;
-      font-size: 0.9rem;
-      color: #fff;
-      text-decoration: none;
-    }
-    .sub-menu li a:hover { background-color: rgba(255, 255, 255, 0.15); }
-    .collapsible { border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px; margin-top: 20px; }
-    .collapsible-content { display: none; margin-top: 10px; font-size: 0.9rem; color: #eee; padding-left: 10px; }
-
-    /*────────────────────────────
-      メインコンテンツ領域
-    ─────────────────────────────*/
-    .main-content {
-      position: relative;
-      z-index: 1;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    .top-bar {
-      background-color: #fff;
-      border-bottom: 1px solid #ddd;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .top-bar .location { font-size: 1rem; color: #666; }
-    .top-bar .button-group { display: flex; gap: 10px; }
-    .top-bar button {
-      padding: 6px 12px;
-      font-size: 0.9rem;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      cursor: pointer;
-    }
-    .top-bar button:hover { background-color: #eee; }
-    .content-area { padding: 20px; overflow-y: auto; }
-
-    /*────────────────────────────
-      検索フォーム
-    ─────────────────────────────*/
-    .search-box {
-      background-color: #fff;
-      padding: 15px;
-      border: 1px solid #ddd;
-      margin-bottom: 20px;
-    }
-    .search-heading {
-      font-size: 1rem;
-      font-weight: bold;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-    }
-    .saved-conditions-container {
-      position: relative;
-      display: inline-block;
-      margin-left: 10px;
-    }
-    .basic-search, .advanced-search {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .advanced-search { display: none; }
-    .search-box label { font-size: 0.9rem; color: #333; }
-    .search-box input[type="text"],
-    .search-box input[type="number"] {
-      padding: 5px;
-      border: 1px solid #ccc;
-      font-size: 0.9rem;
-    }
-    .search-box button {
-      padding: 6px 12px;
-      font-size: 0.9rem;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      cursor: pointer;
-    }
-    .search-box button:hover { background-color: #eee; }
-    .toggle-advanced {
-      cursor: pointer;
-      color: #0073e6;
-      text-decoration: underline;
-      font-size: 0.9rem;
-      margin-bottom: 10px;
-      display: inline-block;
-    }
-    .favorite-link {
-      font-size: 0.9rem;
-      color: #0073e6;
-      text-decoration: underline;
-      cursor: pointer;
-      margin-left: 10px;
-    }
-    .search-button-area { margin-top: 10px; text-align: center; }
-    .saved-conditions-popup {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 200px;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      padding: 10px;
-      z-index: 10;
-    }
-    .saved-conditions-popup ul { list-style: none; padding: 0; margin: 0; }
-    .saved-conditions-popup li { padding: 5px; cursor: pointer; }
-    .saved-conditions-popup li:hover { background-color: #f0f0f0; }
-
-    /*────────────────────────────
-      統計情報エリア
-    ─────────────────────────────*/
-    .results-heading {
-      font-size: 1.1rem;
-      font-weight: bold;
-      margin-bottom: 10px;
-      color: #333;
-    }
-    .stats-summary {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
-      justify-content: space-between;
-    }
-    .stats-summary .stat {
-      background-color: #f0f0f0;
-      padding: 10px;
-      flex: 1 1 200px;
-      text-align: center;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-    }
-    .stats-summary .stat span.label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 5px;
-      color: #333;
-    }
-    .stats-summary .stat span.value {
-      font-size: 1.1rem;
-      color: #0073e6;
-    }
-
-    .title { font-size: 1.2rem; margin-bottom: 10px; }
-
-    /*────────────────────────────
-      リスト上のアクション領域
-    ─────────────────────────────*/
-    .list-actions {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 5px 10px;
-      background-color: #fff;
-      border: 1px solid #ddd;
-      border-bottom: none;
-      margin-bottom: 10px;
-    }
-    .icon {
-      font-size: 1rem;
-      margin-right: 10px;
-      cursor: pointer;
-    }
-    .icon:hover { color: #0073e6; }
-    .new-button {
-      padding: 5px 12px;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-    .new-button:hover { background-color: #eee; }
-
-    /*────────────────────────────
-      テーブル＆ページネーション
-    ─────────────────────────────*/
-    .table-container { background-color: #fff; border: 1px solid #ddd; }
-    table { width: 100%; border-collapse: collapse; }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px 10px;
-      text-align: center;
-      font-size: 0.9rem;
-    }
-    th { background-color: #f0f0f0; }
-    .pagination { margin-top: 10px; text-align: center; }
-    .pagination button {
-      margin: 0 2px;
-      padding: 4px 8px;
-      font-size: 0.8rem;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      cursor: pointer;
-    }
-    .pagination button:hover { background-color: #eee; }
-  </style>
+  </script>
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen flex">
   <!-- 左側サイドバー -->
-  <div class="sidebar" id="sidebar">
+  <div class="bg-primary-800 text-white w-60 flex flex-col transition-all duration-300 ease-in-out z-50" id="sidebar">
     <!-- 折りたたみボタン -->
-    <div class="sidebar-toggle" id="sidebar-toggle"><<</div>
-    <div class="logo">保安管理期間システム</div>
-    <div class="menu-header">メニュー</div>
-    <ul class="menu">
+    <div class="bg-primary-900 text-white text-center py-2 cursor-pointer text-sm" id="sidebar-toggle">&lt;&lt;</div>
+    <div class="text-center text-xl font-bold my-5 leading-tight">電気保安管理システム</div>
+    <div class="text-lg mb-3 pl-3">メニュー</div>
+    <ul class="menu space-y-1">
       <!-- 技術者グループ -->
-      <li class="menu-item">
-        <button class="menu-title">技術者 <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">技術者一覧</a></li>
-          <li><a href="#">物件アサイン＆技術者点数推移</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          技術者 <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="技術者一覧.html" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">技術者一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">物件アサイン＆技術者点数推移</a></li>
         </ul>
       </li>
       <!-- 商談グループ -->
-      <li class="menu-item">
-        <button class="menu-title">商談 <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">商談一覧</a></li>
-          <li><a href="#">工事見積依頼一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          商談 <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">商談一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">工事見積依頼一覧</a></li>
         </ul>
       </li>
       <!-- 申請・届出グループ -->
-      <li class="menu-item">
-        <button class="menu-title">申請・届出 <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">申請/届出一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          申請・届出 <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">申請/届出一覧</a></li>
         </ul>
       </li>
       <!-- 顧客グループ -->
-      <li class="menu-item">
-        <button class="menu-title">顧客 <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">顧客一覧</a></li>
-          <li><a href="#">取引先一覧</a></li>
-          <li><a href="#">契約一覧</a></li>
-          <li><a href="#">契約承認一覧</a></li>
-          <li><a href="#">物件一覧</a></li>
-          <li><a href="#">設備一覧</a></li>
-          <li><a href="#">設備一括登録</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          顧客 <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">顧客一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">取引先一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">契約一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">契約承認一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">物件一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">設備一覧</a></li>
+          <li><a href="設備一括登録.html" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">設備一括登録</a></li>
         </ul>
       </li>
       <!-- 点検グループ -->
-      <li class="menu-item">
-        <button class="menu-title">点検 <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">点検日程一覧</a></li>
-          <li><a href="#">対応不可日時登録</a></li>
-          <li><a href="#">点検日程自動登録一覧</a></li>
-          <li><a href="#">点検日程自動登録詳細</a></li>
-          <li><a href="#">点検計画一覧</a></li>
-          <li><a href="#">点検実施</a></li>
-          <li><a href="#">点検報告一覧</a></li>
-          <li><a href="#">差し戻し履歴一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          点検 <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">点検日程一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">対応不可日時登録</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">点検日程自動登録一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">点検日程自動登録詳細</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">点検計画一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">点検実施</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">点検報告一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">差し戻し履歴一覧</a></li>
         </ul>
       </li>
       <!-- 24時間監視グループ -->
-      <li class="menu-item">
-        <button class="menu-title">24時間監視 <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">監視装置一覧</a></li>
-          <li><a href="#">地図-位置情報</a></li>
-          <li><a href="#">監視ログ一覧</a></li>
-          <li><a href="#">監視装置設定</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          24時間監視 <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">監視装置一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">地図-位置情報</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">監視ログ一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">監視装置設定</a></li>
         </ul>
       </li>
       <!-- お知らせ -->
-      <li class="menu-item">
-        <button class="menu-title">お知らせ <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">お知らせ一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          お知らせ <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">お知らせ一覧</a></li>
         </ul>
       </li>
       <!-- 問い合わせ -->
-      <li class="menu-item">
-        <button class="menu-title">問い合わせ <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">問い合わせ一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          問い合わせ <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">問い合わせ一覧</a></li>
         </ul>
       </li>
       <!-- ナレッジ・共有 -->
-      <li class="menu-item">
-        <button class="menu-title">ナレッジ・共有 <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">マニュアル一覧</a></li>
-          <li><a href="#">技術者掲示板一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          ナレッジ・共有 <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">マニュアル一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">技術者掲示板一覧</a></li>
         </ul>
       </li>
       <!-- 購買・備品管理 -->
-      <li class="menu-item">
-        <button class="menu-title">購買・備品管理 <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">資産備品管理一覧</a></li>
-          <li><a href="#">試験機管理一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          購買・備品管理 <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">資産備品管理一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">試験機管理一覧</a></li>
         </ul>
       </li>
       <!-- 販売管理 -->
-      <li class="menu-item">
-        <button class="menu-title">販売管理 <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">請求一覧</a></li>
-          <li><a href="#">支払い一覧</a></li>
-          <li><a href="#">売上一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          販売管理 <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">請求一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">支払い一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">売上一覧</a></li>
         </ul>
       </li>
       <!-- マスタ -->
-      <li class="menu-item">
-        <button class="menu-title">マスタ <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">単価一覧</a></li>
-          <li><a href="#">設備作成マスタ一覧</a></li>
-          <li><a href="#">フォーマット一覧</a></li>
-          <li><a href="#">メールテンプレート一覧</a></li>
-          <li><a href="#">点検報告文例一覧</a></li>
-          <li><a href="#">換算値一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          マスタ <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">単価一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">設備作成マスタ一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">フォーマット一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">メールテンプレート一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">点検報告文例一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">換算値一覧</a></li>
         </ul>
       </li>
       <!-- ユーザー -->
-      <li class="menu-item">
-        <button class="menu-title">ユーザー <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">ユーザー一覧</a></li>
-          <li><a href="#">グループ権限一覧</a></li>
-          <li><a href="#">顧客アカウント一覧</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          ユーザー <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">ユーザー一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">グループ権限一覧</a></li>
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">顧客アカウント一覧</a></li>
         </ul>
       </li>
       <!-- システム -->
-      <li class="menu-item">
-        <button class="menu-title">システム <span>＋</span></button>
-        <ul class="sub-menu">
-          <li><a href="#">外部連携</a></li>
+      <li class="px-2">
+        <button class="flex items-center justify-between w-full text-left py-2 px-3 hover:bg-primary-700 rounded text-sm">
+          システム <span class="text-xs">＋</span>
+        </button>
+        <ul class="hidden pl-4 space-y-1 mt-1">
+          <li><a href="#" class="block py-1.5 px-3 text-sm hover:bg-primary-700 rounded">外部連携</a></li>
         </ul>
       </li>
     </ul>
-    <div class="collapsible">
-      <div class="collapsible-content" id="sidebar-extra">
-        <p>追加情報1</p>
-        <p>追加情報2</p>
-        <p>追加情報3</p>
-      </div>
+    <div class="mt-auto pt-4 border-t border-primary-700 mt-4 px-3">
+      <p class="text-sm text-primary-200">ログインユーザー: 管理者</p>
+      <p class="text-xs text-primary-300 mt-1">最終ログイン: 2025/05/25 15:00</p>
     </div>
   </div>
 
   <!-- メインコンテンツ領域 -->
-  <div class="main-content">
+  <div class="flex-1 flex flex-col">
     <!-- ヘッダー -->
-    <div class="top-bar">
-      <div class="location">技術者管理 &gt; 技術者一覧</div>
-      <div class="button-group">
-        <button>通知一覧</button>
-        <button>myページ</button>
-        <button>ログアウト</button>
+    <div class="bg-white border-b border-gray-200 py-3 px-6 flex items-center justify-between shadow-sm">
+      <div class="flex items-center">
+        <span class="text-gray-600">技術者管理 &gt; 技術者一覧</span>
+      </div>
+      <div class="flex items-center space-x-3">
+        <button class="flex items-center px-3 py-1.5 text-sm border border-gray-300 rounded hover:bg-gray-50">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+          通知一覧
+        </button>
+        <button class="flex items-center px-3 py-1.5 text-sm border border-gray-300 rounded hover:bg-gray-50">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          マイページ
+        </button>
+        <a href="login.html" class="flex items-center px-3 py-1.5 text-sm border border-gray-300 rounded hover:bg-gray-50">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+          ログアウト
+        </a>
       </div>
     </div>
 
     <!-- コンテンツ内部 -->
-    <div class="content-area">
+    <div class="flex-1 p-6 overflow-auto">
       <!-- 検索フォーム -->
-      <div class="search-box">
-        <div class="search-heading">
-          <span>基本検索</span>
-          <!-- 保存済み検索条件呼び出しリンク（基本検索のすぐ隣） -->
-          <div class="saved-conditions-container">
-            <span id="saved-conditions-link" class="toggle-advanced">検索条件呼び出し</span>
-            <div id="saved-conditions-popup" class="saved-conditions-popup">
-              <ul>
-                <li data-condition="cond1">検索条件セット1</li>
-                <li data-condition="cond2">検索条件セット2</li>
-                <li data-condition="cond3">検索条件セット3</li>
+      <div class="bg-white rounded-lg shadow-md p-5 mb-6">
+        <div class="flex items-center mb-4">
+          <h2 class="text-lg font-medium text-gray-800">基本検索</h2>
+          <!-- 保存済み検索条件呼び出しリンク -->
+          <div class="relative ml-4">
+            <button id="saved-conditions-link" class="text-primary-600 text-sm hover:text-primary-800 underline">
+              検索条件呼び出し
+            </button>
+            <div id="saved-conditions-popup" class="hidden absolute top-full left-0 mt-1 w-56 bg-white rounded-md shadow-lg border border-gray-200 z-10">
+              <ul class="py-1">
+                <li data-condition="cond1" class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">検索条件セット1</li>
+                <li data-condition="cond2" class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">検索条件セット2</li>
+                <li data-condition="cond3" class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">検索条件セット3</li>
               </ul>
             </div>
           </div>
         </div>
         <form id="search-form">
           <!-- 基本検索：常時表示 -->
-          <div class="basic-search">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div>
-              <label for="tech-id">技術者ID:</label>
-              <input type="text" id="tech-id" name="techId" placeholder="例: T123">
+              <label for="tech-id" class="block text-sm font-medium text-gray-700 mb-1">技術者ID:</label>
+              <input type="text" id="tech-id" name="techId" placeholder="例: T123" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
             </div>
             <div>
-              <label for="tech-name">技術者名:</label>
-              <input type="text" id="tech-name" name="techName" placeholder="例: 佐藤太郎">
+              <label for="tech-name" class="block text-sm font-medium text-gray-700 mb-1">技術者名:</label>
+              <input type="text" id="tech-name" name="techName" placeholder="例: 佐藤太郎" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
             </div>
             <div>
-              <label for="area">担当エリア:</label>
-              <input type="text" id="area" name="area" placeholder="例: 関東">
+              <label for="area" class="block text-sm font-medium text-gray-700 mb-1">担当エリア:</label>
+              <input type="text" id="area" name="area" placeholder="例: 関東" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
             </div>
           </div>
-          <!-- 詳細検索トグル（テキストリンク形式） -->
-          <span class="toggle-advanced" id="toggle-advanced">詳細検索 ▶︎</span>
+          <!-- 詳細検索トグル -->
+          <button type="button" id="toggle-advanced" class="text-primary-600 text-sm hover:text-primary-800 mb-4 flex items-center">
+            <span>詳細検索</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
           <!-- 詳細検索：折りたたみ部分 -->
-          <div class="advanced-search" id="advanced-search">
+          <div class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 border-t border-gray-200 pt-4" id="advanced-search">
             <div>
-              <label for="utilization-points">利用点数:</label>
-              <input type="number" id="utilization-points" name="utilizationPoints" placeholder="例: 80">
+              <label for="utilization-points" class="block text-sm font-medium text-gray-700 mb-1">利用点数:</label>
+              <input type="number" id="utilization-points" name="utilizationPoints" placeholder="例: 80" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
             </div>
             <div>
-              <label for="desired-points">希望点数:</label>
-              <input type="number" id="desired-points" name="desiredPoints" placeholder="例: 90">
+              <label for="desired-points" class="block text-sm font-medium text-gray-700 mb-1">希望点数:</label>
+              <input type="number" id="desired-points" name="desiredPoints" placeholder="例: 90" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
             </div>
             <div>
-              <label for="contract-area">受託可能エリア（市区郡）:</label>
-              <input type="text" id="contract-area" name="contractArea" placeholder="例: 横浜市">
+              <label for="contract-area" class="block text-sm font-medium text-gray-700 mb-1">受託可能エリア（市区郡）:</label>
+              <input type="text" id="contract-area" name="contractArea" placeholder="例: 横浜市" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
             </div>
             <div>
-              <label for="returned-count">差戻し件数:</label>
-              <input type="number" id="returned-count" name="returnedCount" placeholder="例: 2">
+              <label for="returned-count" class="block text-sm font-medium text-gray-700 mb-1">差戻し件数:</label>
+              <input type="number" id="returned-count" name="returnedCount" placeholder="例: 2" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
             </div>
           </div>
-          <!-- 検索ボタンとお気に入り検索リンク（中央揃え） -->
-          <div class="search-button-area">
-            <button type="submit">検索</button>
-            <a href="#" class="favorite-link">お気に入り検索として保存</a>
+          <!-- 検索ボタンとお気に入り検索リンク -->
+          <div class="flex justify-center items-center space-x-4">
+            <button type="submit" class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+              検索
+            </button>
+            <a href="#" class="text-primary-600 text-sm hover:text-primary-800 underline">お気に入り検索として保存</a>
           </div>
         </form>
       </div>
 
       <!-- 統計情報エリア -->
-      <div class="results-heading">検索結果</div>
-      <div class="stats-summary">
-        <div class="stat">
-          <span class="label">技術者数</span>
-          <span class="value">3</span>
+      <div class="text-lg font-medium text-gray-800 mb-3">検索結果</div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+        <div class="bg-white rounded-lg shadow p-4 text-center">
+          <span class="block text-sm font-medium text-gray-600 mb-1">技術者数</span>
+          <span class="block text-xl font-semibold text-primary-600">3</span>
         </div>
-        <div class="stat">
-          <span class="label">技術者レベル平均</span>
-          <span class="value">4.5</span>
+        <div class="bg-white rounded-lg shadow p-4 text-center">
+          <span class="block text-sm font-medium text-gray-600 mb-1">技術者レベル平均</span>
+          <span class="block text-xl font-semibold text-primary-600">4.5</span>
         </div>
-        <div class="stat">
-          <span class="label">担当物件数</span>
-          <span class="value">12</span>
+        <div class="bg-white rounded-lg shadow p-4 text-center">
+          <span class="block text-sm font-medium text-gray-600 mb-1">担当物件数</span>
+          <span class="block text-xl font-semibold text-primary-600">12</span>
         </div>
-        <div class="stat">
-          <span class="label">利用中平均点数</span>
-          <span class="value">25.6</span>
+        <div class="bg-white rounded-lg shadow p-4 text-center">
+          <span class="block text-sm font-medium text-gray-600 mb-1">利用中平均点数</span>
+          <span class="block text-xl font-semibold text-primary-600">25.6</span>
         </div>
-        <div class="stat">
-          <span class="label">利用点数</span>
-          <span class="value">82</span>
+        <div class="bg-white rounded-lg shadow p-4 text-center">
+          <span class="block text-sm font-medium text-gray-600 mb-1">利用点数</span>
+          <span class="block text-xl font-semibold text-primary-600">82</span>
         </div>
-        <div class="stat">
-          <span class="label">余剰点数</span>
-          <span class="value">10</span>
+        <div class="bg-white rounded-lg shadow p-4 text-center">
+          <span class="block text-sm font-medium text-gray-600 mb-1">余剰点数</span>
+          <span class="block text-xl font-semibold text-primary-600">10</span>
         </div>
       </div>
 
       <!-- 一覧件数とタイトル -->
-      <div class="title" id="list-title">
+      <div class="text-xl font-medium text-gray-800 mb-3" id="list-title">
         技術者一覧 (20件)
       </div>
 
       <!-- リスト上のアクション領域（アイコン + Newボタン） -->
-      <div class="list-actions">
-        <span class="icon">≡</span>
-        <span class="icon">✉</span>
-        <span class="icon">🔍</span>
-        <button class="new-button">New</button>
+      <div class="flex justify-end items-center bg-white rounded-t-lg shadow-sm border border-gray-200 p-2 mb-0">
+        <button class="p-1.5 text-gray-600 hover:text-primary-600 mr-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+        <button class="p-1.5 text-gray-600 hover:text-primary-600 mr-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+        </button>
+        <button class="p-1.5 text-gray-600 hover:text-primary-600 mr-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </button>
+        <button class="px-3 py-1.5 bg-primary-600 text-white rounded hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 text-sm font-medium">
+          New
+        </button>
       </div>
 
       <!-- 一覧テーブル -->
-      <div class="table-container">
-        <table id="item-table">
-          <thead>
+      <div class="overflow-x-auto bg-white rounded-b-lg shadow-md border border-gray-200 border-t-0">
+        <table id="item-table" class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
             <tr>
-              <th>技術者ID</th>
-              <th>技術者名</th>
-              <th>担当エリア</th>
-              <th>担当物件数</th>
-              <th>利用点数</th>
-              <th>希望点数</th>
-              <th>受託可能エリア（市区郡）</th>
-              <th>差戻し件数</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">技術者ID</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">技術者名</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">担当エリア</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">担当物件数</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">利用点数</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">希望点数</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">受託可能エリア</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">差戻し件数</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="bg-white divide-y divide-gray-200">
             <!-- 以下、20件分のサンプルデータ -->
-            <tr>
-              <td>T001</td>
-              <td>佐藤太郎</td>
-              <td>関東</td>
-              <td>3</td>
-              <td>30</td>
-              <td>20</td>
-              <td>横浜市</td>
-              <td>0</td>
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">T001</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">佐藤太郎</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">関東</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">30</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">20</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">横浜市</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-primary-600"><a href="#" class="hover:text-primary-800">詳細</a></td>
             </tr>
-            <tr>
-              <td>T002</td>
-              <td>鈴木花子</td>
-              <td>関西</td>
-              <td>5</td>
-              <td>28</td>
-              <td>25</td>
-              <td>大阪市</td>
-              <td>1</td>
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">T002</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">鈴木花子</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">関西</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">5</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">28</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">25</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">大阪市</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-primary-600"><a href="#" class="hover:text-primary-800">詳細</a></td>
             </tr>
-            <tr>
-              <td>T003</td>
-              <td>高橋健</td>
-              <td>中部</td>
-              <td>4</td>
-              <td>32</td>
-              <td>15</td>
-              <td>名古屋市</td>
-              <td>0</td>
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">T003</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">高橋健</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">中部</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">4</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">32</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">15</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">名古屋市</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-primary-600"><a href="#" class="hover:text-primary-800">詳細</a></td>
             </tr>
-            <tr>
-              <td>T004</td>
-              <td>田中一郎</td>
-              <td>関東</td>
-              <td>2</td>
-              <td>27</td>
-              <td>18</td>
-              <td>千葉市</td>
-              <td>1</td>
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">T004</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">田中一郎</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">関東</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">27</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">18</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">千葉市</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-primary-600"><a href="#" class="hover:text-primary-800">詳細</a></td>
             </tr>
-            <tr>
-              <td>T005</td>
-              <td>伊藤二郎</td>
-              <td>関西</td>
-              <td>6</td>
-              <td>33</td>
-              <td>22</td>
-              <td>神戸市</td>
-              <td>0</td>
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">T005</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">伊藤二郎</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">関西</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">6</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">33</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">22</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">神戸市</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-primary-600"><a href="#" class="hover:text-primary-800">詳細</a></td>
             </tr>
-            <tr>
-              <td>T006</td>
-              <td>渡辺三郎</td>
-              <td>中部</td>
-              <td>3</td>
-              <td>29</td>
-              <td>14</td>
-              <td>岐阜市</td>
-              <td>2</td>
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">T006</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">渡辺三郎</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">中部</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">29</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">14</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">岐阜市</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-primary-600"><a href="#" class="hover:text-primary-800">詳細</a></td>
             </tr>
-            <tr>
-              <td>T007</td>
-              <td>山本四郎</td>
-              <td>関東</td>
-              <td>4</td>
-              <td>31</td>
-              <td>30</td>
-              <td>横浜市</td>
-              <td>0</td>
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">T007</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">山本四郎</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">関東</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">4</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">31</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">30</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">横浜市</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-primary-600"><a href="#" class="hover:text-primary-800">詳細</a></td>
             </tr>
-            <tr>
-              <td>T008</td>
-              <td>中村五郎</td>
-              <td>関西</td>
-              <td>5</td>
-              <td>26</td>
-              <td>16</td>
-              <td>大阪市</td>
-              <td>1</td>
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">T008</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">中村五郎</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">関西</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">5</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">26</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">16</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">大阪市</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-primary-600"><a href="#" class="hover:text-primary-800">詳細</a></td>
             </tr>
-            <tr>
-              <td>T009</td>
-              <td>小林六郎</td>
-              <td>中部</td>
-              <td>3</td>
-              <td>30</td>
-              <td>20</td>
-              <td>名古屋市</td>
-              <td>0</td>
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">T009</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">小林六郎</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">中部</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">30</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">20</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">名古屋市</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-primary-600"><a href="#" class="hover:text-primary-800">詳細</a></td>
             </tr>
-            <tr>
-              <td>T010</td>
-              <td>加藤七郎</td>
-              <td>関東</td>
-              <td>2</td>
-              <td>27</td>
-              <td>19</td>
-              <td>千葉市</td>
-              <td>1</td>
-            </tr>
-            <tr>
-              <td>T011</td>
-              <td>吉田八郎</td>
-              <td>関西</td>
-              <td>4</td>
-              <td>32</td>
-              <td>23</td>
-              <td>神戸市</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>T012</td>
-              <td>佐々木九郎</td>
-              <td>中部</td>
-              <td>5</td>
-              <td>29</td>
-              <td>17</td>
-              <td>岐阜市</td>
-              <td>2</td>
-            </tr>
-            <tr>
-              <td>T013</td>
-              <td>山口十郎</td>
-              <td>関東</td>
-              <td>3</td>
-              <td>31</td>
-              <td>21</td>
-              <td>横浜市</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>T014</td>
-              <td>松本次郎</td>
-              <td>関西</td>
-              <td>4</td>
-              <td>26</td>
-              <td>12</td>
-              <td>大阪市</td>
-              <td>1</td>
-            </tr>
-            <tr>
-              <td>T015</td>
-              <td>井上三郎</td>
-              <td>中部</td>
-              <td>5</td>
-              <td>30</td>
-              <td>24</td>
-              <td>名古屋市</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>T016</td>
-              <td>木村四郎</td>
-              <td>関東</td>
-              <td>3</td>
-              <td>28</td>
-              <td>16</td>
-              <td>千葉市</td>
-              <td>1</td>
-            </tr>
-            <tr>
-              <td>T017</td>
-              <td>林五郎</td>
-              <td>関西</td>
-              <td>4</td>
-              <td>32</td>
-              <td>20</td>
-              <td>神戸市</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>T018</td>
-              <td>清水六郎</td>
-              <td>中部</td>
-              <td>3</td>
-              <td>29</td>
-              <td>15</td>
-              <td>岐阜市</td>
-              <td>2</td>
-            </tr>
-            <tr>
-              <td>T019</td>
-              <td>山崎七郎</td>
-              <td>関東</td>
-              <td>4</td>
-              <td>33</td>
-              <td>28</td>
-              <td>横浜市</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>T020</td>
-              <td>藤田八郎</td>
-              <td>関西</td>
-              <td>5</td>
-              <td>25</td>
-              <td>18</td>
-              <td>大阪市</td>
-              <td>1</td>
+            <tr class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">T010</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">加藤七郎</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">関東</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">27</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">19</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">千葉市</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-primary-600"><a href="#" class="hover:text-primary-800">詳細</a></td>
             </tr>
           </tbody>
         </table>
       </div>
 
       <!-- ページネーション -->
-      <div class="pagination">
-        <button>&laquo;</button>
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>&raquo;</button>
+      <div class="flex justify-center mt-6 mb-4">
+        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+          <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+            <span class="sr-only">First</span>
+            &laquo;
+          </a>
+          <a href="#" aria-current="page" class="z-10 bg-primary-50 border-primary-500 text-primary-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+            1
+          </a>
+          <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+            2
+          </a>
+          <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+            3
+          </a>
+          <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+            <span class="sr-only">Last</span>
+            &raquo;
+          </a>
+        </nav>
       </div>
     </div>
   </div>
