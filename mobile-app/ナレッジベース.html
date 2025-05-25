@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ナレッジベース | 点検モバイルアプリ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              200: '#fed7aa',
+              300: '#fdba74',
+              400: '#fb923c',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c',
+              800: '#9a3412',
+              900: '#7c2d12',
+              950: '#431407',
+            },
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <!-- ヘッダー -->
+  <header class="bg-white shadow-sm">
+    <div class="max-w-md mx-auto px-4">
+      <div class="flex justify-between h-14">
+        <div class="flex items-center">
+          <button class="text-gray-500 focus:outline-none focus:text-gray-700">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+          <h1 class="ml-3 text-lg font-semibold text-gray-900">ナレッジベース</h1>
+        </div>
+        <div class="flex items-center">
+          <button class="p-1 rounded-full text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+            <span class="sr-only">通知を見る</span>
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- メインコンテンツ -->
+  <main class="flex-grow">
+    <div class="max-w-md mx-auto px-4 py-6">
+      <!-- 検索バー -->
+      <div class="mb-6">
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <input type="text" name="search" id="search" class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-primary-500 focus:border-primary-500 sm:text-sm" placeholder="マニュアルやガイドを検索">
+        </div>
+      </div>
+
+      <!-- カテゴリータブ -->
+      <div class="border-b border-gray-200 mb-6">
+        <nav class="-mb-px flex space-x-6 overflow-x-auto" aria-label="Tabs">
+          <a href="#" class="border-primary-500 text-primary-600 whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm" aria-current="page">
+            すべて
+          </a>
+          <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm">
+            点検手順
+          </a>
+          <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm">
+            設備マニュアル
+          </a>
+          <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm">
+            法令・規格
+          </a>
+          <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm">
+            トラブル対応
+          </a>
+        </nav>
+      </div>
+
+      <!-- よく見られるドキュメント -->
+      <div class="mb-8">
+        <h2 class="text-lg font-medium text-gray-900 mb-4">よく見られるドキュメント</h2>
+        <ul class="space-y-3">
+          <li>
+            <a href="#" class="block bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 bg-primary-100 rounded-md p-2">
+                  <svg class="h-6 w-6 text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <div class="ml-4">
+                  <h3 class="text-sm font-medium text-gray-900">高圧受電設備の月次点検手順書</h3>
+                  <p class="text-xs text-gray-500 mt-1">更新日: 2025年4月15日</p>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="block bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 bg-primary-100 rounded-md p-2">
+                  <svg class="h-6 w-6 text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <div class="ml-4">
+                  <h3 class="text-sm font-medium text-gray-900">絶縁抵抗測定ガイドライン</h3>
+                  <p class="text-xs text-gray-500 mt-1">更新日: 2025年3月10日</p>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="block bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 bg-primary-100 rounded-md p-2">
+                  <svg class="h-6 w-6 text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div class="ml-4">
+                  <h3 class="text-sm font-medium text-gray-900">トラブルシューティング：漏電検知時の対応</h3>
+                  <p class="text-xs text-gray-500 mt-1">更新日: 2025年5月2日</p>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 最近追加されたドキュメント -->
+      <div class="mb-8">
+        <h2 class="text-lg font-medium text-gray-900 mb-4">最近追加されたドキュメント</h2>
+        <ul class="space-y-3">
+          <li>
+            <a href="#" class="block bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 bg-green-100 rounded-md p-2">
+                  <svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div class="ml-4">
+                  <h3 class="text-sm font-medium text-gray-900">2025年度 電気事業法改正ポイント解説</h3>
+                  <div class="flex items-center mt-1">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      新規
+                    </span>
+                    <p class="text-xs text-gray-500 ml-2">2025年5月20日</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="block bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 bg-green-100 rounded-md p-2">
+                  <svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div class="ml-4">
+                  <h3 class="text-sm font-medium text-gray-900">新型絶縁抵抗計の操作マニュアル</h3>
+                  <div class="flex items-center mt-1">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      新規
+                    </span>
+                    <p class="text-xs text-gray-500 ml-2">2025年5月15日</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- カテゴリー別ドキュメント -->
+      <div>
+        <h2 class="text-lg font-medium text-gray-900 mb-4">カテゴリー別ドキュメント</h2>
+        
+        <!-- 点検手順 -->
+        <div class="mb-6">
+          <h3 class="text-md font-medium text-gray-800 mb-3 flex items-center">
+            <svg class="h-5 w-5 text-primary-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
+            点検手順
+          </h3>
+          <ul class="space-y-2">
+            <li>
+              <a href="#" class="block bg-white p-3 rounded-lg border border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-colors duration-200">
+                <h4 class="text-sm font-medium text-gray-900">高圧受電設備の月次点検手順書</h4>
+                <p class="text-xs text-gray-500 mt-1">高圧受電設備の月次点検における標準的な手順と注意点を解説しています。</p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="block bg-white p-3 rounded-lg border border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-colors duration-200">
+                <h4 class="text-sm font-medium text-gray-900">変圧器の年次点検手順書</h4>
+                <p class="text-xs text-gray-500 mt-1">変圧器の年次点検における詳細な手順と測定方法について解説しています。</p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="block bg-white p-3 rounded-lg border border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-colors duration-200">
+                <h4 class="text-sm font-medium text-gray-900">低圧配電盤の点検手順書</h4>
+                <p class="text-xs text-gray-500 mt-1">低圧配電盤の点検における標準的な手順と注意点を解説しています。</p>
+              </a>
+            </li>
+          </ul>
+          <div class="mt-3 text-right">
+            <a href="#" class="text-sm font-medium text-primary-600 hover:text-primary-500">
+              すべて見る <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+        
+        <!-- 設備マニュアル -->
+        <div class="mb-6">
+          <h3 class="text-md font-medium text-gray-800 mb-3 flex items-center">
+            <svg class="h-5 w-5 text-primary-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+            設備マニュアル
+          </h3>
+          <ul class="space-y-2">
+            <li>
+              <a href="#" class="block bg-white p-3 rounded-lg border border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-colors duration-200">
+                <h4 class="text-sm font-medium text-gray-900">高圧遮断器（VCB）取扱説明書</h4>
+                <p class="text-xs text-gray-500 mt-1">真空遮断器の構造、操作方法、メンテナンスについて解説しています。</p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="block bg-white p-3 rounded-lg border border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-colors duration-200">
+                <h4 class="text-sm font-medium text-gray-900">デジタル保護継電器取扱説明書</h4>
+                <p class="text-xs text-gray-500 mt-1">最新のデジタル保護継電器の設定方法と動作確認手順について解説しています。</p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="block bg-white p-3 rounded-lg border border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-colors duration-200">
+                <h4 class="text-sm font-medium text-gray-900">高圧コンデンサ設備取扱説明書</h4>
+                <p class="text-xs text-gray-500 mt-1">力率改善用コンデンサの設置、運用、点検方法について解説しています。</p>
+              </a>
+            </li>
+          </ul>
+          <div class="mt-3 text-right">
+            <a href="#" class="text-sm font-medium text-primary-600 hover:text-primary-500">
+              すべて見る <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+        
+        <!-- 法令・規格 -->
+        <div class="mb-6">
+          <h3 class="text-md font-medium text-gray-800 mb-3 flex items-center">
+            <svg class="h-5 w-5 text-primary-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+            </svg>
+            法令・規格
+          </h3>
+          <ul class="space-y-2">
+            <li>
+              <a href="#" class="block bg-white p-3 rounded-lg border border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-colors duration-200">
+                <h4 class="text-sm font-medium text-gray-900">電気事業法施行規則 解説</h4>
+                <p class="text-xs text-gray-500 mt-1">電気保安管理に関わる法令の要点と実務上の注意点を解説しています。</p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="block bg-white p-3 rounded-lg border border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-colors duration-200">
+                <h4 class="text-sm font-medium text-gray-900">自家用電気工作物の保安規程 作成ガイド</h4>
+                <p class="text-xs text-gray-500 mt-1">保安規程の作成方法と必要な記載事項について解説しています。</p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="block bg-white p-3 rounded-lg border border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-colors duration-200">
+                <h4 class="text-sm font-medium text-gray-900">JIS規格：高圧受電設備関連規格集</h4>
+                <p class="text-xs text-gray-500 mt-1">高圧受電設備に関連するJIS規格の概要と適用範囲について解説しています。</p>
+              </a>
+            </li>
+          </ul>
+          <div class="mt-3 text-right">
+            <a href="#" class="text-sm font-medium text-primary-600 hover:text-primary-500">
+              すべて見る <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+        
+        <!-- トラブル対応 -->
+        <div>
+          <h3 class="text-md font-medium text-gray-800 mb-3 flex items-center">
+            <svg class="h-5 w-5 text-primary-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            トラブル対応
+          </h3>
+          <ul class="space-y-2">
+            <li>
+              <a href="#" class="block bg-white p-3 rounded-lg border border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-colors duration-200">
+                <h4 class="text-sm font-medium text-gray-900">停電時の緊急対応マニュアル</h4>
+                <p class="text-xs text-gray-500 mt-1">停電発生時の初動対応から復旧までの手順を解説しています。</p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="block bg-white p-3 rounded-lg border border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-colors duration-200">
+                <h4 class="text-sm font-medium text-gray-900">漏電検知時の対応手順</h4>
+                <p class="text-xs text-gray-500 mt-1">漏電が検知された場合の安全確保と原因特定の手順について解説しています。</p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="block bg-white p-3 rounded-lg border border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-colors duration-200">
+                <h4 class="text-sm font-medium text-gray-900">過負荷警報発生時の対応</h4>
+                <p class="text-xs text-gray-500 mt-1">過負荷警報が発生した場合の原因調査と負荷軽減策について解説しています。</p>
+              </a>
+            </li>
+          </ul>
+          <div class="mt-3 text-right">
+            <a href="#" class="text-sm font-medium text-primary-600 hover:text-primary-500">
+              すべて見る <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- フッターナビゲーション -->
+  <footer class="bg-white border-t border-gray-200 pt-2 pb-safe">
+    <div class="max-w-md mx-auto px-4">
+      <div class="flex justify-between">
+        <a href="index.html" class="w-full inline-flex flex-col items-center py-2 px-1 text-xs font-medium text-gray-500 hover:text-primary-600">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7m-7-7v14" />
+          </svg>
+          <span class="mt-1">ホーム</span>
+        </a>
+        <a href="点検選択.html" class="w-full inline-flex flex-col items-center py-2 px-1 text-xs font-medium text-gray-500 hover:text-primary-600">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+          </svg>
+          <span class="mt-1">点検</span>
+        </a>
+        <a href="ナレッジベース.html" class="w-full inline-flex flex-col items-center py-2 px-1 text-xs font-medium text-primary-600">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+          <span class="mt-1">ナレッジ</span>
+        </a>
+        <a href="お知らせ.html" class="w-full inline-flex flex-col items-center py-2 px-1 text-xs font-medium text-gray-500 hover:text-primary-600">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+          <span class="mt-1">お知らせ</span>
+        </a>
+        <a href="設定.html" class="w-full inline-flex flex-col items-center py-2 px-1 text-xs font-medium text-gray-500 hover:text-primary-600">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span class="mt-1">設定</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
