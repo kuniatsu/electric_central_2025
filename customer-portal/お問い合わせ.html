@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>お問い合わせ | 顧客ポータル</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#082f49',
+            },
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <!-- ヘッダー -->
+  <header class="bg-white shadow">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex">
+          <div class="flex-shrink-0 flex items-center">
+            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-primary-600.svg" alt="電気保安管理">
+            <span class="ml-2 text-xl font-bold text-primary-800">電気保安顧客ポータル</span>
+          </div>
+        </div>
+        <div class="flex items-center">
+          <div class="hidden md:ml-4 md:flex-shrink-0 md:flex md:items-center">
+            <button class="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+              <span class="sr-only">通知を見る</span>
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+            </button>
+
+            <!-- プロフィールドロップダウン -->
+            <div class="ml-3 relative">
+              <div>
+                <button type="button" class="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                  <span class="sr-only">メニューを開く</span>
+                  <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ナビゲーション -->
+  <nav class="bg-white border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-12">
+        <div class="flex">
+          <div class="hidden sm:-my-px sm:flex sm:space-x-8">
+            <a href="index.html" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+              ホーム
+            </a>
+            <a href="契約情報.html" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+              契約情報
+            </a>
+            <a href="設備詳細.html" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+              設備情報
+            </a>
+            <a href="点検報告詳細.html" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+              点検報告
+            </a>
+            <a href="お知らせ.html" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+              お知らせ
+            </a>
+            <a href="お問い合わせ.html" class="border-primary-500 text-primary-600 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" aria-current="page">
+              お問い合わせ
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- メインコンテンツ -->
+  <main class="flex-grow">
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <!-- パンくずリスト -->
+      <nav class="flex mb-5" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+          <li class="inline-flex items-center">
+            <a href="index.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary-600">
+              <svg class="mr-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+              ホーム
+            </a>
+          </li>
+          <li aria-current="page">
+            <div class="flex items-center">
+              <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+              <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">お問い合わせ</span>
+            </div>
+          </li>
+        </ol>
+      </nav>
+
+      <!-- ページタイトル -->
+      <div class="md:flex md:items-center md:justify-between mb-6">
+        <div class="flex-1 min-w-0">
+          <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">お問い合わせ</h2>
+        </div>
+      </div>
+
+      <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">お問い合わせフォーム</h3>
+          <p class="mt-1 max-w-2xl text-sm text-gray-500">ご質問やご要望がございましたら、こちらのフォームからお問い合わせください。</p>
+        </div>
+        <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
+          <form action="#" method="POST">
+            <div class="grid grid-cols-6 gap-6">
+              <!-- お問い合わせ種別 -->
+              <div class="col-span-6 sm:col-span-3">
+                <label for="inquiry-type" class="block text-sm font-medium text-gray-700">お問い合わせ種別</label>
+                <select id="inquiry-type" name="inquiry-type" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                  <option value="">選択してください</option>
+                  <option value="contract">契約に関するお問い合わせ</option>
+                  <option value="inspection">点検に関するお問い合わせ</option>
+                  <option value="equipment">設備に関するお問い合わせ</option>
+                  <option value="billing">請求に関するお問い合わせ</option>
+                  <option value="other">その他のお問い合わせ</option>
+                </select>
+              </div>
+
+              <!-- 緊急度 -->
+              <div class="col-span-6 sm:col-span-3">
+                <label for="urgency" class="block text-sm font-medium text-gray-700">緊急度</label>
+                <select id="urgency" name="urgency" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                  <option value="low">通常</option>
+                  <option value="medium">やや急ぎ</option>
+                  <option value="high">緊急</option>
+                </select>
+              </div>
+
+              <!-- 件名 -->
+              <div class="col-span-6">
+                <label for="subject" class="block text-sm font-medium text-gray-700">件名</label>
+                <input type="text" name="subject" id="subject" class="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+              </div>
+
+              <!-- お問い合わせ内容 -->
+              <div class="col-span-6">
+                <label for="message" class="block text-sm font-medium text-gray-700">お問い合わせ内容</label>
+                <textarea id="message" name="message" rows="5" class="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+                <p class="mt-2 text-sm text-gray-500">※1000文字以内でご入力ください。</p>
+              </div>
+
+              <!-- 添付ファイル -->
+              <div class="col-span-6">
+                <label class="block text-sm font-medium text-gray-700">添付ファイル</label>
+                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                  <div class="space-y-1 text-center">
+                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                      <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <div class="flex text-sm text-gray-600">
+                      <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-primary-600 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500">
+                        <span>ファイルをアップロード</span>
+                        <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                      </label>
+                      <p class="pl-1">またはドラッグ＆ドロップ</p>
+                    </div>
+                    <p class="text-xs text-gray-500">
+                      PNG, JPG, GIF, PDF (最大 10MB)
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 連絡先情報 -->
+              <div class="col-span-6 sm:col-span-3">
+                <label for="contact-name" class="block text-sm font-medium text-gray-700">担当者名</label>
+                <input type="text" name="contact-name" id="contact-name" class="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+              </div>
+
+              <div class="col-span-6 sm:col-span-3">
+                <label for="contact-email" class="block text-sm font-medium text-gray-700">メールアドレス</label>
+                <input type="email" name="contact-email" id="contact-email" class="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+              </div>
+
+              <div class="col-span-6 sm:col-span-3">
+                <label for="contact-phone" class="block text-sm font-medium text-gray-700">電話番号</label>
+                <input type="tel" name="contact-phone" id="contact-phone" class="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+              </div>
+
+              <div class="col-span-6 sm:col-span-3">
+                <label for="preferred-contact" class="block text-sm font-medium text-gray-700">希望連絡方法</label>
+                <select id="preferred-contact" name="preferred-contact" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                  <option value="email">メール</option>
+                  <option value="phone">電話</option>
+                </select>
+              </div>
+
+              <!-- 個人情報の取り扱い -->
+              <div class="col-span-6">
+                <div class="relative flex items-start">
+                  <div class="flex items-center h-5">
+                    <input id="privacy-policy" name="privacy-policy" type="checkbox" class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded">
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label for="privacy-policy" class="font-medium text-gray-700">個人情報の取り扱いに同意する</label>
+                    <p class="text-gray-500">お問い合わせいただいた内容は、お問い合わせへの対応のみに利用します。詳しくは<a href="#" class="text-primary-600 hover:text-primary-500">プライバシーポリシー</a>をご確認ください。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+              <button type="button" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                キャンセル
+              </button>
+              <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                送信する
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- お問い合わせ履歴 -->
+      <div class="mt-8 bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">お問い合わせ履歴</h3>
+          <p class="mt-1 max-w-2xl text-sm text-gray-500">過去のお問い合わせ内容と回答を確認できます。</p>
+        </div>
+        <div class="border-t border-gray-200">
+          <ul class="divide-y divide-gray-200">
+            <li>
+              <div class="px-4 py-4 sm:px-6">
+                <div class="flex items-center justify-between">
+                  <p class="text-sm font-medium text-primary-600 truncate">
+                    契約更新について
+                  </p>
+                  <div class="ml-2 flex-shrink-0 flex">
+                    <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      回答済み
+                    </p>
+                  </div>
+                </div>
+                <div class="mt-2 sm:flex sm:justify-between">
+                  <div class="sm:flex">
+                    <p class="flex items-center text-sm text-gray-500">
+                      <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                      </svg>
+                      契約更新の手続きについて教えてください。
+                    </p>
+                  </div>
+                  <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                    </svg>
+                    <p>
+                      2025年4月10日
+                    </p>
+                  </div>
+                </div>
+                <div class="mt-2 border-t border-gray-100 pt-2">
+                  <div class="bg-gray-50 p-3 rounded-md">
+                    <p class="text-xs text-gray-500 mb-1">回答日: 2025年4月11日</p>
+                    <p class="text-sm text-gray-700">契約更新の手続きについてご案内いたします。契約満了の1ヶ月前に更新書類をお送りしますので、ご確認の上、ご返送ください。ご不明点があれば、担当営業までお問い合わせください。</p>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="px-4 py-4 sm:px-6">
+                <div class="flex items-center justify-between">
+                  <p class="text-sm font-medium text-primary-600 truncate">
+                    点検日程の変更依頼
+                  </p>
+                  <div class="ml-2 flex-shrink-0 flex">
+                    <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      回答済み
+                    </p>
+                  </div>
+                </div>
+                <div class="mt-2 sm:flex sm:justify-between">
+                  <div class="sm:flex">
+                    <p class="flex items-center text-sm text-gray-500">
+                      <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                      </svg>
+                      3月15日予定の点検を都合により変更したいです。
+                    </p>
+                  </div>
+                  <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                    </svg>
+                    <p>
+                      2025年3月5日
+                    </p>
+                  </div>
+                </div>
+                <div class="mt-2 border-t border-gray-100 pt-2">
+                  <div class="bg-gray-50 p-3 rounded-md">
+                    <p class="text-xs text-gray-500 mb-1">回答日: 2025年3月6日</p>
+                    <p class="text-sm text-gray-700">点検日程の変更を承りました。3月22日10:00〜12:00で再調整させていただきます。ご都合いかがでしょうか。</p>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- よくあるご質問 -->
+      <div class="mt-8 bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">よくあるご質問</h3>
+          <p class="mt-1 max-w-2xl text-sm text-gray-500">お問い合わせの前にご確認ください。</p>
+        </div>
+        <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
+          <dl class="space-y-6 divide-y divide-gray-200">
+            <div class="pt-6 first:pt-0">
+              <dt class="text-lg">
+                <button type="button" class="text-left w-full flex justify-between items-start text-gray-400 focus:outline-none">
+                  <span class="font-medium text-gray-900">点検の日程変更はどのように行えばよいですか？</span>
+                  <span class="ml-6 h-7 flex items-center">
+                    <svg class="h-6 w-6 transform -rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </span>
+                </button>
+              </dt>
+              <dd class="mt-2 pr-12">
+                <p class="text-base text-gray-500">点検の7日前までであれば、このポータルサイトのお問い合わせフォームから変更依頼が可能です。それ以降の変更は、担当営業へ直接ご連絡ください。</p>
+              </dd>
+            </div>
+
+            <div class="pt-6">
+              <dt class="text-lg">
+                <button type="button" class="text-left w-full flex justify-between items-start text-gray-400 focus:outline-none">
+                  <span class="font-medium text-gray-900">契約更新の手続きはいつから始まりますか？</span>
+                  <span class="ml-6 h-7 flex items-center">
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </span>
+                </button>
+              </dt>
+              <dd class="mt-2 pr-12 hidden">
+                <p class="text-base text-gray-500">契約満了の2ヶ月前から更新手続きが始まります。更新書類は契約満了の1ヶ月前までにお送りします。</p>
+              </dd>
+            </div>
+
+            <div class="pt-6">
+              <dt class="text-lg">
+                <button type="button" class="text-left w-full flex justify-between items-start text-gray-400 focus:outline-none">
+                  <span class="font-medium text-gray-900">点検報告書はどこで確認できますか？</span>
+                  <span class="ml-6 h-7 flex items-center">
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </span>
+                </button>
+              </dt>
+              <dd class="mt-2 pr-12 hidden">
+                <p class="text-base text-gray-500">点検報告書は「点検報告」メニューから確認できます。点検完了後、7営業日以内に公開されます。</p>
+              </dd>
+            </div>
+
+            <div class="pt-6">
+              <dt class="text-lg">
+                <button type="button" class="text-left w-full flex justify-between items-start text-gray-400 focus:outline-none">
+                  <span class="font-medium text-gray-900">設備情報の更新はどのように行えばよいですか？</span>
+                  <span class="ml-6 h-7 flex items-center">
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </span>
+                </button>
+              </dt>
+              <dd class="mt-2 pr-12 hidden">
+                <p class="text-base text-gray-500">設備情報の更新は、お問い合わせフォームから依頼してください。担当者が確認後、システムに反映します。</p>
+              </dd>
+            </div>
+
+            <div class="pt-6">
+              <dt class="text-lg">
+                <button type="button" class="text-left w-full flex justify-between items-start text-gray-400 focus:outline-none">
+                  <span class="font-medium text-gray-900">緊急時の連絡先はどこですか？</span>
+                  <span class="ml-6 h-7 flex items-center">
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </span>
+                </button>
+              </dt>
+              <dd class="mt-2 pr-12 hidden">
+                <p class="text-base text-gray-500">緊急時は24時間対応のホットライン（0120-XXX-XXX）までご連絡ください。また、契約情報ページにも緊急連絡先が記載されています。</p>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- フッター -->
+  <footer class="bg-white">
+    <div class="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8">
+      <nav class="-mx-5 -my-2 flex flex-wrap justify-center" aria-label="Footer">
+        <div class="px-5 py-2">
+          <a href="#" class="text-base text-gray-500 hover:text-gray-900">
+            会社概要
+          </a>
+        </div>
+        <div class="px-5 py-2">
+          <a href="#" class="text-base text-gray-500 hover:text-gray-900">
+            プライバシーポリシー
+          </a>
+        </div>
+        <div class="px-5 py-2">
+          <a href="#" class="text-base text-gray-500 hover:text-gray-900">
+            利用規約
+          </a>
+        </div>
+        <div class="px-5 py-2">
+          <a href="#" class="text-base text-gray-500 hover:text-gray-900">
+            お問い合わせ
+          </a>
+        </div>
+      </nav>
+      <p class="mt-8 text-center text-base text-gray-400">
+        &copy; 2025 電気保安管理株式会社. All rights reserved.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
